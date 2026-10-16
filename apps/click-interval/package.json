@@ -7,11 +7,11 @@
   "description": "Click Interval toolbox for Windows",
   "main": "bootstrap.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "npm ci --prefix minecraft-server/vendor"
   },
   "dependencies": {
-    "electron": "44.0.0",
-    "nat-api": "^0.3.1"
+    "electron": "44.0.0"
   },
   "devDependencies": {
     "rcedit": "^5.0.2"
