@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOTD Editor</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="motd-editor.css">
+</head>
+<body>
+  <header class="motd-titlebar">MOTD Editor</header>
+  <main>
+    <section class="motd-workspace" aria-label="MOTD formatting editor">
+      <div class="motd-toolbar">
+        <div id="motdColors" class="motd-colors" aria-label="Text colors"></div>
+        <div class="motd-effects" aria-label="Text effects">
+          <button type="button" data-code="l" class="bold" title="Bold" aria-label="Bold selected text">B</button>
+          <button type="button" data-code="o" class="italic" title="Italic" aria-label="Italicize selected text">I</button>
+          <button type="button" data-code="n" class="underline" title="Underline" aria-label="Underline selected text">U</button>
+          <button type="button" data-code="m" class="strike" title="Strikethrough" aria-label="Strike selected text">S</button>
+          <button type="button" data-code="k" class="magic" title="Obfuscated moving text" aria-label="Make selected text move and change">✦</button>
+          <button type="button" data-code="r" title="Reset formatting" aria-label="Reset formatting">R</button>
+        </div>
+      </div>
+      <label for="motdSource">Message</label>
+      <textarea id="motdSource" maxlength="1024" rows="5" spellcheck="false" placeholder="Type your server message, then select text to format it"></textarea>
+      <div class="motd-source-footer">
+        <span>Select text before choosing a color or effect. You can also type § codes directly.</span>
+        <output id="motdCount">0 / 1024</output>
+      </div>
+      <div class="motd-tools">
+        <button id="clearFormatting" type="button">Remove formatting</button>
+        <button id="clearMotd" type="button">Clear message</button>
+      </div>
+    </section>
+    <section class="motd-preview-section" aria-labelledby="motdPreviewLabel">
+      <div id="motdPreviewLabel" class="motd-preview-label">Minecraft preview</div>
+      <div class="motd-server-preview">
+        <img id="motdServerIcon" src="minecraft-server/renderer/assets/minecraft-default-world.png" alt="">
+        <div>
+          <strong id="motdServerName">Minecraft Server</strong>
+          <div id="motdPreview" class="motd-preview empty">No message shown</div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <button id="cancelMotd" type="button">Cancel</button>
+      <button id="saveMotd" class="primary" type="button">Save MOTD</button>
+    </footer>
+  </main>
+  <script src="theme-loader.js"></script>
+  <script src="motd-editor.js"></script>
+</body>
+</html>

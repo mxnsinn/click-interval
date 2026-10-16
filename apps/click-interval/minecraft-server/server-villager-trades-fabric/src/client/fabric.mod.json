@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "clickinterval_trade_button",
+  "version": "${version}",
+  "name": "Click Interval Trade Button",
+  "description": "A small Cycle Trades icon in the normal villager trading screen. Requires a compatible server, which checks eligibility and performs every reroll. Traded villagers cannot be rerolled. Does not replace screens, delay closing, or change singleplayer trades.",
+  "authors": ["Click Interval"],
+  "license": "Proprietary",
+  "environment": "client",
+  "entrypoints": { "client": ["com.clickinterval.villagertrades.client.VillagerTradesClient"] },
+  "mixins": ["villager-trades-client.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "=26.2",
+    "java": ">=25",
+    "fabric-api": ">=0.161.0+26.2"
+  }
+}

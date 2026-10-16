@@ -1,0 +1,5 @@
+{
+  "required": true, "package": "dev.serverteams.fabric.mixin", "compatibilityLevel": "JAVA_25",
+  "mixins": ["CommandNodeAccessor", "DialogClickMixin", "ServerPlayerMixin", "ExplosionMixin", "PlayerAttackMixin", "LivingKnockbackMixin", "HarmfulEffectMixin"],
+  "injectors": { "defaultRequire": 1 }
+}

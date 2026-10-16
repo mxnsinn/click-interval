@@ -1,0 +1,13 @@
+CLICK INTERVAL V 1.5 SOFTWARE LICENSE
+
+This software is licensed, not sold, by its copyright owner (the Publisher).
+
+The purchaser receives a personal, limited, non-exclusive, non-transferable license to install and use Click Interval on devices they personally control.
+
+The purchaser may not sell, resell, sublicense, redistribute, upload, mirror, share, give away, or otherwise provide the software or its installation files to another person. The purchaser may not bypass ownership checks, update authentication, or other access controls.
+
+Backup copies are permitted only for the purchaser's personal use. They may not be distributed.
+
+The software is provided without warranties to the extent permitted by applicable law. The Publisher is not responsible for bans, account restrictions, data loss, system instability, or other damage caused by using automated input where it is prohibited or unsafe.
+
+Violation of this license terminates the purchaser's permission to use the software. All rights not expressly granted are reserved.

@@ -1,0 +1,150 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    compileOnly files('lib/meowantixray-fabric-1.7.0.jar')
+
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def bundledAntiXrayJar = layout.projectDirectory.file('lib/meowantixray-fabric-1.7.0.jar').asFile
+def bundledAntiXraySha512 = '4a1efe4d13a67ef71d291216eb78ea71b647b62da4feb51891f47eeb2e0cba05b460a8eb4fe7f0579a18b2956f7c51cf135d114d154787a7339f0cc6c994713c'
+
+tasks.register('verifyBundledAntiXray') {
+    inputs.file bundledAntiXrayJar
+    doLast {
+        if (!bundledAntiXrayJar.isFile()) {
+            throw new GradleException("Missing bundled Fabric Anti-Xray dependency: ${bundledAntiXrayJar}")
+        }
+        def digest = java.security.MessageDigest.getInstance('SHA-512')
+        bundledAntiXrayJar.withInputStream { input ->
+            byte[] buffer = new byte[8192]
+            int count
+            while ((count = input.read(buffer)) >= 0) {
+                if (count > 0) digest.update(buffer, 0, count)
+            }
+        }
+        def actual = digest.digest().collect { String.format('%02x', it & 0xff) }.join()
+        if (actual != bundledAntiXraySha512) {
+            throw new GradleException("Bundled Fabric Anti-Xray SHA-512 mismatch: ${actual}")
+        }
+    }
+}
+
+def sharedCore = file('../click-interval-anticheat/src/main/java')
+def entityControlSource = file('../server-trade-assistant-fabric/src/main/java')
+def sharedCoreFiles = [
+        'com/clickinterval/anticheat/core/AccessPolicy.java',
+        'com/clickinterval/anticheat/core/BehaviorPatternAnalyzer.java',
+        'com/clickinterval/anticheat/core/Clock.java',
+        'com/clickinterval/anticheat/core/CombatPatternAnalyzer.java',
+        'com/clickinterval/anticheat/core/EnforcementAction.java',
+        'com/clickinterval/anticheat/core/EventLogger.java',
+        'com/clickinterval/anticheat/core/OffenseRecord.java',
+        'com/clickinterval/anticheat/core/OffenseStore.java',
+        'com/clickinterval/anticheat/core/ProtectionMessages.java',
+        'com/clickinterval/anticheat/core/RateWindow.java',
+        'com/clickinterval/anticheat/core/ReachCheckMath.java',
+        'com/clickinterval/anticheat/core/SpectateRecoveryStore.java',
+        'com/clickinterval/anticheat/core/ViolationDecision.java',
+        'com/clickinterval/anticheat/core/ViolationEngine.java',
+        'com/clickinterval/anticheat/core/ViolationPolicy.java',
+        'com/clickinterval/anticheat/core/VisibilityEvidence.java'
+]
+
+sourceSets {
+    main {
+        java {
+            srcDir sharedCore
+            srcDir entityControlSource
+            include 'dev/serverprotection/fabric/**'
+            include 'dev/servertradeassistant/fabric/control/AppControlBridge.java'
+            include 'dev/servertradeassistant/fabric/mixin/MerchantOfferAccessor.java'
+            sharedCoreFiles.each { include it }
+        }
+    }
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    maxParallelForks = 1
+    minHeapSize = '64m'
+    maxHeapSize = '256m'
+    jvmArgs '-XX:ActiveProcessorCount=2'
+    testLogging {
+        events 'failed', 'skipped'
+        exceptionFormat 'full'
+    }
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+tasks.named('jar') {
+    dependsOn tasks.named('verifyBundledAntiXray')
+    from(bundledAntiXrayJar) {
+        into 'META-INF/jars'
+    }
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.register('copyReleaseJar', Copy) {
+    dependsOn tasks.named('check'), tasks.named('jar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('dist')
+    rename { "ServerProtection-Fabric-${project.mod_version}+mc26.3.jar" }
+}
+
+def resolvedFabricApi = providers.provider {
+    def expected = "fabric-api-${project.fabric_api_version}.jar"
+    def matches = configurations.runtimeClasspath.files.findAll { it.name == expected }
+    if (matches.size() != 1 || !matches[0].isFile()) {
+        throw new GradleException("Expected exactly one resolved ${expected}, found ${matches.size()}")
+    }
+    matches[0]
+}
+
+tasks.register('copyFabricApi', Copy) {
+    from resolvedFabricApi
+    into layout.projectDirectory.dir('dist')
+}
+
+tasks.named('build') {
+    dependsOn tasks.named('copyReleaseJar'), tasks.named('copyFabricApi')
+}

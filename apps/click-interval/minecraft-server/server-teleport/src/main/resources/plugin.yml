@@ -1,0 +1,41 @@
+name: ServerTeleport
+version: 1.2.0
+main: com.servermanager.teleport.ServerTeleportPlugin
+api-version: '1.20'
+authors: [Server Manager]
+description: Lightweight player teleport requests and persistent named locations.
+commands:
+  tpa:
+    description: Request a player teleport or manage and use your saved locations.
+    usage: /tpa <player|location> | /tpa accept | /tpa decline | /tpa set <name> | /tpa list | /tpa delete <name>
+  tpaccept:
+    description: Accept a pending teleport request.
+    usage: /tpaccept [player]
+  tpdeny:
+    description: Deny a pending teleport request.
+    usage: /tpdeny [player]
+  tpacancel:
+    description: Cancel your outgoing teleport request.
+    usage: /tpacancel
+  serverteleport:
+    description: Reload the teleport request settings.
+    usage: /serverteleport reload
+permissions:
+  serverteleport.request:
+    description: Send teleport requests.
+    default: true
+  serverteleport.places:
+    description: Save, list, delete, and teleport to personal named locations.
+    default: true
+  serverteleport.respond:
+    description: Accept or deny teleport requests.
+    default: true
+  serverteleport.cancel:
+    description: Cancel an outgoing teleport request.
+    default: true
+  serverteleport.reload:
+    description: Reload the teleport request settings.
+    default: op
+  serverteleport.bypass.cooldown:
+    description: Send teleport requests without the request cooldown.
+    default: op

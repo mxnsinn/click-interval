@@ -1,0 +1,16 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #101214; color: #e8edf2; font: 14px "Segoe UI", Arial, sans-serif; }
+header { height: 46px; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: #181c20; border-bottom: 1px solid #30363d; -webkit-app-region: drag; }
+header span { flex: 1; }
+button { -webkit-app-region: no-drag; background: #252b31; color: #e8edf2; border: 1px solid #444; border-radius: 4px; padding: 6px 11px; cursor: pointer; }
+button:hover { background: #303840; }
+.filters { display: flex; gap: 8px; padding: 10px; border-bottom: 1px solid #252a2f; }
+input, select { background: #191d21; color: #e8edf2; border: 1px solid #3a4148; border-radius: 4px; padding: 7px 9px; }
+input { flex: 1; }
+main { height: calc(100vh - 96px); overflow: auto; padding: 10px; }
+.row { padding: 7px 9px; border-bottom: 1px solid #20252a; }
+.time { color: #7f8b97; font-size: 11px; margin-right: 8px; }
+.private .sender { color: #d7a6ff; }
+.sender { color: #6fd3ff; font-weight: 600; margin-right: 5px; }
+.recipient { color: #9aa7b4; font-size: 12px; margin-right: 5px; }
+.empty { color: #7f8b97; padding: 20px; text-align: center; }

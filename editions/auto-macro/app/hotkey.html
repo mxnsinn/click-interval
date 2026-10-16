@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; connect-src 'none'; img-src 'self' data:; style-src 'self'; script-src 'self'">
+  <title>Hotkey Setting</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body class="hotkey-window">
+  <header id="popupTitle" class="popup-titlebar">Hotkey Setting</header>
+  <main>
+    <div class="hotkey-row">
+      <button id="captureHotkey" type="button">Start / Stop</button>
+      <output id="hotkeyValue" aria-live="polite">q</output>
+    </div>
+    <div class="popup-actions">
+      <button id="okButton" type="button">Ok</button>
+      <button id="cancelButton" type="button">Cancel</button>
+    </div>
+  </main>
+  <script src="hotkey-window.js"></script>
+</body>
+</html>

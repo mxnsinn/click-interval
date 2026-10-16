@@ -1,0 +1,324 @@
+:root {
+  --console-divider: color-mix(in srgb, var(--theme-border) 72%, transparent);
+  --console-control-hover: color-mix(in srgb, var(--theme-raised) 74%, transparent);
+  --console-success: color-mix(in srgb, #24a45d 78%, var(--theme-text));
+  --console-warning: color-mix(in srgb, #c88718 76%, var(--theme-text));
+  font: 12px "Segoe UI", sans-serif;
+  color: var(--theme-text);
+  background: var(--theme-bg);
+}
+
+* { box-sizing: border-box; }
+
+html,
+body,
+.terminal-shell { width: 100%; height: 100%; }
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--theme-bg);
+}
+
+button,
+input { font: inherit; color: inherit; }
+
+button { -webkit-app-region: no-drag; }
+
+.terminal-shell {
+  display: grid;
+  grid-template-rows: 34px 34px minmax(0, 1fr) 42px;
+  overflow: hidden;
+  color: var(--theme-text);
+  background: var(--theme-bg);
+}
+
+.console-titlebar,
+.console-toolbar,
+#consoleCommand {
+  background: var(--theme-surface);
+}
+
+.console-titlebar {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  user-select: none;
+  border-bottom: 0;
+}
+
+.console-brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+  gap: 8px;
+  padding-left: 11px;
+}
+
+.terminal-mark {
+  display: inline-flex;
+  align-items: baseline;
+  width: 21px;
+  color: var(--theme-highlight);
+  font: 700 15px/1 Consolas, "Cascadia Mono", monospace;
+}
+
+.terminal-mark b,
+.terminal-mark i { font: inherit; }
+.terminal-mark i { color: var(--theme-subtle); }
+
+.console-brand strong {
+  overflow: hidden;
+  color: var(--theme-text);
+  font: 600 11px/1 Consolas, "Cascadia Mono", monospace;
+  letter-spacing: .15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.console-drag {
+  flex: 1;
+  align-self: stretch;
+  -webkit-app-region: drag;
+}
+
+.console-window-actions {
+  display: flex;
+  align-self: stretch;
+  -webkit-app-region: no-drag;
+}
+
+.console-window-actions button {
+  display: grid;
+  width: 43px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--theme-muted);
+  font-size: 17px;
+  line-height: 1;
+}
+
+.console-window-actions button:hover {
+  background: var(--console-control-hover);
+  color: var(--theme-text);
+}
+
+.console-window-actions .close:hover {
+  background: var(--theme-danger);
+  color: var(--theme-bg);
+}
+
+.console-toolbar {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0 7px 0 12px;
+  border-bottom: 1px solid var(--console-divider);
+}
+
+.session-name {
+  overflow: hidden;
+  flex: 1;
+  color: var(--theme-subtle);
+  font: 10px/1 Consolas, "Cascadia Mono", monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 1px;
+}
+
+.toolbar-actions button {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  gap: 5px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--theme-muted);
+}
+
+.toolbar-actions button svg,
+.send-command svg {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
+}
+
+.toolbar-actions button:hover:not(:disabled) {
+  background: var(--console-control-hover);
+  color: var(--theme-text);
+}
+
+.toolbar-actions button:focus-visible,
+.console-window-actions button:focus-visible,
+.send-command:focus-visible {
+  outline: 1px solid var(--theme-highlight);
+  outline-offset: -1px;
+}
+
+.toolbar-actions button:disabled {
+  opacity: .32;
+  cursor: default;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 15px;
+  margin: 0 4px;
+  background: var(--theme-border);
+}
+
+#consoleOutput {
+  min-width: 0;
+  min-height: 0;
+  padding: 10px 13px 14px;
+  overflow: auto;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  font: 11px/1.55 Consolas, "Cascadia Mono", "Courier New", monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  scrollbar-color: var(--theme-scrollbar-thumb) var(--theme-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+#consoleOutput:empty::before {
+  color: var(--theme-subtle);
+  content: "Console ready. Type /help to see commands.";
+}
+
+#consoleOutput::-webkit-scrollbar { width: 8px; height: 8px; }
+#consoleOutput::-webkit-scrollbar-track { background: var(--theme-scrollbar-track); }
+#consoleOutput::-webkit-scrollbar-thumb {
+  border: 2px solid var(--theme-scrollbar-track);
+  border-radius: 5px;
+  background: var(--theme-scrollbar-thumb);
+}
+#consoleOutput::-webkit-scrollbar-thumb:hover { background: var(--theme-scrollbar-thumb-hover); }
+#consoleOutput::-webkit-scrollbar-corner { background: var(--theme-scrollbar-track); }
+
+.console-line { min-height: 17px; color: var(--theme-text); }
+.console-line.error { color: var(--theme-danger); }
+.console-line.warning { color: var(--console-warning); }
+.console-line.success { color: var(--console-success); }
+.console-line.system { color: var(--theme-accent-bright); }
+.console-line.player { color: color-mix(in srgb, var(--theme-highlight) 72%, var(--theme-text)); }
+.console-line.command { color: var(--theme-muted); }
+.console-line.helper { color: color-mix(in srgb, var(--theme-text) 82%, var(--theme-muted)); }
+
+#consoleCommand {
+  display: grid;
+  grid-template-columns: 17px minmax(0, 1fr) auto 31px;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+  padding: 5px 7px 5px 12px;
+  border-top: 1px solid var(--console-divider);
+}
+
+.command-prompt {
+  color: var(--theme-highlight);
+  font: 700 18px/1 Consolas, "Cascadia Mono", monospace;
+}
+
+.command-field {
+  position: relative;
+  min-width: 0;
+  height: 30px;
+}
+
+#consoleInput,
+#consoleGhost {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 30px;
+  padding: 6px 8px;
+  overflow: hidden;
+  border: 0;
+  font: 11px/18px Consolas, "Cascadia Mono", "Courier New", monospace;
+  white-space: pre;
+}
+
+#consoleGhost {
+  z-index: 0;
+  pointer-events: none;
+  color: transparent;
+}
+
+#consoleGhostTail { color: var(--theme-subtle); }
+
+#consoleInput {
+  z-index: 1;
+  min-width: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--theme-text);
+  caret-color: var(--theme-highlight);
+}
+
+#consoleInput::placeholder {
+  color: var(--theme-subtle);
+  opacity: 1;
+}
+
+.command-field::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--theme-border);
+  content: "";
+}
+
+.command-field:focus-within::after { background: var(--theme-highlight); }
+
+.complete-hint {
+  color: var(--theme-subtle);
+  font-size: 9px;
+  user-select: none;
+}
+
+.complete-hint[hidden] { display: none; }
+
+.complete-hint kbd {
+  padding: 1px 4px;
+  border: 1px solid var(--theme-border);
+  border-radius: 3px;
+  background: var(--theme-row);
+  font: inherit;
+}
+
+.send-command {
+  display: grid;
+  width: 30px;
+  height: 28px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--theme-muted);
+}
+
+.send-command:hover {
+  background: var(--console-control-hover);
+  color: var(--theme-highlight);
+}
+
+@media (max-width: 540px) {
+  .toolbar-actions button span { display: none; }
+  .toolbar-actions button { width: 28px; justify-content: center; padding: 0; }
+}

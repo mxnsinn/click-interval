@@ -1,0 +1,159 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def generatedArtwork = layout.buildDirectory.dir('generated/trade-assistant-artwork')
+sourceSets.main.resources.srcDir(generatedArtwork)
+
+tasks.register('generateArtwork') {
+    outputs.dir generatedArtwork
+    doLast {
+        def root = generatedArtwork.get().asFile
+        def spriteDir = new File(root, 'assets/tradeassistant/textures/gui/sprites')
+        spriteDir.mkdirs()
+
+        def render = { File destination, int size, boolean focused, boolean disabled, boolean panel ->
+            def image = new java.awt.image.BufferedImage(size, size, java.awt.image.BufferedImage.TYPE_INT_ARGB)
+            def graphics = image.createGraphics()
+            try {
+                graphics.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                        java.awt.RenderingHints.VALUE_ANTIALIAS_ON)
+                graphics.setRenderingHint(java.awt.RenderingHints.KEY_STROKE_CONTROL,
+                        java.awt.RenderingHints.VALUE_STROKE_PURE)
+                def scale = size / 64.0d
+                if (panel) {
+                    graphics.color = new java.awt.Color(10, 14, 18, 255)
+                    graphics.fillRoundRect(1, 1, size - 2, size - 2, (int) (14 * scale), (int) (14 * scale))
+                    graphics.color = new java.awt.Color(31, 47, 57, 255)
+                    graphics.stroke = new java.awt.BasicStroke((float) Math.max(1.0d, 2.0d * scale))
+                    graphics.drawRoundRect(2, 2, size - 5, size - 5, (int) (13 * scale), (int) (13 * scale))
+                }
+
+                def center = size / 2.0d
+                def emerald = disabled
+                        ? new java.awt.Color(104, 116, 120, 210)
+                        : new java.awt.Color(33, focused ? 224 : 201, focused ? 181 : 160, 255)
+                def highlight = disabled
+                        ? new java.awt.Color(149, 156, 159, 205)
+                        : new java.awt.Color(130, focused ? 255 : 241, focused ? 230 : 213, 255)
+
+                def diamond = new java.awt.geom.Path2D.Double()
+                diamond.moveTo(center, 15 * scale)
+                diamond.lineTo(48 * scale, center)
+                diamond.lineTo(center, 49 * scale)
+                diamond.lineTo(16 * scale, center)
+                diamond.closePath()
+                graphics.color = emerald
+                graphics.fill(diamond)
+                graphics.color = highlight
+                graphics.stroke = new java.awt.BasicStroke((float) Math.max(1.0d, 2.4d * scale),
+                        java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND)
+                graphics.draw(diamond)
+                graphics.drawLine((int) center, (int) (17 * scale), (int) center, (int) (47 * scale))
+                graphics.drawLine((int) (18 * scale), (int) center, (int) (46 * scale), (int) center)
+
+                graphics.color = disabled
+                        ? new java.awt.Color(166, 171, 173, 230)
+                        : new java.awt.Color(235, 251, 255, 255)
+                graphics.stroke = new java.awt.BasicStroke((float) Math.max(1.2d, 4.2d * scale),
+                        java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND)
+                graphics.draw(new java.awt.geom.Arc2D.Double(9 * scale, 8 * scale, 46 * scale, 46 * scale,
+                        38, 118, java.awt.geom.Arc2D.OPEN))
+                graphics.draw(new java.awt.geom.Arc2D.Double(9 * scale, 8 * scale, 46 * scale, 46 * scale,
+                        218, 118, java.awt.geom.Arc2D.OPEN))
+
+                def upperArrow = new java.awt.geom.Path2D.Double()
+                upperArrow.moveTo(49 * scale, 7 * scale)
+                upperArrow.lineTo(57 * scale, 18 * scale)
+                upperArrow.lineTo(44 * scale, 19 * scale)
+                upperArrow.closePath()
+                graphics.fill(upperArrow)
+                def lowerArrow = new java.awt.geom.Path2D.Double()
+                lowerArrow.moveTo(15 * scale, 57 * scale)
+                lowerArrow.lineTo(7 * scale, 46 * scale)
+                lowerArrow.lineTo(20 * scale, 45 * scale)
+                lowerArrow.closePath()
+                graphics.fill(lowerArrow)
+            } finally {
+                graphics.dispose()
+            }
+            javax.imageio.ImageIO.write(image, 'png', destination)
+        }
+
+        render(new File(spriteDir, 'cycle.png'), 20, false, false, true)
+        render(new File(spriteDir, 'cycle_highlighted.png'), 20, true, false, true)
+        render(new File(spriteDir, 'cycle_disabled.png'), 20, false, true, true)
+    }
+}
+
+processResources {
+    dependsOn tasks.named('generateArtwork')
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add('-Xlint:all')
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    maxParallelForks = 1
+    minHeapSize = '64m'
+    maxHeapSize = '256m'
+    testLogging {
+        events 'failed', 'skipped'
+        exceptionFormat 'full'
+    }
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.named('sourcesJar') {
+    dependsOn tasks.named('generateArtwork')
+}
+
+tasks.register('copyReleaseJar', Copy) {
+    dependsOn tasks.named('jar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('dist')
+    rename { 'ServerTradeAssistant-Fabric-1.0.0+mc26.2.jar' }
+}
+
+tasks.named('build') {
+    finalizedBy tasks.named('copyReleaseJar')
+}

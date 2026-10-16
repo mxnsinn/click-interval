@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Macro</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body class="macro-delete-window">
+  <header class="popup-titlebar">Delete Macro</header>
+  <main>
+    <div class="delete-message"><span aria-hidden="true">&#9888;</span><p id="deleteQuestion"></p></div>
+    <label id="resetServerSettingsOption" class="reset-settings-option" hidden><input id="resetServerSettings" type="checkbox" aria-describedby="resetServerSettingsHelp"><span>Reset other server settings</span></label>
+    <p id="resetServerSettingsHelp" class="reset-settings-help" hidden>Resets the other fields in this server’s Settings section in Click Interval. The fields below are kept unless you check their own box.</p>
+    <fieldset id="resetServerFields" class="reset-fields" hidden aria-describedby="resetServerFieldsHelp">
+      <legend>Also reset selected fields</legend>
+      <div class="reset-fields-grid">
+        <label><input id="resetServerField-serverIcon" type="checkbox"> Server icon</label>
+        <label><input id="resetServerField-serverType" type="checkbox"> Server type</label>
+        <label><input id="resetServerField-serverVersion" type="checkbox"> Server version</label>
+        <label><input id="resetServerField-levelName" type="checkbox"> World name</label>
+        <label><input id="resetServerField-motd" type="checkbox"> MOTD</label>
+        <label><input id="resetServerField-publicAddress" type="checkbox"> Public address / hostname</label>
+        <label><input id="resetServerField-simulationDistance" type="checkbox"> Simulation distance</label>
+      </div>
+      <p id="resetServerFieldsHelp">Each box applies independently. Server type and version reset the selection for your next install.</p>
+    </fieldset>
+    <div class="popup-actions">
+      <button id="confirmDelete" class="danger-button" type="button">Delete</button>
+      <button id="cancelDelete" type="button">Cancel</button>
+    </div>
+  </main>
+  <script src="theme-loader.js"></script><script src="localization.js"></script><script src="macro-delete-window.js"></script>
+</body>
+</html>

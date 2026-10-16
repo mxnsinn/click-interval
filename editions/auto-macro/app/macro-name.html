@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; connect-src 'none'; img-src 'self' data:; style-src 'self'; script-src 'self'">
+  <title>New Macro</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body class="macro-name-window">
+  <header id="macroNameTitle" class="popup-titlebar">New Macro</header>
+  <main>
+    <label id="macroNameLabel" for="macroNameInput">Macro name</label>
+    <input id="macroNameInput" type="text" maxlength="40" autocomplete="off" placeholder="My Macro">
+    <div class="popup-actions">
+      <button id="createMacro" type="button">Create</button>
+      <button id="cancelMacro" type="button">Cancel</button>
+    </div>
+  </main>
+  <script src="macro-name-window.js"></script>
+</body>
+</html>

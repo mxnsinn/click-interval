@@ -1,0 +1,1 @@
+{"required":true,"package":"dev.serverenchantments.fabric.mixin","compatibilityLevel":"JAVA_25","mixins":["PlacedLogMixin","AnvilMenuMixin","CompletedBlockBreakMixin","SmelterDropsMixin","EnchantmentToggleInputMixin"],"injectors":{"defaultRequire":1}}

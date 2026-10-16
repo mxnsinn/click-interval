@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: transparent; }
+    body { display: grid; place-items: center; }
+    #value { color: #fff; font: 700 16px "Segoe UI", sans-serif; line-height: 1; mix-blend-mode: difference; text-align: center; white-space: nowrap; }
+    #split { min-width: 72px; display: grid; grid-template-columns: 1fr 1px 1fr; align-items: center; gap: 10px; color: #fff; font: 700 16px "Segoe UI", sans-serif; line-height: 1; mix-blend-mode: difference; text-align: center; }
+    #split[hidden] { display: none; }
+    #split i { width: 1px; height: 20px; background: currentColor; opacity: .72; }
+  </style>
+</head>
+<body><div id="value" class="total">0 CPS</div><div id="split" hidden><span id="left">0</span><i></i><span id="right">0</span></div><script>
+const valueElement = document.getElementById('value');
+const splitElement = document.getElementById('split');
+window.cpsIndicator.onValue(payload => {
+  const data = payload && typeof payload === 'object' ? payload : { mode: 'total', total: payload };
+  if (data.mode === 'left-right') {
+    valueElement.hidden = true;
+    splitElement.hidden = false;
+    document.getElementById('left').textContent = String(Math.max(0, Math.round(Number(data.left) || 0)));
+    document.getElementById('right').textContent = String(Math.max(0, Math.round(Number(data.right) || 0)));
+    return;
+  }
+  splitElement.hidden = true;
+  valueElement.hidden = false;
+  const cps = Math.max(0, Number(data.total) || 0);
+  valueElement.textContent = `${cps >= 100 ? Math.round(cps) : cps.toFixed(1)} CPS`;
+});
+</script></body>
+</html>

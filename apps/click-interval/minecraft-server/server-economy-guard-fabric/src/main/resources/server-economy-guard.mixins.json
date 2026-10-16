@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.clickinterval.economyguard.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": ["TripwireHookGuardMixin", "FallingBlockPortalMixin", "ContainerVehicleGuardMixin", "ItemEntityPickupMixin", "HopperItemGuardMixin"],
+  "injectors": { "defaultRequire": 1 }
+}

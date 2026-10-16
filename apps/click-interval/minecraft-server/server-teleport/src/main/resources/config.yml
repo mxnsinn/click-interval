@@ -1,0 +1,58 @@
+requests:
+  # Requests expire automatically. Accepted range: 5-300 seconds.
+  expiry-seconds: 60
+  # Anti-spam cooldown after a valid request. Accepted range: 0-300 seconds.
+  cooldown-seconds: 10
+  # Maximum requests waiting for one player. Accepted range: 1-32.
+  max-incoming-per-player: 8
+  allow-cross-world: true
+
+# Every player-facing message is editable. Use an empty string to suppress a message.
+# Available placeholders include {requester}, {target}, {seconds}, {requests}, {name},
+# {locations}, {limit}, and {world} where relevant.
+# Standard ampersand color codes such as &a, &c, and &e are supported.
+messages:
+  players-only: "&cOnly a player can use that command."
+  no-permission: "&cYou do not have permission to do that."
+  usage-tpa: "&eUsage: /tpa <player|location>, /tpa accept, /tpa decline, /tpa set <name>, /tpa list, or /tpa delete <name>"
+  usage-location-set: "&eUsage: /tpa set <name>"
+  usage-location-delete: "&eUsage: /tpa delete <name>"
+  usage-tpaccept: "&eUsage: /tpa accept [player]"
+  usage-tpdeny: "&eUsage: /tpa decline [player]"
+  usage-tpacancel: "&eUsage: /tpacancel"
+  usage-admin: "&eUsage: /serverteleport reload"
+  player-unavailable: "&cThat player is not available."
+  location-invalid-name: "&cLocation names must use 1-24 letters, numbers, underscores, or hyphens. accept, decline, set, list, and delete are reserved."
+  location-limit: "&cYou can save at most {limit} locations. Delete one before adding another."
+  location-saved: "&aSaved your current location as {name}."
+  location-deleted: "&aDeleted saved location {name}."
+  location-list: "&eSaved locations: {locations}"
+  location-none: "&eYou have no saved locations. Use /tpa set <name> to add one."
+  location-not-found: "&cNo online player or saved location named {name} was found."
+  location-storage-failed: "&cSaved locations are temporarily unavailable. Check the server log."
+  location-world-unavailable: "&cThe world for {name} ({world}) is not loaded or no longer matches."
+  location-unsafe: "&cThat location is outside the world's safe teleport bounds."
+  location-teleported: "&aTeleported to {name}."
+  cannot-target-self: "&cYou cannot send a teleport request to yourself."
+  already-pending: "&eCancel your request to {target} before sending another."
+  target-limit: "&cThat player already has too many pending requests."
+  cooldown: "&eWait {seconds}s before sending another teleport request."
+  request-sent: "&aTeleport request sent to {target}."
+  request-received: "&eYou got a TPA request from {requester}. Would you like to accept or decline?"
+  choose-request: "&eChoose a pending request: {requests}"
+  no-pending: "&cYou have no pending teleport requests."
+  no-matching-request: "&cThere is no pending request from {requester}."
+  accepted-requester: "&a{target} accepted your teleport request."
+  accepted-target: "&aAccepted {requester}'s teleport request."
+  denied-requester: "&c{target} denied your teleport request."
+  denied-target: "&eDenied {requester}'s teleport request."
+  cancelled-requester: "&eYour teleport request was cancelled."
+  cancelled-target: "&e{requester} cancelled their teleport request."
+  expired-requester: "&eYour teleport request to {target} expired."
+  expired-target: "&e{requester}'s teleport request expired."
+  requester-left-target: "&e{requester} left, so their teleport request was cancelled."
+  target-left-requester: "&e{target} left, so your teleport request was cancelled."
+  cross-world-disabled: "&cCross-world teleports are disabled."
+  teleport-failed: "&cThe teleport could not be completed."
+  reload-complete: "&aTeleport settings reloaded."
+  reload-failed: "&cTeleport settings could not be reloaded. Check the server log."

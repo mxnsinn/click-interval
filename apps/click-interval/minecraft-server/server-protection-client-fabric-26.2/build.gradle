@@ -1,0 +1,94 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.ow2.asm:asm-tree:9.9'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def adapterProject = file('../server-protection-client-fabric')
+def sharedProtocol = file('../server-protection-fabric/src/main/java')
+sourceSets {
+    main {
+        java {
+            srcDir adapterProject.toPath().resolve('src/main/java').toFile()
+            srcDir sharedProtocol
+            srcDir '../server-chat-fabric/src/main/java'
+            include 'com/clickinterval/chat/protocol/**'
+            include 'dev/serverprotection/client/**'
+            include 'dev/serverprotection/fabric/attestation/AttestationProtocol.java'
+            include 'dev/serverprotection/fabric/playerview/**'
+        }
+        resources.setSrcDirs([])
+    }
+    test {
+        java.srcDir adapterProject.toPath().resolve('src/test/java').toFile()
+    }
+}
+
+processResources {
+    inputs.property 'version', project.version
+    from('src/main/resources') {
+        include 'fabric.mod.json'
+        expand version: project.version
+    }
+    from(adapterProject.toPath().resolve('src/main/resources').toFile()) {
+        include 'serverprotection.companion.mixins.json'
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    maxParallelForks = 1
+    minHeapSize = '32m'
+    maxHeapSize = '128m'
+    jvmArgs '-XX:ActiveProcessorCount=2'
+    def testScratch = layout.buildDirectory.dir('tmp/test-scratch').get().asFile
+    systemProperty 'java.io.tmpdir', testScratch.absolutePath
+    doFirst { testScratch.mkdirs() }
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.register('copyReleaseJar', Copy) {
+    dependsOn tasks.named('check'), tasks.named('jar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('dist')
+    rename { "${project.archives_base_name}-${project.mod_version}+mc26.2.jar" }
+}
+
+tasks.named('build') {
+    dependsOn tasks.named('copyReleaseJar')
+}

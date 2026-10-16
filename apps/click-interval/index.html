@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click Interval V 1.5</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="titlebar">
+    <div class="app-title"><img class="app-logo" src="assets/toolbox-icon.svg" alt=""><span id="appVersionLabel">Click Interval V 1.5</span></div>
+    <div class="window-buttons">
+      <button id="updateWindow" class="update-window check-mode" type="button" aria-label="Check for updates" title="Check for updates">
+        <svg class="update-check-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.8 7A6.2 6.2 0 1 0 16 12"/><path d="M12.7 4.2h3.5v3.5"/></svg>
+        <svg class="update-install-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5v9m0 0 3.2-3.2M10 11.5 6.8 8.3M4 14.5v2h12v-2"/></svg>
+      </button>
+      <button id="settingsWindow" class="settings-window" type="button" aria-label="Open settings" title="Settings">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 1.5h4l.5 2.1 1.4.6 1.9-1.1 1.1 1.1-1.1 1.9.6 1.4 2.1.5v4l-2.1.5-.6 1.4 1.1 1.9-1.1 1.1-1.9-1.1-1.4.6-.5 2.1H8l-.5-2.1-1.4-.6-1.9 1.1-1.1-1.1 1.1-1.9-.6-1.4-2.1-.5V8l2.1-.5.6-1.4-1.1-1.9 1.1-1.1 1.9 1.1 1.4-.6L8 1.5Z"/><circle cx="10" cy="10" r="2.5"/></svg>
+      </button>
+      <button id="minimizeWindow" type="button" aria-label="Minimize">&#x2212;</button>
+      <button id="closeWindow" class="close" type="button" aria-label="Close">&#x00D7;</button>
+    </div>
+  </header>
+  <nav class="tool-switcher" aria-label="Tools">
+    <button id="showAutoClicker" class="tool-tab active" type="button" aria-pressed="true" title="Right-click for tab options"><span class="tool-mouse" aria-hidden="true"></span>Auto Clicker<svg class="tool-lock-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7"/></svg></button>
+    <button id="showMacro" class="tool-tab" type="button" aria-pressed="false" title="Right-click for tab options"><svg class="tool-macro-icon" viewBox="0 0 18 16" aria-hidden="true"><rect x="1.5" y="2.5" width="15" height="11" rx="2"/><circle cx="6" cy="8" r="2"/><path d="M11 6.5h3M11 9.5h3"/></svg>Macro<svg class="tool-lock-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7"/></svg></button>
+    <button id="showCrosshair" class="tool-tab" type="button" aria-pressed="false" title="Right-click for tab options"><svg class="tool-crosshair-icon" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="5.25"/><circle cx="9" cy="9" r="1.25"/><path d="M9 1v4M9 13v4M1 9h4M13 9h4"/></svg>Crosshair<svg class="tool-lock-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7"/></svg></button>
+    <button id="showVoice" class="tool-tab" type="button" aria-pressed="false" title="Right-click for tab options"><svg class="tool-voice-icon" viewBox="0 0 18 18" aria-hidden="true"><rect x="6.2" y="2" width="5.6" height="9" rx="2.8"/><path d="M4 8.2a5 5 0 0 0 10 0M9 13.2V16M6.5 16h5"/></svg>Voice<svg class="tool-lock-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7"/></svg></button>
+    <button id="showMinecraftServer" class="tool-tab" type="button" aria-pressed="false" title="Right-click for tab options"><svg class="tool-server-icon" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="2.5" width="14" height="5" rx="1.5"/><rect x="2" y="10.5" width="14" height="5" rx="1.5"/><circle cx="5" cy="5" r=".8"/><circle cx="5" cy="13" r=".8"/><path d="M8 5h5M8 13h5"/></svg>Minecraft Server<svg class="tool-lock-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7"/></svg></button>
+  </nav>
+  <main id="appMain" class="tool-view" tabindex="-1">
+    <fieldset class="interval-box">
+      <legend>Click interval</legend>
+      <div class="interval-row">
+        <input id="hours" type="text" inputmode="numeric" value="0"><span>hours</span>
+        <input id="minutes" type="text" inputmode="numeric" value="0"><span>mins</span>
+        <input id="seconds" type="text" inputmode="numeric" value="0"><span>secs</span>
+        <input id="milliseconds" type="text" inputmode="numeric" value="10" title="Maximum speed is controlled by the CPS cap"><span>milliseconds</span>
+      </div>
+      <div class="random-row">
+        <button id="help" class="help" type="button" title="Set a random offset for the interval.">?</button>
+        <label class="check-label"><input id="randomEnabled" type="checkbox"> Random offset</label>
+        <input id="randomMilliseconds" type="text" inputmode="numeric" value="40">
+        <span>milliseconds</span>
+      </div>
+    </fieldset>
+
+    <div class="middle-grid">
+      <fieldset>
+        <legend>Click options</legend>
+        <div class="form-row"><label for="mouseClick">Mouse button:</label><select id="mouseClick"><option>Left</option><option>Right</option><option>Middle</option></select></div>
+        <div class="form-row"><label for="clickType">Click type:</label><select id="clickType"><option>Single</option><option>Double</option></select></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>CPS cap &amp; emergency stop</legend>
+        <div class="safety-row cps-row"><label for="cpsCap">CPS cap:</label><div class="cps-input-wrap"><input id="cpsCap" type="text" inputmode="numeric" value="100"><div class="cps-stepper"><button id="cpsIncrease" type="button" aria-label="Increase CPS cap"></button><button id="cpsDecrease" type="button" aria-label="Decrease CPS cap"></button></div></div><span id="cpsWarning" class="cps-warning" title="250 CPS is the recommended warning threshold for this PC. The selected cap is the maximum click rate regardless of the click interval.">&#9888;</span></div>
+        <div class="safety-row"><span>Emergency:</span><button id="emergencyHotkey" type="button">Ctrl + Shift + F12</button></div>
+      </fieldset>
+    </div>
+
+    <fieldset class="cursor-box">
+      <legend>Cursor position</legend>
+      <label class="cursor-current"><input type="radio" name="cursor" id="currentLocation" checked> Current location</label>
+      <label class="pick-radio"><input type="radio" name="cursor" id="pickedLocation"></label>
+      <button id="pickLocation" type="button">Pick location</button>
+      <label>X <input id="cursorX" type="text" inputmode="numeric" value="0"></label>
+      <label>Y <input id="cursorY" type="text" inputmode="numeric" value="0"></label>
+    </fieldset>
+
+    <div class="actions">
+      <button id="startButton" type="button">Start (Q)</button>
+      <button id="stopButton" type="button" disabled>Stop (Q)</button>
+      <button id="hotkeyButton" class="focused-look" type="button">Hotkey setting</button>
+      <button id="recordButton" type="button">Emergency Stop (Ctrl+Shift+F12)</button>
+    </div>
+  </main>
+
+  <main id="macroView" class="tool-view macro-view" tabindex="-1" hidden>
+    <section id="macroHomePanel" class="macro-panel">
+      <div class="macro-page-header">
+        <strong>Your macros</strong>
+        <div class="macro-header-actions">
+          <button id="importMacro" class="macro-bare-icon" type="button" aria-label="Open a macro file" title="Open a macro file">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7.5h6l2 2h7v9h-15z"/><path d="M4.5 7.5v-2h6l2 2"/></svg>
+          </button>
+          <button id="createMacroButton" class="macro-bare-icon macro-plus" type="button" aria-label="Create a new macro" title="Create a new macro">+</button>
+        </div>
+      </div>
+      <div class="macro-library-box">
+        <div id="macroLibraryList" class="macro-library-list" role="list" aria-label="Saved macros"></div>
+        <div id="macroEmptyState" class="macro-empty-state">No macros yet. Press + to create one.</div>
+      </div>
+    </section>
+
+    <section id="macroRecorderPanel" class="macro-panel" hidden>
+      <div class="macro-page-header editor-header">
+        <button id="macroRecorderBack" class="macro-nav-icon" type="button" aria-label="Back to saved macros" title="Back to saved macros">&#x2190;</button>
+        <div class="macro-title-stack">
+          <strong id="macroRecorderTitle">Macro</strong>
+          <div class="macro-file-status"><strong id="macroActionCount">0 actions</strong><span id="macroFileName">Not saved</span></div>
+        </div>
+        <div class="macro-header-actions">
+          <button id="macroSave" class="macro-nav-icon macro-save-button" type="button" aria-label="Save macro" title="Save macro">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg>
+          </button>
+          <button id="openAdvancedMacro" class="macro-nav-icon advanced-button" type="button" aria-label="Open advanced editor" title="Open advanced editor">&#9881;</button>
+        </div>
+      </div>
+      <fieldset class="macro-settings-box">
+        <legend>Settings</legend>
+        <div class="recorder-settings-grid">
+          <div class="recorder-settings-group">
+            <span class="settings-group-title">Repeat</span>
+            <div class="recorder-setting-row repeat-count-setting"><label><input type="radio" name="macroRepeatMode" id="macroRepeatCountMode" checked> Repeat count</label><input id="macroRepeatCount" type="text" inputmode="numeric" value="3"></div>
+            <div class="recorder-setting-row"><label><input type="radio" name="macroRepeatMode" id="macroConstantRepeat"> Constant repeat</label></div>
+            <div class="recorder-setting-row"><label for="macroLoopDelay">Loop delay</label><div class="setting-unit"><input id="macroLoopDelay" type="text" inputmode="numeric" value="0"><span>ms</span></div></div>
+          </div>
+          <div class="recorder-settings-group">
+            <span class="settings-group-title">Playback</span>
+            <div class="recorder-setting-row"><label for="macroPlaybackSpeed">Speed</label><select id="macroPlaybackSpeed"><option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option></select></div>
+            <div class="recorder-setting-row"><label for="macroStartDelay">Start delay</label><select id="macroStartDelay"><option value="0">None</option><option value="250">0.25s</option><option value="500">0.5s</option><option value="1000">1s</option><option value="2000">2s</option></select></div>
+            <div class="recorder-setting-row"><label for="macroTimingVariance">Timing variance</label><select id="macroTimingVariance"><option value="0">None</option><option value="5">5%</option><option value="10">10%</option><option value="20">20%</option></select></div>
+          </div>
+        </div>
+        <div class="recorder-behavior-row">
+          <label class="check-label" title="Hide Click Interval when playback starts"><input id="macroMinimizeOnPlay" type="checkbox" checked> Minimize app</label>
+          <label class="check-label" title="Return the cursor to its starting position when playback ends"><input id="macroRestoreCursor" type="checkbox"> Restore cursor</label>
+          <label class="check-label" title="Stop playback when physical keyboard or mouse input is detected"><input id="macroStopOnInput" type="checkbox"> Stop on input</label>
+        </div>
+      </fieldset>
+      <fieldset class="macro-recording-box">
+        <legend>Record &amp; playback</legend>
+        <div class="macro-record-controls">
+          <button id="macroRecord" class="macro-primary" type="button"><span class="record-dot"></span><span>Record</span></button>
+          <button id="macroPlay" type="button"><span class="play-triangle"></span><span>Play</span></button>
+        </div>
+        <div class="macro-file-controls">
+          <div class="recording-quality-control">
+            <label for="macroRecordingQuality" title="Compact 30 Hz, Balanced 60 Hz, Smooth 120 Hz, Ultra 240 Hz">Quality</label>
+            <select id="macroRecordingQuality">
+              <option value="compact">Compact</option>
+              <option value="balanced" selected>Balanced</option>
+              <option value="smooth">Smooth</option>
+              <option value="ultra">Ultra</option>
+            </select>
+          </div>
+          <button id="macroOpen" type="button">Open file</button>
+        </div>
+      </fieldset>
+      <fieldset class="macro-hotkeys-box">
+        <legend>Hotkeys</legend>
+        <div class="macro-shortcuts">
+          <button id="macroRecordHotkey" type="button">Record / Stop: Ctrl + F10</button>
+          <button id="macroPlayHotkey" type="button">Play / Stop: Ctrl + F11</button>
+        </div>
+      </fieldset>
+    </section>
+
+    <section id="macroAdvancedPanel" class="macro-panel" hidden>
+      <div class="macro-page-header advanced-header">
+        <button id="macroAdvancedBack" class="macro-nav-icon" type="button" aria-label="Back to recorder" title="Back to recorder">&#x2190;</button>
+        <strong>Advanced editor</strong>
+        <div class="advanced-header-tools">
+          <select id="advancedMacroSelect" aria-label="Macro to edit"></select>
+          <select id="triggerTypeMenu" hidden aria-hidden="true"><option value="relation">Color Relation</option><option value="visual">Color Presence</option><option value="pixel">Pixel Color</option><option value="zone">Color Zone</option><option value="bar">Bar Fill</option><option value="screen">Screen Change</option></select>
+          <button id="openTriggerMenu" class="macro-bare-icon trigger-menu-icon" type="button" aria-label="Add or edit trigger" title="Add or edit trigger">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v7m0 0a3 3 0 1 0 0 6v5M5 10a3 3 0 0 1 0 6M8 13h5l3-4v8l3-4h2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="advanced-top-grid">
+        <fieldset class="macro-trigger-box">
+          <legend>Trigger</legend>
+          <div class="compact-row"><label for="macroTriggerMode">When:</label><select id="macroTriggerMode"><option>Pressed</option><option>Hold</option><option>Toggle</option></select></div>
+          <div class="compact-row"><span>Keys:</span><button id="macroTriggerKey" type="button">F8</button></div>
+          <label class="check-label macro-enabled"><input id="macroEnabled" type="checkbox"> Enable global trigger</label>
+        </fieldset>
+        <fieldset class="macro-capture-box">
+          <legend>Record settings</legend>
+          <div class="capture-grid">
+            <label><input id="captureMovement" type="checkbox" checked> Movement</label>
+            <label><input id="captureButtons" type="checkbox" checked> Buttons</label>
+            <label><input id="captureKeyboard" type="checkbox" checked> Keyboard</label>
+            <label><input id="captureDelays" type="checkbox" checked> Delays</label>
+          </div>
+          <div class="position-mode"><label><input type="radio" name="macroPosition" id="macroAbsolute" checked> Absolute</label><label><input type="radio" name="macroPosition" id="macroRelative"> Relative</label></div>
+        </fieldset>
+      </div>
+
+      <fieldset class="macro-actions-box">
+        <legend>Actions</legend>
+        <div class="action-layout">
+          <select id="macroActionList" size="6" aria-label="Macro actions"></select>
+          <div class="action-toolbar">
+            <button id="actionEdit" type="button" title="Edit selected action" aria-label="Edit selected action">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19l1-4L16.5 4.5l3 3L9 18z"/><path d="M14.5 6.5l3 3"/></svg>
+            </button>
+            <button id="actionUp" type="button" title="Move up">&#x2191;</button>
+            <button id="actionDown" type="button" title="Move down">&#x2193;</button>
+            <button id="actionDuplicate" type="button" title="Duplicate">&#x29C9;</button>
+            <button id="actionDelete" type="button" title="Delete">&#x00D7;</button>
+            <button id="actionClear" type="button" title="Clear all">C</button>
+          </div>
+        </div>
+        <div class="action-add-row">
+          <select id="newActionType" aria-label="New action type"><option value="wait">Wait</option><option value="wait_until_relation">Wait until color relation</option><option value="find_color_click">Find color and click</option><option value="switch_crosshair">Switch crosshair</option><option value="auto_clicker_control">Control auto clicker</option><option value="label">Label</option><option value="goto">Go to label</option><option value="mouse_click">Mouse click</option><option value="mouse_down">Mouse button down</option><option value="mouse_up">Mouse button up</option><option value="key_press">Key press (VK)</option><option value="move_absolute">Move absolute</option><option value="move_relative">Move relative</option></select>
+          <input id="newActionValue" type="text" value="100" aria-label="Action value" title="Wait: milliseconds. Key: virtual-key number. Move: x,y">
+          <select id="newActionButton" aria-label="Mouse button" hidden><option>Left</option><option>Right</option><option>Middle</option><option>MB4</option><option>MB5</option></select>
+          <button id="actionAdd" type="button">Add</button>
+        </div>
+      </fieldset>
+    </section>
+
+    <section id="macroActionEditorPanel" class="macro-panel" hidden>
+      <div class="macro-page-header action-editor-header">
+        <button id="macroActionEditorBack" class="macro-nav-icon" type="button" aria-label="Back to advanced editor" title="Back to advanced editor">&#x2190;</button>
+        <strong id="macroActionEditorTitle">Edit action</strong>
+        <span></span>
+      </div>
+
+      <fieldset class="action-editor-box">
+        <legend>Action settings</legend>
+        <div id="actionEditWaitFields" class="action-edit-fields" hidden>
+          <label>Delay <span class="action-edit-unit"><input id="actionEditWaitMs" type="text" inputmode="numeric"><span>ms</span></span></label>
+        </div>
+        <div id="actionEditMoveFields" class="action-edit-fields" hidden>
+          <label>X <input id="actionEditMoveX" type="text" inputmode="numeric"></label>
+          <label>Y <input id="actionEditMoveY" type="text" inputmode="numeric"></label>
+          <label>Movement <select id="actionEditMoveMode"><option value="absolute">Absolute</option><option value="relative">Relative</option></select></label>
+        </div>
+        <div id="actionEditPathFields" class="action-edit-path" hidden>
+          <div class="action-edit-path-options">
+            <label>Movement <select id="actionEditPathMode"><option value="absolute">Absolute</option><option value="relative">Relative</option></select></label>
+            <label>Playback <span class="action-edit-unit"><input id="actionEditPathHz" type="text" inputmode="numeric"><span>Hz</span></span></label>
+          </div>
+          <label>Path points <span class="action-edit-help">one line per point: delay, x, y</span></label>
+          <textarea id="actionEditPathPoints" spellcheck="false"></textarea>
+        </div>
+        <div id="actionEditMouseFields" class="action-edit-fields" hidden>
+          <label>Event <select id="actionEditMouseEvent"><option value="mouse_down">Button down</option><option value="mouse_up">Button up</option></select></label>
+          <label>Button <select id="actionEditMouseButton"><option>Left</option><option>Right</option><option>Middle</option><option>MB4</option><option>MB5</option></select></label>
+        </div>
+        <div id="actionEditKeyFields" class="action-edit-fields" hidden>
+          <label>Event <select id="actionEditKeyEvent"><option value="key_down">Key down</option><option value="key_up">Key up</option></select></label>
+          <label>Key <input id="actionEditKeyVk" type="text" readonly aria-label="Click, then press a key"></label>
+        </div>
+        <div id="actionEditWaitUntilFields" class="action-edit-fields action-edit-compact" hidden>
+          <label>Boundary color <input id="actionEditWaitBoundary" type="text" maxlength="7"></label>
+          <label>Target color <input id="actionEditWaitTarget" type="text" maxlength="7"></label>
+          <label>Tolerance, margin <input id="actionEditWaitDetection" type="text"></label>
+          <label>Relation <select id="actionEditWaitCondition"><option value="target_inside">Target is inside</option><option value="target_right">Target is right</option><option value="target_left">Target is left</option><option value="target_centered">Target is centered</option><option value="colors_visible">Both colors are visible</option><option value="tracking_lost">Either color is missing</option></select></label>
+          <label>Area X,Y <input id="actionEditWaitAreaXY" type="text"></label>
+          <label>Area W,H <input id="actionEditWaitAreaWH" type="text"></label>
+          <label>Check every <span class="action-edit-unit"><input id="actionEditWaitPoll" type="text" inputmode="numeric"><span>ms</span></span></label>
+          <label>Timeout <span class="action-edit-unit"><input id="actionEditWaitTimeout" type="text" inputmode="numeric"><span>ms</span></span></label>
+          <button id="actionEditWaitPickArea" class="action-area-pick" type="button">Select area on screen</button>
+        </div>
+        <div id="actionEditFindClickFields" class="action-edit-fields action-edit-compact" hidden>
+          <label>Target color <input id="actionEditFindColor" type="text" maxlength="7"></label>
+          <label>Tolerance <input id="actionEditFindTolerance" type="text" inputmode="numeric"></label>
+          <label>Minimum pixels <input id="actionEditFindPixels" type="text" inputmode="numeric"></label>
+          <label>Area X,Y <input id="actionEditFindAreaXY" type="text"></label>
+          <label>Area W,H <input id="actionEditFindAreaWH" type="text"></label>
+          <label>Mouse button <select id="actionEditFindButton"><option>Left</option><option>Right</option><option>Middle</option></select></label>
+          <label>Check every <span class="action-edit-unit"><input id="actionEditFindPoll" type="text" inputmode="numeric"><span>ms</span></span></label>
+          <label>Timeout <span class="action-edit-unit"><input id="actionEditFindTimeout" type="text" inputmode="numeric"><span>ms</span></span></label>
+          <button id="actionEditFindPickArea" class="action-area-pick" type="button">Select area on screen</button>
+        </div>
+        <div id="actionEditControlFields" class="action-edit-fields" hidden>
+          <label id="actionEditControlLabel">Name <input id="actionEditControlName" type="text" maxlength="40"></label>
+        </div>
+        <div id="actionEditCrosshairFields" class="action-edit-fields" hidden>
+          <label>Operation <select id="actionEditCrosshairOperation"><option value="activate">Switch and show</option><option value="switch">Switch only</option><option value="hide">Hide overlay</option><option value="toggle">Toggle overlay</option></select></label>
+          <label>Crosshair <select id="actionEditCrosshairProfile"></select></label>
+        </div>
+        <div id="actionEditAutoClickerFields" class="action-edit-fields" hidden>
+          <label>Auto clicker <select id="actionEditAutoClickerOperation"><option value="start">Start</option><option value="stop">Stop</option><option value="toggle">Toggle</option></select></label>
+        </div>
+      </fieldset>
+      <div class="action-editor-buttons">
+        <button id="actionEditCancel" type="button">Cancel</button>
+        <button id="actionEditSave" type="button">Save action</button>
+      </div>
+    </section>
+
+    <section id="macroSmartPanel" class="macro-panel" hidden>
+      <div class="macro-page-header smart-header">
+        <button id="macroSmartBack" class="macro-nav-icon" type="button" aria-label="Back to advanced editor" title="Back to advanced editor">&#x2190;</button>
+        <strong id="triggerEditorTitle">Color Presence</strong>
+        <span id="smartActivationState" class="smart-state">Disabled</span>
+      </div>
+
+      <fieldset class="smart-source-box">
+        <legend id="triggerSourceLegend">Target color</legend>
+        <div id="visualTriggerSource" class="trigger-source-simple" hidden>
+          <div class="trigger-color-preview" id="triggerColorPreview"></div>
+          <div><strong id="triggerColorTitle">Measure color coverage</strong><span id="triggerColorDescription" title="Runs the next action while the selected color covers the chosen percentage of the search area.">Runs the next action while the selected color covers the chosen percentage of the search area.</span></div>
+          <div class="trigger-color-inputs">
+            <input id="triggerColor" type="text" value="#ff0000" maxlength="7" aria-label="Target color">
+            <select id="triggerCoverage" aria-label="Required color coverage"><option value="0.5">0.5% area</option><option value="1">1% area</option><option value="5" selected>5% area</option><option value="10">10% area</option><option value="25">25% area</option><option value="50">50% area</option></select>
+          </div>
+        </div>
+        <div id="screenTriggerSource" class="trigger-source-simple" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3M6 11h3l2-3 3 6 2-3h2"/></svg>
+          <div><strong>Compare consecutive scans</strong><span id="screenTriggerDescription" title="Runs the next action when the selected region changes, or remains stable, compared with its previous scan.">Runs the next action when the selected region changes, or remains stable, compared with its previous scan.</span></div>
+        </div>
+        <div id="relationTriggerSource" class="relation-trigger-source" hidden>
+          <label>Boundary color <input id="relationBoundaryColor" type="text" value="#ffffff" maxlength="7"></label>
+          <label>Target color <input id="relationTargetColor" type="text" value="#ff0000" maxlength="7"></label>
+          <label>Tolerance <input id="relationTolerance" type="text" inputmode="numeric" value="35"></label>
+          <label>Edge margin <input id="relationEdgeMargin" type="text" inputmode="numeric" value="3"></label>
+        </div>
+      </fieldset>
+
+      <div class="smart-settings-grid">
+        <fieldset>
+          <legend>Detection</legend>
+          <div class="smart-setting-row"><label for="smartCondition">Trigger when</label><select id="smartCondition"></select></div>
+          <div class="smart-setting-row"><label id="triggerThresholdLabel" for="smartThreshold">Confidence</label><select id="smartThreshold"></select></div>
+          <div class="smart-setting-row"><label id="smartScanLabel" for="smartScanInterval">Scan every</label><select id="smartScanInterval"><option value="100">100 ms</option><option value="250" selected>250 ms</option><option value="500">500 ms</option><option value="1000">1 second</option></select></div>
+          <div class="smart-setting-row"><label id="smartCooldownLabel" for="smartCooldown">Minimum interval</label><div class="setting-unit"><input id="smartCooldown" type="text" inputmode="numeric" value="0"><span>ms</span></div></div>
+        </fieldset>
+        <fieldset>
+          <legend>Search area</legend>
+          <div class="smart-setting-row"><label for="smartAreaMode">Area</label><select id="smartAreaMode"><option value="full">Full screen</option><option value="center">Center 50%</option><option value="custom">Custom</option></select></div>
+          <div id="smartCustomArea" class="smart-area-inputs" hidden>
+            <label>X <input id="smartAreaX" type="text" inputmode="numeric" value="0"></label>
+            <label>Y <input id="smartAreaY" type="text" inputmode="numeric" value="0"></label>
+            <label>W <input id="smartAreaWidth" type="text" inputmode="numeric" value="800"></label>
+            <label>H <input id="smartAreaHeight" type="text" inputmode="numeric" value="600"></label>
+            <button id="smartPickArea" type="button">Select area on screen</button>
+          </div>
+        </fieldset>
+      </div>
+
+      <fieldset class="smart-enable-box">
+        <legend id="smartAddLegend">Add trigger</legend>
+        <button id="addTriggerAction" type="button">Add trigger to actions</button>
+        <span id="smartMatchDetails">Configure this trigger, then add it.</span>
+      </fieldset>
+    </section>
+  </main>
+
+  <main id="crosshairView" class="tool-view crosshair-view" tabindex="-1" hidden>
+    <section id="crosshairHomePanel" class="crosshair-home-panel">
+      <div class="macro-page-header">
+        <strong>Your crosshairs</strong>
+        <div class="macro-header-actions">
+          <button id="crosshairHomeImport" class="macro-bare-icon" type="button" title="Import crosshair"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7.5h6l2 2h7v9h-15z"/><path d="M4.5 7.5v-2h6l2 2"/></svg></button>
+          <button id="crosshairHomeCreate" class="macro-bare-icon macro-plus" type="button" title="Create crosshair">+</button>
+        </div>
+      </div>
+      <div id="crosshairLibraryList" class="crosshair-library-list"></div>
+      <div id="crosshairEmptyState" class="macro-empty-state" hidden>No crosshairs yet. Press + to create one.</div>
+    </section>
+    <section id="crosshairEditorPanel" class="crosshair-editor-panel" hidden>
+    <section class="crosshair-header">
+      <button id="crosshairEditorBack" class="macro-nav-icon" type="button" title="Back to saved crosshairs">&#x2190;</button>
+      <strong id="crosshairEditorTitle">Crosshair</strong>
+      <div class="crosshair-master"><button id="openCrosshairPreview" class="crosshair-preview-button" type="button" title="Open live preview window"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 1v4M10 15v4M1 10h4M15 10h4"/></svg></button><span id="crosshairStatus">Overlay off</span><label class="switch"><input id="crosshairEnabled" type="checkbox"><i></i></label></div>
+    </section>
+    <div id="crosshairEditorScroll" class="crosshair-editor-scroll">
+        <fieldset><legend>Crosshair</legend>
+          <div class="crosshair-control-grid">
+            <label>Scale <input id="crosshairScale" type="range" min="0" max="400" value="100"><output>100%</output></label>
+            <label>Rotation <input id="crosshairRotation" type="range" min="0" max="360" value="0"><output>0&deg;</output></label>
+          </div>
+          <div class="crosshair-check-row crosshair-toggle-grid"><label><input id="crosshairStatic" type="checkbox" checked> Static</label><label><input id="crosshairShowAds" type="checkbox" checked> Show while aiming</label><label><input id="crosshairBarsEnabled" type="checkbox" checked> Bars</label><label><input id="crosshairDot" type="checkbox" checked> Dot</label><label><input id="crosshairCircleEnabled" type="checkbox"> Circle</label><label><input id="crosshairOutline" type="checkbox" checked> Outline</label></div>
+        </fieldset>
+        <fieldset id="crosshairBarsSection" data-enable-control="crosshairBarsEnabled"><legend>Bars</legend>
+          <div class="crosshair-control-grid">
+            <label>Color <input id="crosshairBarColor" type="color" value="#00e5ff"></label><label>Spacing <input id="crosshairGap" type="range" min="0" max="80" value="6"><output>6</output></label>
+            <label>Length <input id="crosshairLength" type="range" min="1" max="120" value="18"><output>18</output></label><label>Thickness <input id="crosshairThickness" type="range" min="1" max="30" value="3"><output>3</output></label>
+            <label>Transparency <input id="crosshairBarOpacity" type="range" min="0" max="100" value="100"><output>100%</output></label><label>Shape <select id="crosshairBarShape"><option value="sharp">Sharp</option><option value="round">Round</option></select></label>
+          </div><div class="crosshair-check-row"><label><input id="crosshairBarTop" type="checkbox" checked> Top</label><label><input id="crosshairBarBottom" type="checkbox" checked> Bottom</label><label><input id="crosshairBarLeft" type="checkbox" checked> Left</label><label><input id="crosshairBarRight" type="checkbox" checked> Right</label></div>
+        </fieldset>
+        <fieldset id="crosshairDotSection" data-enable-control="crosshairDot"><legend>Dot</legend><div class="crosshair-control-grid"><label>Color <input id="crosshairDotColor" type="color" value="#00e5ff"></label><label>Thickness <input id="crosshairDotSize" type="range" min="1" max="40" value="4"><output>4</output></label><label>Transparency <input id="crosshairDotOpacity" type="range" min="0" max="100" value="100"><output>100%</output></label><label>Shape <select id="crosshairDotShape"><option value="sharp">Sharp</option><option value="round">Round</option></select></label></div></fieldset>
+        <fieldset id="crosshairCircleSection" data-enable-control="crosshairCircleEnabled"><legend>Circle</legend><div class="crosshair-control-grid"><label>Color <input id="crosshairCircleColor" type="color" value="#00e5ff"></label><label>Size <input id="crosshairCircleSize" type="range" min="2" max="200" value="28"><output>28</output></label><label>Thickness <input id="crosshairCircleThickness" type="range" min="1" max="30" value="2"><output>2</output></label><label>Transparency <input id="crosshairCircleOpacity" type="range" min="0" max="100" value="100"><output>100%</output></label><label>Shape <select id="crosshairCircleShape"><option value="circle">Circle</option><option value="round">Rounded square</option><option value="sharp">Sharp square</option></select></label></div></fieldset>
+        <fieldset id="crosshairOutlineSection" data-enable-control="crosshairOutline"><legend>Outline</legend><div class="crosshair-control-grid"><label>Color <input id="crosshairOutlineColor" type="color" value="#000000"></label><label>Thickness <input id="crosshairOutlineSize" type="range" min="1" max="12" value="2"><output>2</output></label><label>Transparency <input id="crosshairOutlineOpacity" type="range" min="0" max="100" value="100"><output>100%</output></label><label>Type <select id="crosshairOutlineJoin"><option value="miter">Miter</option><option value="round">Round</option><option value="bevel">Bevel</option></select></label></div></fieldset>
+        <fieldset><legend>Scoped</legend><div class="crosshair-check-row"><label><input id="crosshairScopedBars" type="checkbox" checked> Bars while aiming</label><label><input id="crosshairScopedDot" type="checkbox" checked> Dot while aiming</label><label>Color <input id="crosshairScopedColor" type="color" value="#00e5ff"></label></div></fieldset>
+        <fieldset class="crosshair-placement-box"><legend>Placement &amp; files</legend>
+          <div class="crosshair-control-grid placement-grid">
+            <label>Monitor <select id="crosshairDisplay"></select></label>
+            <label>X offset <input id="crosshairOffsetX" type="number" min="-2000" max="2000" value="0"></label>
+            <label>Y offset <input id="crosshairOffsetY" type="number" min="-2000" max="2000" value="0"></label>
+            <label>Toggle key <button id="crosshairHotkey" type="button" title="Change overlay shortcut">Ctrl + Shift + F9</button></label>
+          </div>
+          <div class="crosshair-check-row placement-checks"><label><input id="crosshairStartEnabled" type="checkbox"> Restore overlay at launch</label></div>
+          <div class="crosshair-file-row"><button id="crosshairImage" type="button">Image</button><button id="crosshairExport" type="button">Export</button><button id="crosshairPng" type="button">PNG</button><button id="crosshairShare" type="button">Copy</button><button id="crosshairPaste" type="button">Paste</button></div>
+        </fieldset>
+          <fieldset class="crosshair-effects-box visual-effects-box">
+            <legend>Crosshair effects</legend>
+            <div class="crosshair-control-grid">
+              <label>Animation <select id="crosshairAnimation"><option value="none">None</option><option value="pulse">Pulse</option><option value="spin">Spin</option><option value="bloom">Shot bloom</option></select></label>
+              <label>Glow <input id="crosshairGlow" type="range" min="0" max="30" value="0"><output>0</output></label>
+              <label>Idle scale <input id="crosshairIdleScale" type="range" min="0" max="50" value="12"><output>12%</output></label>
+              <label>Speed <input id="crosshairEffectSpeed" type="range" min="25" max="300" value="100"><output>100%</output></label>
+            </div>
+            <div class="crosshair-check-row"><label><input id="crosshairRainbow" type="checkbox"> Color cycle</label><label><input id="crosshairFade" type="checkbox"> Soft fade</label></div>
+          </fieldset>
+          <fieldset class="crosshair-effects-box firing-effects-box">
+          <legend>Firing effects</legend>
+          <div class="crosshair-preset-grid"><label>Game <select id="crosshairEffectGame"></select></label><label>Weapon <select id="crosshairEffectWeapon"></select></label><label>Mode <select id="crosshairEffectPreset"><option value="none">Off</option><option value="weapon">Weapon preset</option><option value="custom">Custom</option></select></label></div>
+          <div class="crosshair-custom-game-row"><label>Custom executable <input id="crosshairCustomGameExecutable" type="text" placeholder="game.exe"></label><label><input id="crosshairOnlyWhenGameActive" type="checkbox" checked> Only while selected game is active</label></div>
+          <div class="crosshair-effects-title"><label><input id="crosshairRecoilEnabled" type="checkbox"> React while firing</label><span>Visual response—not bullet prediction</span></div>
+          <div class="crosshair-control-grid firing-control-grid">
+            <label>Direction <select id="crosshairRecoilPattern"><option value="vertical">Vertical only</option><option value="sway">Alternate left / right</option><option value="random">Random left / right</option><option value="left">Move left</option><option value="right">Move right</option></select></label>
+            <label>Vertical <input id="crosshairRecoilRise" type="range" min="-80" max="80" value="-12"><output>-12</output></label>
+            <label>Horizontal <input id="crosshairRecoilSway" type="range" min="0" max="50" value="5"><output>5</output></label>
+            <label>Recovery <input id="crosshairRecoilRecovery" type="range" min="50" max="1200" step="10" value="260"><output>260 ms</output></label>
+            <label>Fire rate <input id="crosshairFireRate" type="range" min="60" max="1200" step="10" value="600"><output>600 RPM</output></label>
+            <label>Bloom <input id="crosshairBloomStrength" type="range" min="0" max="100" value="20"><output>20%</output></label>
+          </div>
+          <div class="crosshair-check-row"><label><input id="crosshairAutomaticFire" type="checkbox" checked> Continue while held</label><label><input id="crosshairResetOnRelease" type="checkbox" checked> Recover on release</label></div>
+        </fieldset>
+    </div>
+    <canvas id="crosshairPreview" width="300" height="250" hidden></canvas>
+    </section>
+  </main>
+
+  <main id="voiceView" class="tool-view voice-view" tabindex="-1" hidden>
+    <div class="voice-scroll">
+      <fieldset class="voice-device-box">
+        <legend>Voice changer</legend>
+        <div class="voice-device-row"><label>Microphone <select id="voiceInputDevice"><option value="">Default microphone</option></select></label><button id="voicePower" type="button"><span class="voice-power-dot"></span>Start</button></div>
+        <div class="voice-device-row"><label>Playback device <select id="voiceOutputDevice"><option value="">Default speakers</option></select></label><label class="voice-monitor-toggle"><input id="voiceMonitor" type="checkbox"> Hear my voice</label></div>
+        <div class="voice-isolation-row"><label title="Reduces steady room, fan, and keyboard noise."><input id="voiceIsolation" type="checkbox"> Voice isolation</label><label title="Uses Windows loopback audio as a reference to remove sounds playing through your PC speakers."><input id="voicePcAudioCancellation" type="checkbox"> Remove PC audio</label></div>
+        <div class="voice-meter" aria-label="Microphone level"><i id="voiceMeterLevel"></i><span id="voiceMeterText">Voice changer off</span></div>
+      </fieldset>
+
+      <fieldset class="voice-preset-box">
+        <legend>Preset</legend>
+        <div class="voice-preset-row"><select id="voicePreset"><option value="custom">Custom</option><option value="clean">Clean studio</option><option value="deep">Deep voice</option><option value="bright">Bright voice</option><option value="radio">Radio</option><option value="robot">Robot</option><option value="hall">Large hall</option></select><button id="voiceReset" type="button">Reset</button></div>
+      </fieldset>
+
+      <fieldset class="voice-controls-box">
+        <legend>Tone</legend>
+        <div class="voice-knob-grid">
+          <label class="voice-knob" data-unit=" st"><span>Pitch</span><span class="voice-knob-face"><i></i><input id="voicePitch" type="range" min="-12" max="12" step="1" value="0"></span><output>0 st</output></label>
+          <label class="voice-knob" data-unit=" dB"><span>Bass</span><span class="voice-knob-face"><i></i><input id="voiceBass" type="range" min="-18" max="18" step="1" value="0"></span><output>0 dB</output></label>
+          <label class="voice-knob" data-unit=" dB"><span>Treble</span><span class="voice-knob-face"><i></i><input id="voiceTreble" type="range" min="-18" max="18" step="1" value="0"></span><output>0 dB</output></label>
+          <label class="voice-knob" data-unit="%"><span>Warmth</span><span class="voice-knob-face"><i></i><input id="voiceWarmth" type="range" min="0" max="100" step="1" value="20"></span><output>20%</output></label>
+          <label class="voice-knob" data-unit=" dB"><span>Clarity</span><span class="voice-knob-face"><i></i><input id="voiceClarity" type="range" min="-12" max="12" step="1" value="2"></span><output>2 dB</output></label>
+          <label class="voice-knob" data-unit="%"><span>Reverb</span><span class="voice-knob-face"><i></i><input id="voiceReverb" type="range" min="0" max="100" step="1" value="0"></span><output>0%</output></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="voice-controls-box">
+        <legend>Dynamics &amp; output</legend>
+        <div class="voice-knob-grid">
+          <label class="voice-knob" data-unit=" dB"><span>Noise gate</span><span class="voice-knob-face"><i></i><input id="voiceGate" type="range" min="-70" max="-15" step="1" value="-65"></span><output>-65 dB</output></label>
+          <label class="voice-knob" data-unit="%"><span>Compression</span><span class="voice-knob-face"><i></i><input id="voiceCompression" type="range" min="0" max="100" step="1" value="35"></span><output>35%</output></label>
+          <label class="voice-knob" data-unit="%"><span>Distortion</span><span class="voice-knob-face"><i></i><input id="voiceDistortion" type="range" min="0" max="100" step="1" value="0"></span><output>0%</output></label>
+          <label class="voice-knob" data-unit="%"><span>Effect mix</span><span class="voice-knob-face"><i></i><input id="voiceMix" type="range" min="0" max="100" step="1" value="100"></span><output>100%</output></label>
+          <label class="voice-knob" data-unit="%"><span>Input</span><span class="voice-knob-face"><i></i><input id="voiceInputGain" type="range" min="0" max="200" step="1" value="100"></span><output>100%</output></label>
+          <label class="voice-knob" data-unit="%"><span>Output</span><span class="voice-knob-face"><i></i><input id="voiceOutputGain" type="range" min="0" max="200" step="1" value="100"></span><output>100%</output></label>
+        </div>
+      </fieldset>
+
+    </div>
+    <audio id="voiceMonitorAudio" autoplay></audio>
+  </main>
+
+  <main id="minecraftServerView" class="tool-view minecraft-server-view" tabindex="-1" hidden>
+    <section id="msHomePanel" class="minecraft-panel macro-panel">
+      <div class="macro-page-header"><strong>Your servers</strong><div class="macro-header-actions"><button id="msOpenServersFolder" class="macro-bare-icon" type="button" aria-label="Open servers folder" title="Open servers folder"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5h7l2 2h8v9h-17z"/></svg></button><button id="msCreateServer" class="macro-bare-icon macro-plus" type="button" aria-label="Create a new server" title="Create a new server">+</button></div></div>
+      <div class="macro-library-box"><div id="msServerList" class="macro-library-list ms-server-list" role="list" aria-label="Saved servers"></div><div id="msServerEmpty" class="macro-empty-state">No servers yet. Press + to create one.</div></div>
+    </section>
+
+    <section id="msWorkspacePanel" class="minecraft-panel" hidden>
+      <div class="macro-page-header ms-workspace-header"><button id="msBackHome" class="macro-nav-icon" type="button" title="Back to servers">←</button><div class="macro-title-stack"><strong id="msServerTitle">Minecraft Server</strong><div class="macro-file-status"><strong id="msServerState">Stopped</strong><span id="msServerVersion">Not configured</span></div></div><div class="macro-header-actions ms-workspace-actions"><button id="msOpenConsoleWindow" class="macro-bare-icon ms-console-launch" type="button" aria-label="Open server console" title="Open server console"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 8 4 4-4 4M13 17h5"/></svg></button><button id="msOpenWorldMap" class="macro-bare-icon ms-map-launch" type="button" aria-label="Open live world map" title="Open live world map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 5.5 5-2 7 3 5-2v14l-5 2-7-3-5 2zM8.5 3.5v14m7-11v14"/></svg></button><button id="msOpenEntityViewer" class="macro-bare-icon" type="button" aria-label="Open entity editor" title="Open entity editor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8.5 9 5h6l3 3.5V17l-3 2H9l-3-2zM9 11h.01M15 11h.01M9 15h6"/></svg></button><button id="msOpenFolder" class="macro-bare-icon ms-folder-launch" type="button" aria-label="Open server folder" title="Open server folder"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5h7l2 2h8v9h-17z"/></svg></button></div></div>
+      <nav class="ms-section-tabs" aria-label="Server sections"><button data-ms-page="overview" class="active">Overview</button><button data-ms-page="players">Players</button><button data-ms-page="settings">Settings</button><button data-ms-page="addons">Add-ons</button><button data-ms-page="security">Protection</button><button data-ms-page="storage">Storage</button></nav>
+
+      <div id="msOverviewPage" class="ms-page">
+        <div class="ms-server-actions"><button id="msToggleServer" class="macro-primary" type="button">Start</button><button id="msRestartServer" type="button">Restart</button></div>
+        <div class="ms-metrics"><div><span>Players</span><strong id="msPlayersMetric">0 / 0</strong></div><div><span>Memory</span><strong id="msMemoryMetric">0 MB</strong></div><div><span>Runtime</span><strong id="msRuntimeMetric">Offline</strong></div></div>
+        <section class="ms-flat-section" aria-labelledby="msJoinTitle"><h3 id="msJoinTitle">Join addresses — copying does not publish the server</h3><div class="ms-copy-row"><label>Public<input id="msPublicAddress" readonly></label><button data-copy="msPublicAddress" type="button">Copy</button></div><div class="ms-copy-row"><label>LAN<input id="msLanAddress" readonly></label><button data-copy="msLanAddress" type="button">Copy</button></div></section>
+        <details id="msSetupDisclosure" class="ms-setup-disclosure"><summary><span>Server setup</span><small>Software and public access</small></summary><div id="msReadiness" class="ms-readiness"></div><div class="ms-setup-group"><span>Server software — download the selected type or choose an existing JAR</span><div class="ms-button-grid"><button id="msDownloadServer" type="button">Download selected</button><button id="msChooseJar" type="button">Choose existing JAR</button><button id="msGetJava" type="button">Get Java</button><button id="msRepairConnection" type="button">Check connection</button></div></div><div class="ms-setup-group"><span>Public access — direct mapping uses your router; a tunnel avoids router setup</span><div class="ms-button-grid"><button id="msMapPort" type="button">Map direct port</button><button id="msUnmapPort" type="button">Remove mapping</button><button id="msStartTunnel" type="button">Start tunnel</button><button id="msStopTunnel" type="button">Stop tunnel</button><button id="msSetupTunnel" type="button">Tunnel setup</button></div></div></details>
+      </div>
+
+      <div id="msPlayersPage" class="ms-page ms-fill-page" hidden><div class="ms-subtabs"><button data-ms-players="online" class="active">Online</button><button data-ms-players="banned">Banned</button><button data-ms-players="history">History</button><button data-ms-players="access">Access</button><button data-ms-players="roles">Roles</button><button id="msAddPlayerAccess" class="ms-subtab-action" type="button" aria-label="Add player access" title="Add player access" hidden>+</button></div><div id="msPlayersList" class="ms-list ms-fill-list" role="list" aria-live="polite"></div></div>
+
+      <div id="msSettingsPage" class="ms-page ms-settings-page" hidden><form id="msSettingsForm"><div id="msSettingsFields"></div><div class="ms-sticky-actions"><div class="ms-settings-buttons"><button id="msSaveSettings" class="macro-primary" type="submit">Save settings</button><button id="msResetDataSettings" class="danger" type="button" aria-describedby="msResetDataHint" disabled>Reset Data</button></div><small id="msResetDataHint">Stop the server to enable Reset Data.</small></div></form></div>
+
+      <div id="msAddonsPage" class="ms-page ms-fill-page" hidden>
+        <div class="ms-addon-mode" role="tablist" aria-label="Add-on view"><button id="msAddonInstalledTab" class="active" type="button" role="tab" aria-selected="true">Installed</button><button id="msAddonBrowseTab" type="button" role="tab" aria-selected="false">Browse</button><button id="msAddonAllowedTab" type="button" role="tab" aria-selected="false">Allowed mods</button><button id="msAddonBlockedTab" type="button" role="tab" aria-selected="false">Blocked mods</button></div>
+        <div class="ms-addon-utilities" aria-label="Add-on actions"><button id="msImportAddon" class="ms-addon-import" type="button">Import jar</button><button id="msDownloadServerAddons" class="ms-addon-site" type="button" title="Download Teleport Requests, Proximity Voice, and other server add-ons from the project website">Download server add-ons ↗</button></div>
+        <div id="msAddonBrowseTools" class="ms-addon-toolbar" hidden><select id="msAddonKind" aria-label="Add-on type"><option value="mods">Mods</option><option value="plugins">Plugins</option></select><select id="msAddonSource" aria-label="Add-on source"><option value="modrinth">Modrinth</option><option value="curseforge">CurseForge</option></select><label class="ms-addon-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4 4"/></svg><input id="msAddonSearch" type="search" autocomplete="off" placeholder="Search add-ons" aria-label="Search add-ons"></label><button id="msSearchAddons" type="button">Search</button></div>
+        <div id="msAddonInstalledTools" class="ms-addon-toolbar ms-addon-installed-tools"><select id="msInstalledAddonKind" aria-label="Installed add-on type"><option value="mods">Mods</option><option value="plugins">Plugins</option></select><span id="msAddonInstalledCount" class="ms-addon-count">0 installed</span></div>
+        <div id="msAddonPolicyTools" class="ms-addon-policy-tools" hidden><span title="This policy uses mod IDs declared by compatible clients. It cannot discover hidden client mods.">Declared client mods only</span><button id="msAddModPolicyRule" type="button">Add mod</button></div>
+        <div id="msAddonList" class="ms-list ms-addon-list ms-fill-list" aria-live="polite"></div>
+      </div>
+
+      <div id="msSecurityPage" class="ms-page ms-protection-page" hidden>
+        <nav class="ms-protection-tabs" aria-label="Protection sections">
+          <button class="active" type="button" data-ms-protection-page="checks" aria-selected="true">Checks</button>
+          <button type="button" data-ms-protection-page="layers" aria-selected="false">Layers</button>
+          <button type="button" data-ms-protection-page="response" aria-selected="false">Response</button>
+          <button type="button" data-ms-protection-page="messages" aria-selected="false">Messages</button>
+          <button type="button" data-ms-protection-page="tuning" aria-selected="false">Tuning</button>
+          <button type="button" data-ms-protection-page="exemptions" aria-selected="false">Exempt</button>
+          <button type="button" data-ms-protection-page="history" aria-selected="false">History</button>
+          <span id="msProtectionSaveState" role="status" aria-live="polite">Loading…</span>
+        </nav>
+
+        <section id="msProtectionChecks" class="ms-protection-view" data-ms-protection-view="checks">
+          <div class="ms-protection-master">
+            <div><strong>Runtime checks</strong><span id="msBuiltInState">Checking…</span></div>
+            <select id="msProtectionPreset" aria-label="Protection preset"><option value="compatibility">Low false positives</option><option value="balanced">Balanced</option><option value="strict">Strict</option><option value="custom">Custom</option></select>
+            <label class="switch" title="Enable the bundled runtime checks"><input id="msProtectionEnabled" type="checkbox"><i></i></label>
+            <button id="msSetupBuiltIn" type="button" hidden>Set up</button>
+          </div>
+
+          <div class="ms-check-groups">
+            <div class="ms-check-group" data-ms-checks="movement">
+              <div class="ms-check-group-head"><button class="ms-check-expand" type="button" data-ms-expand-checks="movement" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m4 2 4 4-4 4"/></svg><span>Movement<small id="msMovementCount">0 / 10</small></span></button><label class="switch" title="Toggle supported movement checks"><input type="checkbox" data-ms-check-group="movement"><i></i></label></div>
+              <div class="ms-check-list" hidden><label title="Movement faster than the configured ground or air limit"><input type="checkbox" data-ms-check="speed"><span>Speed</span></label><label title="Sustained unsupported flight"><input type="checkbox" data-ms-check="flight"><span>Flight</span></label><label title="Movement through solid blocks"><input type="checkbox" data-ms-check="phase"><span>Phase</span></label><label title="Non-finite, out-of-bounds, or otherwise impossible player coordinates"><input type="checkbox" data-ms-check="invalidPosition"><span>Invalid position</span></label><label title="Impossible pitch values or non-finite view rotations"><input type="checkbox" data-ms-check="invalidRotation"><span>Invalid rotation</span></label><label title="Repeated client ground claims without collision support; covers no-fall ground spoofing"><input type="checkbox" data-ms-check="groundSpoof"><span>No-fall / ground spoof</span></label><label title="Repeated stable movement across liquid without entering it"><input type="checkbox" data-ms-check="waterWalk"><span>Water walk</span></label><label title="Repeated climbs above the server step-height attribute"><input type="checkbox" data-ms-check="step"><span>Step height</span></label><label title="Movement packet clock running above the normal client rate for several full windows"><input type="checkbox" data-ms-check="timer"><span>Timer / packet clock</span></label><label title="Sustained full-speed movement while actively using a slowing item"><input type="checkbox" data-ms-check="noSlow"><span>No slowdown</span></label></div>
+            </div>
+            <div class="ms-check-group" data-ms-checks="reach">
+              <div class="ms-check-group-head"><button class="ms-check-expand" type="button" data-ms-expand-checks="reach" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m4 2 4 4-4 4"/></svg><span>Reach<small id="msReachCount">0 / 2</small></span></button><label class="switch" title="Toggle supported reach and line-of-sight checks"><input type="checkbox" data-ms-check-group="reach"><i></i></label></div>
+              <div class="ms-check-list" hidden><label title="Melee hits beyond the configured latency-aware hitbox distance"><input type="checkbox" data-ms-check="reach"><span>Combat reach</span></label><label title="Melee hits through a solid wall or without server-visible line of sight"><input type="checkbox" data-ms-check="wallHit"><span>Wall hit</span></label></div>
+            </div>
+            <div class="ms-check-group" data-ms-checks="combat">
+              <div class="ms-check-group-head"><button class="ms-check-expand" type="button" data-ms-expand-checks="combat" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m4 2 4 4-4 4"/></svg><span>Combat automation<small id="msCombatCount">0 / 6</small></span></button><label class="switch" title="Toggle supported combat automation checks"><input type="checkbox" data-ms-check-group="combat"><i></i></label></div>
+              <div class="ms-check-list" hidden><label title="Attack rates above the configured clicks-per-second limit"><input type="checkbox" data-ms-check="autoClicker"><span>Auto clicker rate</span></label><label title="Several distinct targets attacked inside one short window"><input type="checkbox" data-ms-check="multiTarget"><span>Multi-target</span></label><label title="Repeated attacks while the server-visible view direction misses the expanded target hitbox"><input type="checkbox" data-ms-check="aimDirection"><span>Aim / lock-on direction</span></label><label title="Repeated wide-angle target switches faster than normal input can reliably produce"><input type="checkbox" data-ms-check="killAura"><span>Kill aura switching</span></label><label title="A long sequence of nearly identical attack intervals; one regular click never triggers it"><input type="checkbox" data-ms-check="clickPattern"><span>Bot-like click timing</span></label><label title="Repeated critical attacks using a server-supported micro-fall state"><input type="checkbox" data-ms-check="criticals"><span>Critical spoof</span></label></div>
+            </div>
+            <div class="ms-check-group" data-ms-checks="world">
+              <div class="ms-check-group-head"><button class="ms-check-expand" type="button" data-ms-expand-checks="world" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m4 2 4 4-4 4"/></svg><span>Block &amp; world<small id="msWorldCount">0 / 6</small></span></button><label class="switch" title="Toggle supported block and world checks"><input type="checkbox" data-ms-check-group="world"><i></i></label></div>
+              <div class="ms-check-list" hidden><label title="Blocks broken faster than the configured limit"><input type="checkbox" data-ms-check="fastBreak"><span>Fast break</span></label><label title="Blocks placed faster than the configured limit"><input type="checkbox" data-ms-check="fastPlace"><span>Fast place</span></label><label title="Block breaks beyond the player's server-side interaction range"><input type="checkbox" data-ms-check="breakReach"><span>Break reach</span></label><label title="Block placements beyond the player's server-side interaction range"><input type="checkbox" data-ms-check="placeReach"><span>Place reach</span></label><label title="Repeated beneath-player placements far outside the visible aim direction"><input type="checkbox" data-ms-check="scaffold"><span>Scaffold placement</span></label><label title="A wide cluster of blocks broken inside an implausibly short window"><input type="checkbox" data-ms-check="multiBreak"><span>Nuker / multi-break</span></label></div>
+            </div>
+            <div class="ms-check-group" data-ms-checks="visibility" hidden>
+              <div class="ms-check-group-head"><button class="ms-check-expand" type="button" data-ms-expand-checks="visibility" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m4 2 4 4-4 4"/></svg><span>Visibility<small>mitigation</small></span></button><label class="switch" title="Withhold repeatedly occluded player tracking data"><input id="msCheckEspMitigation" type="checkbox"><i></i></label></div>
+              <div class="ms-check-list" hidden><label class="ms-check-note" title="This prevents many player-ESP clients from receiving hidden player positions; it does not accuse or punish players."><span>Player ESP concealment hides server tracking data after repeated occlusion. It may cause short player pop-in and fails open under lag.</span></label></div>
+            </div>
+            <div class="ms-check-group" data-ms-checks="abuse">
+              <div class="ms-check-group-head"><button class="ms-check-expand" type="button" data-ms-expand-checks="abuse" aria-expanded="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="m4 2 4 4-4 4"/></svg><span>Abuse<small id="msAbuseCount">0 / 3</small></span></button><label class="switch" title="Toggle supported abuse checks"><input type="checkbox" data-ms-check-group="abuse"><i></i></label></div>
+              <div class="ms-check-list" hidden><label title="Repeated chat messages beyond the configured limit"><input type="checkbox" data-ms-check="chatSpam"><span>Chat spam</span></label><label title="Repeated commands beyond the configured limit"><input type="checkbox" data-ms-check="commandSpam"><span>Command spam</span></label><label title="Inventory actions beyond the configured rate"><input type="checkbox" data-ms-check="inventorySpam"><span>Inventory spam</span></label></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="msProtectionLayers" class="ms-protection-view" data-ms-protection-view="layers" hidden>
+          <div class="ms-layer-list">
+            <div class="ms-layer-row ms-layer-action"><div><strong>Baseline hardening</strong><span id="msHardeningLayerState">Checking…</span></div><button id="msApplyHardening" type="button">Apply</button></div>
+            <div class="ms-layer-row"><div><strong>Runtime checks</strong><span id="msBuiltInLayerState">Checking…</span></div><label class="switch" title="Use bundled runtime checks"><input id="msLayerBuiltIn" type="checkbox"><i></i></label><button id="msInstallBuiltIn" type="button" hidden>Enable</button></div>
+            <div class="ms-layer-row"><div><strong>Ore protection</strong><span id="msAntiXrayLayerState">Checking…</span></div><label class="switch" title="Supported Fabric versions obfuscate hidden ores before chunk data reaches players, like Paper and Purpur. Fabric also keeps concealed-ore detection as a second layer."><input id="msLayerAntiXray" type="checkbox"><i></i></label><button id="msSetupAntiXray" type="button" hidden>Enable support</button></div>
+            <div class="ms-layer-row"><div><strong>PvP visibility</strong><span id="msEspMitigationLayerState">Players and nametags keep vanilla visibility through walls and at normal tracking distance</span></div><label class="switch" hidden><input id="msLayerEspMitigation" type="checkbox"><i></i></label></div>
+            <div id="msLegacyProtectionRow" class="ms-layer-row ms-layer-action" hidden><div><strong>Older managed add-on</strong><span id="msLegacyProtectionState">Checking…</span></div><button id="msRemoveLegacyProtection" type="button">Remove</button></div>
+          </div>
+          <div class="ms-custom-ac-head"><div><strong>Custom protection adapter</strong><span id="msCustomAntiCheatHint">Matching plugin or mod JARs</span></div><button id="msImportAntiCheat" type="button" disabled>Import JAR</button></div>
+          <div id="msCustomAntiCheatList" class="ms-custom-ac-list"></div>
+        </section>
+
+        <section id="msProtectionResponse" class="ms-protection-view" data-ms-protection-view="response" hidden>
+          <div class="ms-response-master"><span><strong>Automatic response</strong><small id="msResponseState">Escalates repeat offenses</small></span><label class="switch"><input id="msEscalationEnabled" type="checkbox"><i></i></label></div>
+          <div class="ms-response-grid">
+            <label><span>Before threshold</span><select id="msPreThresholdAction"><option value="warn">Warn player</option><option value="log">Log only</option></select></label>
+            <label><span>Reset offenses after</span><select id="msOffenseDecay"><option value="1">1 hour</option><option value="6">6 hours</option><option value="12">12 hours</option><option value="24">24 hours</option><option value="72">3 days</option><option value="168">7 days</option></select></label>
+            <label><span>Kick at offense</span><input id="msKickThreshold" type="number" min="1" max="18" value="3"></label>
+            <label><span>Temp-ban at offense</span><input id="msTempBanThreshold" type="number" min="2" max="19" value="5"></label>
+            <label><span>Temp-ban length</span><select id="msTempBanDuration"><option value="10">10 minutes</option><option value="30">30 minutes</option><option value="60">1 hour</option><option value="360">6 hours</option><option value="1440">1 day</option><option value="10080">7 days</option><option value="43200">30 days</option><option value="129600">90 days</option><option value="525600">365 days</option></select></label>
+            <label><span>Permanent ban at</span><input id="msBanThreshold" type="number" min="3" max="20" value="8"></label>
+          </div>
+        </section>
+
+        <section id="msProtectionMessages" class="ms-protection-view" data-ms-protection-view="messages" hidden>
+          <div class="ms-message-toolbar">
+            <select id="msProtectionMessageType" aria-label="Protection message">
+              <optgroup label="Warnings by check">
+                <option value="check:reach">Reach warning</option><option value="check:autoClicker">Auto clicker warning</option>
+                <option value="check:wallHit">Wall-attack warning</option><option value="check:multiTarget">Multi-target warning</option>
+                <option value="check:aimDirection">Aim-direction warning</option><option value="check:killAura">Kill-aura warning</option><option value="check:clickPattern">Click-pattern warning</option>
+                <option value="check:criticals">Critical-spoof warning</option>
+                <option value="check:speed">Speed warning</option><option value="check:flight">Flight warning</option><option value="check:phase">Phase warning</option><option value="check:invalidPosition">Invalid-position warning</option><option value="check:invalidRotation">Invalid-rotation warning</option><option value="check:groundSpoof">Ground-spoof warning</option><option value="check:waterWalk">Water-walk warning</option><option value="check:step">Step warning</option><option value="check:timer">Timer warning</option><option value="check:noSlow">No-slow warning</option>
+                <option value="check:fastBreak">Fast break warning</option><option value="check:fastPlace">Fast place warning</option><option value="check:breakReach">Break-reach warning</option><option value="check:placeReach">Place-reach warning</option><option value="check:scaffold">Scaffold warning</option><option value="check:multiBreak">Multi-break warning</option>
+                <option value="check:chatSpam">Chat spam warning</option><option value="check:commandSpam">Command spam warning</option><option value="check:inventorySpam">Inventory warning</option>
+              </optgroup>
+              <optgroup label="Global actions">
+                <option value="warning">Default warning</option><option value="alert">Alert</option><option value="kick">Kick</option>
+                <option value="temporaryBan">Temporary ban</option><option value="permanentBan">Permanent ban</option>
+                <option value="loginTemporaryBan">Temporary-ban login</option><option value="loginPermanentBan">Ban login</option><option value="modPolicyKick">Mod-policy kick</option>
+              </optgroup>
+            </select>
+            <button id="msResetProtectionMessage" type="button">Reset</button>
+          </div>
+          <label class="ms-message-text" title="Placeholders: {player}, {check}, {reason}, {action}, {violations}, {offenses}, {duration_minutes}, {remaining_minutes}"><span>Text</span><textarea id="msProtectionMessageText" maxlength="512" spellcheck="true" aria-label="Protection message text"></textarea></label>
+          <div class="ms-message-options">
+            <label><span>Text color</span><input id="msProtectionMessageColor" type="color" value="#ffff55"></label>
+            <label><span>Warning cooldown</span><input id="msWarningCooldown" type="number" min="1" max="300" step="1" value="10"></label>
+            <label><span>Ban source</span><input id="msProtectionBanSource" type="text" maxlength="64" value="Server protection"></label>
+          </div>
+        </section>
+
+        <section id="msProtectionTuning" class="ms-protection-view" data-ms-protection-view="tuning" hidden>
+          <div class="ms-tuning-grid">
+            <label title="Maximum hitbox distance accepted for melee attacks."><span>Max reach</span><input data-ms-tuning="limits.maxReach" type="number" min="2.5" max="8" step="0.05"></label>
+            <label title="Maximum attack clicks accepted per second."><span>Max CPS</span><input data-ms-tuning="limits.maxCps" type="number" min="5" max="40" step="1"></label>
+            <label title="Maximum grounded movement per server tick."><span>Ground speed</span><input data-ms-tuning="limits.maxGroundBlocksPerTick" type="number" min="0.25" max="5" step="0.01"></label>
+            <label title="Maximum airborne movement per server tick."><span>Air speed</span><input data-ms-tuning="limits.maxAirBlocksPerTick" type="number" min="0.25" max="5" step="0.01"></label>
+            <label title="Ticks allowed in the air before flight evidence is recorded."><span>Air ticks</span><input data-ms-tuning="limits.maxAirTicks" type="number" min="20" max="600" step="1"></label>
+            <label title="Consecutive solid-block collision samples required before phase evidence is recorded."><span>Phase samples</span><input data-ms-tuning="limits.phaseSamples" type="number" min="2" max="10" step="1"></label>
+            <div class="ms-tuning-heading">Movement evidence</div>
+            <label title="Unsupported client ground claims required before no-fall or ground-spoof evidence is reported."><span>Ground samples</span><input data-ms-tuning="limits.groundSpoofSamples" type="number" min="3" max="12" step="1"></label>
+            <label title="Stable liquid-surface samples required before water-walk evidence is reported."><span>Water samples</span><input data-ms-tuning="limits.waterWalkSamples" type="number" min="3" max="16" step="1"></label>
+            <label title="Above-attribute climbs required before step evidence is reported."><span>Step samples</span><input data-ms-tuning="limits.stepSamples" type="number" min="2" max="8" step="1"></label>
+            <label title="Maximum movement per tick while actively using a slowing item."><span>Use-item speed</span><input data-ms-tuning="limits.maxUseItemBlocksPerTick" type="number" min="0.08" max="0.5" step="0.01"></label>
+            <label title="Over-limit use-item movement samples required before no-slow evidence is reported."><span>No-slow samples</span><input data-ms-tuning="limits.noSlowSamples" type="number" min="3" max="16" step="1"></label>
+            <label title="Maximum movement packets accepted in a complete one-second window."><span>Move packets / sec</span><input data-ms-tuning="limits.maxPacketsPerSecond" type="number" min="21" max="100" step="1"></label>
+            <label title="Complete over-limit windows required before timer evidence is reported."><span>Timer windows</span><input data-ms-tuning="limits.timerEvidenceWindows" type="number" min="2" max="6" step="1"></label>
+            <label title="Consecutive attacks without server-visible line of sight required before wall-attack evidence is recorded."><span>Wall-hit samples</span><input data-ms-tuning="limits.wallHitSamples" type="number" min="6" max="12" step="1"></label>
+            <label title="Distinct targets attacked inside the target window before multi-target evidence is recorded."><span>Multi-target count</span><input data-ms-tuning="limits.multiTargetCount" type="number" min="2" max="16" step="1"></label>
+            <label title="Time window used to count distinct combat targets."><span>Target window (ms)</span><input data-ms-tuning="limits.multiTargetWindowMillis" type="number" min="100" max="5000" step="1"></label>
+            <div class="ms-tuning-heading">Combat evidence</div>
+            <label title="Maximum angle outside the expanded target hitbox before one aim-direction sample is suspicious."><span>Aim deviation (°)</span><input data-ms-tuning="limits.maxAimDeviationDegrees" type="number" min="20" max="120" step="1"></label>
+            <label title="Separate off-target attacks required before aim-direction evidence is reported."><span>Aim samples</span><input data-ms-tuning="limits.aimEvidenceSamples" type="number" min="2" max="12" step="1"></label>
+            <label title="Maximum time containing the required aim-direction samples."><span>Aim window (ms)</span><input data-ms-tuning="limits.aimEvidenceWindowMillis" type="number" min="500" max="5000" step="50"></label>
+            <label title="Maximum time between different targets for a rapid-switch sample."><span>Switch time (ms)</span><input data-ms-tuning="limits.rapidSwitchMillis" type="number" min="40" max="300" step="5"></label>
+            <label title="Minimum angle between rapidly switched targets."><span>Switch angle (°)</span><input data-ms-tuning="limits.rapidSwitchAngleDegrees" type="number" min="45" max="170" step="1"></label>
+            <label title="Repeated wide-angle switches required before kill-aura switching is reported."><span>Switch samples</span><input data-ms-tuning="limits.rapidSwitchSamples" type="number" min="2" max="8" step="1"></label>
+            <label title="Maximum time containing the required rapid-switch samples."><span>Switch evidence (ms)</span><input data-ms-tuning="limits.rapidSwitchEvidenceWindowMillis" type="number" min="300" max="5000" step="50"></label>
+            <label title="Attack intervals required before robotic timing is evaluated."><span>Timing samples</span><input data-ms-tuning="limits.clickPatternSamples" type="number" min="8" max="24" step="1"></label>
+            <label title="Maximum standard deviation across attack intervals; lower values require more exact automation."><span>Timing deviation (ms)</span><input data-ms-tuning="limits.clickPatternMaxDeviationMillis" type="number" min="0" max="20" step="0.25"></label>
+            <label title="Server-supported micro-fall attacks required before critical-spoof evidence is reported."><span>Critical samples</span><input data-ms-tuning="limits.criticalSamples" type="number" min="2" max="8" step="1"></label>
+            <label title="Time window containing the required critical-spoof samples."><span>Critical window (ms)</span><input data-ms-tuning="limits.criticalWindowMillis" type="number" min="500" max="10000" step="100"></label>
+            <label title="Extra distance beyond the server's own block interaction range before break/place reach is reported."><span>Block reach margin</span><input data-ms-tuning="limits.blockReachAllowance" type="number" min="0.25" max="3" step="0.05"></label>
+            <label title="Maximum block breaks accepted per second."><span>Breaks / sec</span><input data-ms-tuning="limits.maxBreaksPerSecond" type="number" min="1" max="100" step="1"></label>
+            <label title="Maximum block placements accepted per second."><span>Places / sec</span><input data-ms-tuning="limits.maxPlacesPerSecond" type="number" min="1" max="100" step="1"></label>
+            <div class="ms-tuning-heading">World evidence</div>
+            <label title="Minimum angle away from a beneath-player placement before it becomes scaffold evidence."><span>Scaffold aim (°)</span><input data-ms-tuning="limits.scaffoldAimDegrees" type="number" min="45" max="140" step="1"></label>
+            <label title="Implausible beneath-player placements required before scaffold is reported."><span>Scaffold samples</span><input data-ms-tuning="limits.scaffoldSamples" type="number" min="2" max="10" step="1"></label>
+            <label title="Accepted breaks required inside the multi-break window."><span>Multi-break samples</span><input data-ms-tuning="limits.multiBreakSamples" type="number" min="3" max="12" step="1"></label>
+            <label title="Maximum time containing the required multi-break samples."><span>Multi-break window</span><input data-ms-tuning="limits.multiBreakWindowMillis" type="number" min="100" max="2000" step="25"></label>
+            <label title="Maximum chat messages accepted in five seconds."><span>Chat / 5 sec</span><input data-ms-tuning="limits.maxChatPerFiveSeconds" type="number" min="1" max="100" step="1"></label>
+            <label title="Maximum commands accepted in five seconds."><span>Commands / 5 sec</span><input data-ms-tuning="limits.maxCommandsPerFiveSeconds" type="number" min="1" max="200" step="1"></label>
+            <label title="Checks pause below this server TPS."><span>Minimum TPS</span><input data-ms-tuning="minimumTps" type="number" min="10" max="20" step="0.1"></label>
+            <label title="Check grace period after joining."><span>Join grace</span><input data-ms-tuning="grace.joinSeconds" type="number" min="2" max="30" step="0.5"></label>
+            <label title="Check grace period after teleporting."><span>Teleport grace</span><input data-ms-tuning="grace.teleportSeconds" type="number" min="2" max="30" step="0.5"></label>
+            <label title="Check grace period after knockback or other velocity."><span>Velocity grace</span><input data-ms-tuning="grace.velocitySeconds" type="number" min="1" max="15" step="0.5"></label>
+            <label title="Violation score that triggers an alert."><span>Alert VL</span><input data-ms-tuning="response.alertVl" type="number" min="1" max="100" step="0.1"></label>
+            <label title="Violation score that triggers the configured enforcement step."><span>Kick VL</span><input data-ms-tuning="response.kickVl" type="number" min="2" max="200" step="0.1"></label>
+            <label title="Minimum seconds between automatic actions."><span>Action cooldown</span><input data-ms-tuning="response.actionCooldownSeconds" type="number" min="1" max="300" step="1"></label>
+            <label title="Violation points removed per second without a detection."><span>VL decay / sec</span><input data-ms-tuning="response.violationDecay" type="number" min="0" max="10" step="0.01"></label>
+            <div class="ms-tuning-heading">Inventory evidence</div>
+            <label title="Sustained inventory actions above this rate count as one evidence sample."><span>Inventory / sec</span><input data-ms-tuning="limits.maxInventoryClicksPerSecond" type="number" min="1" max="200" step="1"></label>
+            <label title="Separate over-limit samples required before inventory spam is reported. Higher values reduce false warnings from inventory helper mods."><span>Required samples</span><input data-ms-tuning="limits.inventoryEvidenceSamples" type="number" min="2" max="8" step="1"></label>
+            <label title="Minimum time between inventory evidence samples. Repeated packets in one burst cannot fill every sample."><span>Sample spacing (ms)</span><input data-ms-tuning="limits.inventorySampleIntervalMillis" type="number" min="100" max="1000" step="25"></label>
+            <label title="Maximum time allowed between the first and last inventory evidence sample."><span>Evidence window (ms)</span><input data-ms-tuning="limits.inventoryEvidenceWindowMillis" type="number" min="100" max="10000" step="50"></label>
+            <label title="A one-second inventory packet rate this high is treated as a severe flood without waiting for repeated samples. This is always kept above Inventory / sec."><span>Hard burst / sec</span><input data-ms-tuning="limits.maxInventoryBurstPacketsPerSecond" type="number" min="20" max="1000" step="1"></label>
+            <label title="Minimum delay before inventory spam can create another violation for the same player."><span>Report cooldown (ms)</span><input data-ms-tuning="limits.inventoryViolationCooldownMillis" type="number" min="500" max="30000" step="100"></label>
+            <div class="ms-tuning-heading">Reach reconciliation</div>
+            <label title="Small distance margin added for hitbox and floating-point rounding."><span>Geometry margin</span><input data-ms-tuning="reach.geometryAllowance" type="number" min="0.025" max="0.25" step="0.005"></label>
+            <label title="Maximum reach margin that latency may add."><span>Ping margin cap</span><input data-ms-tuning="reach.maxPingAllowance" type="number" min="0.15" max="0.5" step="0.01"></label>
+            <label title="Reach margin added for each millisecond of measured latency."><span>Ping margin / ms</span><input data-ms-tuning="reach.pingAllowancePerMs" type="number" min="0.0005" max="0.002" step="0.0001"></label>
+            <label title="Maximum reach margin allowed when server tick rate falls."><span>TPS margin cap</span><input data-ms-tuning="reach.maxTickAllowance" type="number" min="0.05" max="0.25" step="0.01"></label>
+            <label title="Reach margin per missing TPS below 20."><span>Margin / missing TPS</span><input data-ms-tuning="reach.tickAllowancePerMissingTps" type="number" min="0.025" max="0.1" step="0.005"></label>
+            <label title="Maximum distance a moving target hitbox may be rewound."><span>Target rewind cap</span><input data-ms-tuning="reach.maxTargetRewind" type="number" min="0.25" max="0.75" step="0.05"></label>
+            <label title="Base number of target movement ticks used for reconciliation."><span>Base rewind ticks</span><input data-ms-tuning="reach.baseRewindTicks" type="number" min="0.25" max="1.5" step="0.05"></label>
+            <label title="Extra rewind ticks added for each millisecond of latency."><span>Rewind ticks / ms</span><input data-ms-tuning="reach.pingRewindTicksPerMs" type="number" min="0.005" max="0.02" step="0.001"></label>
+            <label title="Maximum target movement ticks used for reconciliation."><span>Rewind tick cap</span><input data-ms-tuning="reach.maxRewindTicks" type="number" min="1.5" max="5" step="0.1"></label>
+            <label title="Reach excess that is severe enough to report immediately."><span>Immediate excess</span><input data-ms-tuning="reach.immediateExcess" type="number" min="0.5" max="2" step="0.05"></label>
+            <label title="Borderline reach samples required before reporting."><span>Required samples</span><input data-ms-tuning="reach.consecutiveSamples" type="number" min="2" max="6" step="1"></label>
+            <label title="Maximum time between borderline samples, in milliseconds."><span>Sample window (ms)</span><input data-ms-tuning="reach.evidenceWindowMillis" type="number" min="750" max="5000" step="50"></label>
+          </div>
+        </section>
+
+        <section id="msProtectionExemptions" class="ms-protection-view ms-protection-exemptions" data-ms-protection-view="exemptions" hidden>
+          <div id="msExemptionRuntime" class="ms-exemption-runtime" hidden><span>Update Server Protection to enforce this whitelist.</span><button id="msUpdateProtectionExempt" type="button">Update</button></div>
+          <div class="ms-exemption-option"><div><strong>Owners</strong><span>Never enforce built-in anti-cheat against the assigned owner</span></div><label class="switch"><input id="msExemptOwners" type="checkbox"><i></i></label></div>
+          <div class="ms-exemption-option"><div><strong>Admins</strong><span>Never enforce built-in anti-cheat against assigned admins</span></div><label class="switch"><input id="msExemptAdmins" type="checkbox"><i></i></label></div>
+          <div class="ms-exemption-heading"><div><strong>Player whitelist</strong><span>Specific players ignored by built-in anti-cheat</span></div><button id="msAddProtectionExempt" type="button" aria-label="Add exempt player" title="Add exempt player">+</button></div>
+          <div id="msProtectionExemptList" class="ms-exemption-list"></div>
+        </section>
+
+        <section id="msProtectionHistory" class="ms-protection-view ms-protection-history" data-ms-protection-view="history" hidden>
+          <div class="ms-history-toolbar"><span id="msProtectionHistoryCount">No events</span><button id="msRefreshProtection" type="button">Refresh</button><button id="msClearProtectionHistory" type="button">Clear</button></div>
+          <div id="msProtectionHistoryList" class="ms-history-list"></div>
+        </section>
+      </div>
+
+      <div id="msStoragePage" class="ms-page" hidden><section class="ms-storage-group"><h3>Server files</h3><div class="ms-button-grid ms-storage-actions"><button id="msOpenFolderStorage" type="button">Open folder</button><button id="msClearLogs" type="button">Clear logs</button><button id="msWipeData" class="danger" type="button" disabled>Reset Data</button></div></section><section class="ms-storage-group"><h3>Tunnel agent</h3><div class="ms-button-grid"><button id="msDownloadPlayit" type="button">Download agent</button><button id="msOpenPlayitDownload" type="button">Download page</button><button id="msSetupPlayitStorage" type="button">Setup page</button></div></section><section class="ms-storage-group"><h3>Installed files</h3><div id="msStorageSummary" class="ms-readiness"></div></section></div>
+      <div id="msToast" class="ms-toast" role="status"></div>
+    </section>
+  </main>
+
+  <div id="msLoadingOverlay" class="ms-loading-overlay" role="status" aria-live="polite" hidden>
+    <span class="ms-loading-spinner" aria-hidden="true"></span>
+    <strong id="msLoadingText">Creating server…</strong>
+  </div>
+
+  <script src="crosshair-draw.js"></script>
+  <script src="localization.js"></script>
+  <script src="theme-loader.js"></script>
+  <script src="renderer.js"></script>
+  <script src="dimension-lock-controls.js"></script>
+  <script src="minecraft-server-ui.js"></script>
+</body>
+</html>

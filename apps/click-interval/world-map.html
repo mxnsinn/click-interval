@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Live World Map</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="world-map.css">
+</head>
+<body>
+  <section class="map-shell" aria-label="Live Minecraft world map">
+    <header class="map-titlebar">
+      <div class="map-brand">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 5 5-2 8 3 5-2v15l-5 2-8-3-5 2zM8 3v15m8-12v15"/></svg>
+        <strong id="mapTitle">Live World Map</strong>
+      </div>
+      <div class="map-drag"></div>
+      <div class="map-window-actions" aria-label="Window controls">
+        <button type="button" data-window-action="minimize" aria-label="Minimize"><span aria-hidden="true">−</span></button>
+        <button type="button" data-window-action="maximize" aria-label="Maximize"><span aria-hidden="true">□</span></button>
+        <button type="button" data-window-action="close" class="close" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </header>
+
+    <div class="map-toolbar" aria-label="World map controls">
+      <span id="mapBackendLabel">Live map</span>
+      <div class="map-dimensions" role="tablist" aria-label="Dimension">
+        <button type="button" data-dimension="minecraft:overworld" class="active">Overworld</button>
+        <button type="button" data-dimension="minecraft:the_nether">Nether</button>
+        <button type="button" data-dimension="minecraft:the_end">End</button>
+      </div>
+      <details class="map-layers">
+        <summary>Layers</summary>
+        <div class="map-layer-options">
+          <label id="seedLayer" title="Seed-based biomes, not exact blocks. Saved terrain and player changes appear on top."><input type="checkbox" data-map-layer="seed" checked> Seed preview <small>Biomes</small></label>
+          <label title="A fixed 16 × 16 block grid; hidden only when chunks are smaller than four pixels."><input type="checkbox" data-map-layer="grid"> Chunk grid</label>
+          <label title="Java Edition slime chunks. Available in the Overworld when zoomed in."><input type="checkbox" data-map-layer="slime"> Slime chunks</label>
+          <label><input type="checkbox" data-map-layer="players" checked> Players</label>
+          <label title="Show offline players at their last known position, not as live players."><input type="checkbox" data-map-layer="offline"> Offline locations</label>
+          <label><input type="checkbox" data-map-layer="structures" checked> Structures</label>
+          <div id="structureLayers" class="map-structure-options" aria-label="Structure visibility"></div>
+        </div>
+      </details>
+      <div class="map-toolbar-actions">
+        <button id="mapDisable" type="button" title="Disable the live map module">Disable map</button>
+        <button id="mapFit" class="icon-only" type="button" title="Fit the main saved area" aria-label="Fit the main saved area"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M7 17H3v-4m10 4h4v-4"/></svg></button>
+        <button id="mapFitAll" class="icon-only" type="button" title="Fit every saved area, including remote chunks" aria-label="Fit every saved area"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M3 10h14M10 3c2 2 3 4.3 3 7s-1 5-3 7c-2-2-3-4.3-3-7s1-5 3-7"/></svg></button>
+        <button id="mapRefresh" class="icon-only" type="button" title="Refresh map" aria-label="Refresh map">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16 8a6 6 0 1 0 .1 4M16 3v5h-5"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <main class="map-workspace">
+      <section class="map-stage" aria-label="Rendered world">
+        <canvas id="mapCanvas" tabindex="0" aria-label="Interactive Minecraft terrain map"></canvas>
+        <div class="map-empty" id="mapEmpty">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="m6 11 10-4 16 6 10-4v28l-10 4-16-6-10 4zM16 7v28m16-22v28"/></svg>
+          <strong id="mapEmptyTitle">Map loading</strong>
+          <span id="mapEmptyDetail"></span>
+        </div>
+        <div class="map-readout" id="mapReadout" hidden></div>
+      </section>
+
+      <aside class="map-sidebar">
+        <label class="player-search">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+          <input id="playerSearch" type="search" autocomplete="off" spellcheck="false" placeholder="Search players">
+        </label>
+
+        <div class="player-list-head"><strong>Players</strong><span id="playerCount">0</span></div>
+        <div class="player-list" id="playerList" role="listbox" aria-label="Server players, online first"></div>
+
+        <section class="selected-player" id="selectedPlayer" hidden>
+          <div class="selected-player-head"><strong id="selectedName"></strong><span id="selectedDimension"></span></div>
+          <div class="coordinate-grid" aria-label="Player coordinates">
+            <span><small>X</small><b id="selectedX">—</b></span>
+            <span><small>Y</small><b id="selectedY">—</b></span>
+            <span><small>Z</small><b id="selectedZ">—</b></span>
+          </div>
+          <div class="player-actions" aria-label="Player actions">
+            <button type="button" data-player-action="view" title="View player profile" aria-label="View player profile">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3"/><path d="M4 17c.6-3.4 2.6-5 6-5s5.4 1.6 6 5"/></svg>
+            </button>
+            <button type="button" data-player-action="kick" title="Kick player" aria-label="Kick player">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 4H4v12h4m2-3 3-3-3-3m-5 3h8"/></svg>
+            </button>
+            <button type="button" data-player-action="tempban" title="Temporarily ban player" aria-label="Temporarily ban player">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l3 2"/></svg>
+            </button>
+            <button type="button" data-player-action="ban" class="danger" title="Ban player" aria-label="Ban player">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m5 5 10 10"/></svg>
+            </button>
+          </div>
+          <form id="moderationForm" class="moderation-form" hidden>
+            <input id="moderationReason" maxlength="160" autocomplete="off" placeholder="Reason (optional)">
+            <div id="durationRow" class="duration-row" hidden>
+              <input id="durationValue" type="number" min="1" max="365" value="1" aria-label="Temporary ban duration">
+              <select id="durationUnit" aria-label="Temporary ban duration unit">
+                <option value="60000">Minutes</option>
+                <option value="3600000" selected>Hours</option>
+                <option value="86400000">Days</option>
+              </select>
+            </div>
+            <div class="moderation-actions"><button type="button" id="moderationCancel">Cancel</button><button type="submit" id="moderationConfirm">Confirm</button></div>
+          </form>
+        </section>
+
+        <p id="mapNotice" class="map-notice" role="status" aria-live="polite"></p>
+      </aside>
+    </main>
+  </section>
+  <script src="theme-loader.js"></script>
+  <script src="world-map.js"></script>
+</body>
+</html>

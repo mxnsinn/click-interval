@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; connect-src 'none'; img-src 'self' data:; style-src 'self'; script-src 'self'">
+  <title>Delete Macro</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body class="macro-delete-window">
+  <header class="popup-titlebar">Delete Macro</header>
+  <main>
+    <div class="delete-message"><span aria-hidden="true">&#9888;</span><p id="deleteQuestion"></p></div>
+    <div class="popup-actions">
+      <button id="confirmDelete" class="danger-button" type="button">Delete</button>
+      <button id="cancelDelete" type="button">Cancel</button>
+    </div>
+  </main>
+  <script src="macro-delete-window.js"></script>
+</body>
+</html>

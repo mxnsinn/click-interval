@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Minecraft Server Console</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="server-console.css">
+</head>
+<body>
+  <section class="terminal-shell" aria-label="Minecraft server console">
+    <header class="console-titlebar">
+      <div class="console-brand">
+        <span class="terminal-mark" aria-hidden="true"><b>›</b><i>_</i></span>
+        <strong>Server Console</strong>
+      </div>
+      <div class="console-drag"></div>
+      <div class="console-window-actions" aria-label="Window controls">
+        <button type="button" data-window-action="minimize" aria-label="Minimize"><span aria-hidden="true">−</span></button>
+        <button type="button" data-window-action="close" class="close" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </header>
+
+    <div class="console-toolbar" id="consoleToolbar" aria-label="Server controls">
+      <span class="session-name" id="consoleSessionName" aria-hidden="true">$ minecraft-server</span>
+      <div class="toolbar-actions">
+        <button type="button" data-action="start" title="Start server">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5 12 8l-7 4.5z"/></svg><span>Start</span>
+        </button>
+        <button type="button" data-action="stop" title="Stop server">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5h7v7h-7z"/></svg><span>Stop</span>
+        </button>
+        <button type="button" data-action="restart" title="Restart server">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M12.4 6.2A4.7 4.7 0 1 0 12 10.7l-1.2-.7A3.3 3.3 0 1 1 11 6.2H8.8l2.9-2.9 2.9 2.9z"/></svg><span>Restart</span>
+        </button>
+        <span class="toolbar-divider" aria-hidden="true"></span>
+        <button type="button" data-action="clear" title="Clear console">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4h10v1.3H3zm1 2.5h8l-.6 7H4.6zm2-3.8h4V4H6z"/></svg><span>Clear</span>
+        </button>
+        <button type="button" data-action="chat-history" title="Open live chat history"><span>Chat history</span></button>
+      </div>
+    </div>
+
+    <main id="consoleOutput" role="log" aria-live="off" aria-label="Console output"></main>
+
+    <form id="consoleCommand" autocomplete="off">
+      <span class="command-prompt" aria-hidden="true">›</span>
+      <div class="command-field">
+        <div id="consoleGhost" aria-hidden="true"><span id="consoleGhostPrefix"></span><span id="consoleGhostTail"></span></div>
+        <input id="consoleInput" aria-label="Console command" aria-autocomplete="inline" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type a command — /help shows everything">
+      </div>
+      <span id="consoleCompleteHint" class="complete-hint" hidden><kbd>Tab</kbd></span>
+      <button class="send-command" type="submit" aria-label="Send command" title="Send command">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 3 10 5-10 5 2-4.2L10 8 5 7.2z"/></svg>
+      </button>
+    </form>
+  </section>
+  <script src="theme-loader.js"></script>
+  <script src="server-console.js"></script>
+</body>
+</html>

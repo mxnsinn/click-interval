@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1, "id": "serverteams_fabric", "version": "${version}",
+  "name": "Server Teams", "description": "Private-test server teams with native dialogs, personal TPA trust and pairwise ceasefires.",
+  "environment": "*", "entrypoints": { "main": ["dev.serverteams.fabric.ServerTeams"] },
+  "mixins": ["serverteams.mixins.json"],
+  "depends": { "fabricloader": ">=0.19.5", "minecraft": "26.2", "java": ">=25", "fabric-api": "*" }
+}

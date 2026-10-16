@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server Manager</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-top">
+          <div id="serverState" class="state stopped">Stopped</div>
+          <button id="sidebarCloseBtn" class="icon-btn sidebar-close" title="Collapse sidebar" aria-label="Collapse sidebar">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+          </button>
+        </div>
+        <nav class="nav">
+          <button class="nav-item active" data-panel="dashboard">
+            <svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item" data-panel="config">
+            <svg viewBox="0 0 24 24"><path d="M6 4h12l2 4v12H4V8l2-4Z" /><path d="M8 4v6h8V4" /><path d="M8 16h8" /></svg>
+            <span>Config</span>
+          </button>
+          <button class="nav-item" data-panel="requirements">
+            <svg viewBox="0 0 24 24"><path d="M20 7 9 18l-5-5" /><path d="M14 6h6v6" /></svg>
+            <span>Requirements</span>
+          </button>
+          <button class="nav-item" data-panel="analytics">
+            <svg viewBox="0 0 24 24"><path d="M4 19V5" /><path d="M4 19h16" /><path d="M8 16v-5" /><path d="M12 16V8" /><path d="M16 16v-9" /></svg>
+            <span>Analytics</span>
+          </button>
+          <button class="nav-item" data-panel="settings">
+            <svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z" /><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.37a1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.08a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.63 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.08a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.63a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.08a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.37 9c.22.62.8 1 1.55 1H21a2 2 0 1 1 0 4h-.08a1.7 1.7 0 0 0-1.52 1Z" /></svg>
+            <span>Settings</span>
+          </button>
+          <button class="nav-item" data-panel="mods">
+            <svg viewBox="0 0 24 24"><path d="M14.5 4.5 19 9l-9.5 9.5H5v-4.5l9.5-9.5Z" /><path d="m13 6 5 5" /></svg>
+            <span>Mods</span>
+          </button>
+          <button class="nav-item" data-panel="storage">
+            <svg viewBox="0 0 24 24"><path d="M4 7c0-2 16-2 16 0v10c0 2-16 2-16 0V7Z" /><path d="M4 7c0 2 16 2 16 0M4 12c0 2 16 2 16 0" /></svg>
+            <span>Storage</span>
+          </button>
+        </nav>
+        <div class="server-switcher">
+          <span>World to Manage</span>
+          <div class="profile-dropdown" id="profileDropdown">
+            <button id="profileDropdownBtn" type="button">
+              <span id="profileDropdownLabel">Default Server</span>
+              <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div id="profileDropdownMenu" class="profile-dropdown-menu"></div>
+          </div>
+        </div>
+      </aside>
+
+      <button id="sidebarOpenBtn" class="icon-btn sidebar-open" title="Open sidebar" aria-label="Open sidebar">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+      </button>
+
+      <div class="workspace">
+        <header class="titlebar">
+          <div class="left-title-actions">
+            <button id="notificationsBtn" class="title-action" title="Notifications" aria-label="Notifications">
+              <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" /><path d="M10 21h4" /></svg>
+            </button>
+            <div id="notificationsMenu" class="notifications-menu">
+              <div class="notifications-head">Notifications</div>
+              <div id="notificationsList" class="notifications-list"></div>
+            </div>
+            <button id="consoleWindowBtn" class="title-action" title="Open console" aria-label="Open console">
+              <svg viewBox="0 0 24 24"><path d="m4 17 6-6-6-6M12 19h8" /></svg>
+            </button>
+            <button id="uiModeToggleBtn" class="mode-switch" type="button" title="Switch UI mode" aria-label="Switch UI mode">
+              <span id="uiModeLabel">Classic</span>
+            </button>
+          </div>
+          <div class="drag-region"></div>
+          <div class="window-controls">
+            <button id="minimizeBtn" class="window-btn" title="Minimize" aria-label="Minimize">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14" /></svg>
+            </button>
+            <button id="maximizeBtn" class="window-btn" title="Maximize" aria-label="Maximize">
+              <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z" /></svg>
+            </button>
+            <button id="closeBtn" class="window-btn close" title="Close" aria-label="Close">
+              <svg viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17" /></svg>
+            </button>
+          </div>
+        </header>
+
+        <main>
+          <section id="dashboard" class="panel active">
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">Server Manager</p>
+                <h1>Dashboard</h1>
+              </div>
+              <button id="openFolderBtn">Open Server Folder</button>
+            </div>
+
+            <div class="dashboard-overview">
+              <div class="connect-strip">
+                <div class="connect-main">
+                  <span class="label">Minecraft connect address</span>
+                  <div class="copy-row">
+                    <input id="serverAddress" readonly />
+                    <button id="copyIpBtn" class="icon-btn accent" title="Copy IP" aria-label="Copy IP">
+                      <svg viewBox="0 0 24 24"><path d="M8 8h11v11H8z" /><path d="M5 15H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" /></svg>
+                    </button>
+                  </div>
+                  <p id="addressHint" class="address-hint">This is the only address players should add in Minecraft.</p>
+                </div>
+                <div class="server-control">
+                  <button id="toggleServerBtn" class="primary">Start Server</button>
+                  <button id="restartServerBtn">Restart</button>
+                </div>
+              </div>
+
+              <div class="players-panel">
+                <div class="players-head">
+                  <span>Players Online</span>
+                  <strong id="playerCountSummary">0 / 0</strong>
+                </div>
+                <div id="playerHeads" class="player-heads"></div>
+              </div>
+
+              <div class="overview-table">
+                <div class="overview-row"><span>World Name</span><strong id="worldName">world</strong></div>
+                <div class="overview-row"><span>Seed</span><strong id="seedSummary">Random seed</strong></div>
+                <div class="overview-row"><span>Memory</span><strong id="memorySummary">2048 MB</strong></div>
+                <div class="overview-row"><span>Server Version</span><strong id="versionSummary">latest</strong></div>
+                <div class="overview-row"><span>Runtime</span><strong id="runtimeSummary">Not running</strong></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="requirements" class="panel">
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">Readiness</p>
+                <h1>Requirements</h1>
+              </div>
+            </div>
+            <div class="requirements-wrap">
+              <section class="settings-category">
+                <h2>Launch Requirements</h2>
+                <div id="readinessList" class="readiness-list"></div>
+                <div class="requirements-actions">
+                  <button id="quickDownloadJarBtn">Download Server Jar</button>
+                  <button id="javaDownloadBtn">Install Java 25</button>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section id="analytics" class="panel">
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">Server Stats</p>
+                <h1>Analytics</h1>
+              </div>
+              <button id="refreshAnalyticsBtn">Refresh</button>
+            </div>
+            <div class="analytics-wrap">
+              <section class="analytics-metrics">
+                <div class="metric-row">
+                  <span>Health</span>
+                  <strong id="analyticsHealth">Offline</strong>
+                </div>
+                <div class="metric-row">
+                  <span>CPU</span>
+                  <strong id="analyticsCpu">0%</strong>
+                </div>
+                <div class="metric-row">
+                  <span>Memory</span>
+                  <strong id="analyticsMemory">0 / 2048 MB</strong>
+                </div>
+                <div class="metric-row">
+                  <span>Players</span>
+                  <strong id="analyticsPlayers">0 / 0</strong>
+                </div>
+              </section>
+
+              <section class="analytics-list">
+                <h2>Server Health</h2>
+                <div class="analytics-row"><span>State</span><strong id="analyticsStatus">Stopped</strong></div>
+                <div class="analytics-row"><span>Detail</span><strong id="analyticsHealthDetail">Server is stopped.</strong></div>
+                <div class="analytics-row"><span>Status Ping</span><strong id="analyticsPing">Offline</strong></div>
+                <div class="analytics-row"><span>Runtime</span><strong id="analyticsRuntime">Not running</strong></div>
+              </section>
+
+              <section class="analytics-list">
+                <h2>Performance</h2>
+                <div class="analytics-row"><span>Memory Used</span><strong id="analyticsMemoryDetail">0 MB used of 2048 MB</strong></div>
+                <div class="analytics-row"><span>Player Load</span><strong id="analyticsPlayerLoad">0%</strong></div>
+                <div class="analytics-row"><span>System RAM Free</span><strong id="analyticsSystemMemory">Checking</strong></div>
+                <div class="analytics-row"><span>Server Folder Size</span><strong id="analyticsDisk">0 B</strong></div>
+              </section>
+
+              <section class="analytics-list">
+                <h2>Network</h2>
+                <div class="analytics-row"><span>Join Address</span><strong id="analyticsJoinAddress">Set public address</strong></div>
+                <div class="analytics-row"><span>Port</span><strong id="analyticsPort">25565</strong></div>
+                <div class="analytics-row"><span>Direct Hosting</span><strong id="analyticsDirectHosting">Not mapped</strong></div>
+              </section>
+
+              <section class="analytics-list">
+                <h2>World</h2>
+                <div class="analytics-row"><span>World</span><strong id="analyticsWorld">world</strong></div>
+                <div class="analytics-row"><span>Version</span><strong id="analyticsVersion">latest</strong></div>
+                <div class="analytics-row"><span>Difficulty</span><strong id="analyticsDifficulty">normal</strong></div>
+                <div class="analytics-row"><span>Start Ready</span><strong id="analyticsReady">No</strong></div>
+              </section>
+            </div>
+          </section>
+
+          <section id="config" class="panel">
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">Server Files</p>
+                <h1>Config</h1>
+              </div>
+            </div>
+            <div class="config-list">
+              <div class="config-row config-row-tall">
+                <div>
+                  <strong>Minecraft Version</strong>
+                  <span>Select the exact vanilla release to download and run.</span>
+                </div>
+                <div class="config-control">
+                  <select id="serverVersionSelect">
+                    <option value="latest">Loading versions...</option>
+                  </select>
+                </div>
+              </div>
+              <div class="config-row">
+                <div>
+                  <strong>Vanilla Server Jar</strong>
+                  <span>Download the selected official Minecraft server jar from Mojang.</span>
+                </div>
+                <button id="downloadBtn">Download Vanilla</button>
+              </div>
+              <div class="config-row">
+                <div>
+                  <strong>Custom Server Jar</strong>
+                  <span>Use Paper, Fabric, Forge, or another modded server jar.</span>
+                </div>
+                <button id="selectJarBtn">Choose Custom Jar</button>
+              </div>
+              <div class="config-row">
+                <div>
+                  <strong>Console Logs</strong>
+                  <span>Delete saved log files and clear the in-app console buffer.</span>
+                </div>
+                <button id="clearLogsBtn">Clear Logs</button>
+              </div>
+              <div class="config-row danger-row">
+                <div>
+                  <strong>Generated Data</strong>
+                  <span>Remove worlds, cache, crash reports, bans, ops, and whitelist data.</span>
+                </div>
+                <button id="wipeDataBtn" class="danger">Wipe Generated Data</button>
+              </div>
+              <div class="config-row">
+                <div>
+                  <strong>Server Folder</strong>
+                  <span>Open the folder that contains the world, jars, mods, plugins, and logs.</span>
+                </div>
+                <button id="openFolderConfigBtn">Open Folder</button>
+              </div>
+              <div class="config-row config-row-tall">
+                <div>
+                  <strong>Direct Hosting</strong>
+                  <span>Try to expose this PC directly by mapping TCP 25565 on your router.</span>
+                  <small id="directHostingStatus" class="config-note">Not mapped.</small>
+                </div>
+                <div class="config-actions">
+                  <button id="enableDirectHostingBtn">Map Port</button>
+                  <button id="disableDirectHostingBtn">Unmap</button>
+                </div>
+              </div>
+              <div class="config-row config-row-tall">
+                <div>
+                  <strong>Tunnel Fallback</strong>
+                  <span>Use playit.gg only if direct hosting fails or your ISP blocks inbound ports.</span>
+                </div>
+                <div class="config-actions">
+                  <button id="downloadPlayitBtn">Download Agent</button>
+                  <button id="startPlayitBtn">Start Tunnel</button>
+                  <button id="stopPlayitBtn">Stop Tunnel</button>
+                  <button id="openPlayitSetupBtn">Setup</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="settings" class="panel">
+            <div class="settings-wrap">
+              <div class="page-head settings-head">
+                <div>
+                  <p class="eyebrow">Configuration</p>
+                  <h1>Settings</h1>
+                </div>
+                <button id="saveBtn" class="primary">Save Settings</button>
+              </div>
+
+              <div class="settings-sticky">
+                <div class="search-wrap">
+                  <svg viewBox="0 0 24 24"><path d="m21 21-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" /></svg>
+                  <input id="settingsSearch" placeholder="Search settings" />
+                </div>
+              </div>
+
+              <div class="settings-categories">
+                <section class="settings-category" data-search="network ip bind address port players motd">
+                  <h2>Network</h2>
+                  <label class="setting-row hostname-row"><span>Custom Public Join Address <small>Optional. This must be a real domain that points to your public IP.</small></span>
+                    <div class="hostname-control">
+                      <input id="customHostname" placeholder="myserver.net" />
+                      <span id="hostnameStatus" class="hostname-status hidden" tabindex="0">
+                        <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01" /><path d="M10.3 4.3 2.7 18a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z" /></svg>
+                        <span id="hostnameTooltip" class="hostname-tooltip">This domain is not ready.</span>
+                      </span>
+                    </div>
+                  </label>
+                  <label class="setting-row"><span>Public Join Address <small>Direct hosting fills this with the real address friends use.</small></span><input id="publicAddress" placeholder="Map direct hosting first" /></label>
+                  <input id="directHostingEnabled" type="checkbox" hidden />
+                  <label class="setting-row"><span>Server IP Bind <small>Leave blank unless you need one exact network adapter.</small></span><input id="bindIp" placeholder="Blank recommended" /></label>
+                  <label class="setting-row"><span>Port</span><input id="port" type="number" min="1" max="65535" /></label>
+                  <label class="setting-row"><span>Max Players</span><input id="maxPlayers" type="number" min="1" max="1000" /></label>
+                  <label class="setting-row"><span>MOTD</span><input id="motd" /></label>
+                </section>
+
+                <section class="settings-category" data-search="world seed level name gamemode difficulty spawn protection">
+                  <h2>World</h2>
+                  <label class="setting-row"><span>World Name</span><input id="levelName" /></label>
+                  <label class="setting-row"><span>Seed</span><input id="seed" placeholder="Blank creates a random world" /></label>
+                  <label class="setting-row"><span>Difficulty</span>
+                    <select id="difficulty">
+                      <option>peaceful</option>
+                      <option>easy</option>
+                      <option>normal</option>
+                      <option>hard</option>
+                    </select>
+                  </label>
+                  <label class="setting-row"><span>Game Mode</span>
+                    <select id="gamemode">
+                      <option>survival</option>
+                      <option>creative</option>
+                      <option>adventure</option>
+                      <option>spectator</option>
+                    </select>
+                  </label>
+                  <label class="setting-row"><span>Spawn Protection</span><input id="spawnProtection" type="number" min="0" max="128" /></label>
+                </section>
+
+                <section class="settings-category" data-search="performance java memory ram distance view simulation">
+                  <h2>Performance</h2>
+                  <label class="setting-row memory-row"><span>Memory <small id="memoryRangeLabel">512 MB selected</small></span>
+                    <div class="memory-control">
+                      <div class="memory-slider-wrap">
+                        <div id="memoryBubble" class="memory-bubble">512 MB</div>
+                        <input id="memoryMb" type="range" min="512" step="256" />
+                        <div class="memory-scale">
+                          <span id="memoryMinLabel">512 MB</span>
+                          <span id="memoryMaxLabel">4096 MB</span>
+                        </div>
+                      </div>
+                      <input id="memoryMbText" class="memory-text" inputmode="numeric" />
+                    </div>
+                  </label>
+                  <label class="setting-row"><span>Java Path</span><input id="javaPath" placeholder="java" /></label>
+                  <label class="setting-row"><span>Stable Player Limit <small id="playerLimitNote">Based on allocated memory.</small></span><input id="playerLimitView" readonly /></label>
+                  <label class="setting-row"><span>View Distance</span><input id="viewDistance" type="number" min="2" max="32" /></label>
+                  <label class="setting-row"><span>Simulation Distance</span><input id="simulationDistance" type="number" min="2" max="32" /></label>
+                </section>
+
+                <section class="settings-category" data-search="gameplay eula online pvp flight cheats whitelist hardcore nether structures spawn animals monsters npcs">
+                  <h2>Gameplay</h2>
+                  <label class="setting-row switch-row"><span>Online mode</span><input id="onlineMode" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>PvP</span><input id="pvp" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Player locator bar <small>Shows player direction in the in-game locator bar.</small></span><input id="playerLocatorBar" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Allow flight</span><input id="allowFlight" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Allow cheats</span><input id="allowCheats" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Whitelist</span><input id="whiteList" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Hardcore</span><input id="hardcore" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Force gamemode</span><input id="forceGamemode" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Allow Nether</span><input id="allowNether" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Generate structures</span><input id="generateStructures" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Spawn animals</span><input id="spawnAnimals" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Spawn monsters</span><input id="spawnMonsters" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Spawn NPCs</span><input id="spawnNpcs" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>I accept the Minecraft EULA</span><input id="acceptEula" type="checkbox" /><i></i></label>
+                </section>
+
+                <section class="settings-category" data-search="smp gamerule phantoms insomnia griefing fire spread inventory sleep trader patrol death advancements spawn radius tick speed">
+                  <h2>SMP Rules</h2>
+                  <label class="setting-row switch-row"><span>Disable phantoms <small>Turns off insomnia phantom spawning.</small></span><input id="doInsomnia" type="checkbox" data-invert="true" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Mob interactions <small>Allows Villager breeding and Piglin bartering. Server Protection still blocks Creeper and Enderman block griefing.</small></span><input id="mobGriefing" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Fire spread <small>Lets fire spread and burn blocks.</small></span><input id="doFireTick" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Keep inventory</span><input id="keepInventory" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Immediate respawn</span><input id="doImmediateRespawn" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Death messages</span><input id="showDeathMessages" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Advancement announcements</span><input id="announceAdvancements" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Wandering traders</span><input id="doTraderSpawning" type="checkbox" /><i></i></label>
+                  <label class="setting-row switch-row"><span>Pillager patrols</span><input id="doPatrolSpawning" type="checkbox" /><i></i></label>
+                  <label class="setting-row"><span>Sleep percentage <small>Percent of players needed to skip night.</small></span><input id="playersSleepingPercentage" type="number" min="0" max="100" /></label>
+                  <label class="setting-row"><span>Spawn radius</span><input id="spawnRadius" type="number" min="0" max="128" /></label>
+                  <label class="setting-row"><span>Random tick speed <small>3 is vanilla. Higher speeds up crops and leaf decay.</small></span><input id="randomTickSpeed" type="number" min="0" max="100" /></label>
+                </section>
+              </div>
+            </div>
+          </section>
+
+          <section id="mods" class="panel">
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">Extensions</p>
+                <h1>Mods and Plugins</h1>
+              </div>
+              <div class="actions">
+                <button id="addModsBtn">Add Mods</button>
+                <button id="addPluginsBtn">Add Plugins</button>
+              </div>
+            </div>
+            <div class="two-col">
+              <div class="fixed-list">
+                <h2>Mods</h2>
+                <div id="modsList" class="file-list"></div>
+              </div>
+              <div class="fixed-list">
+                <h2>Plugins</h2>
+                <div id="pluginsList" class="file-list"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="storage" class="panel">
+            <div class="page-head">
+              <div>
+                <p class="eyebrow">Cleanup</p>
+                <h1>Storage</h1>
+              </div>
+            </div>
+            <div class="storage-wrap">
+              <section class="settings-category">
+                <h2>Cleanup</h2>
+                <div class="config-row">
+                  <div>
+                    <strong>Console Logs</strong>
+                    <span>Clear saved log files and the in-app console buffer.</span>
+                  </div>
+                  <button id="clearLogsStorageBtn">Clear Logs</button>
+                </div>
+                <div class="config-row danger-row">
+                  <div>
+                    <strong>Generated Data</strong>
+                    <span>Remove worlds, cache, crash reports, bans, ops, and whitelist data.</span>
+                  </div>
+                  <button id="wipeDataStorageBtn" class="danger">Wipe Data</button>
+                </div>
+                <div class="config-row">
+                  <div>
+                    <strong>Server Folder</strong>
+                    <span>Open the active world's files and generated data.</span>
+                  </div>
+                  <button id="openFolderStorageBtn">Open Folder</button>
+                </div>
+              </section>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <div id="worldModal" class="modal-backdrop hidden">
+      <div class="modal">
+        <h2>Name World</h2>
+        <input id="worldNameInput" placeholder="Survival World" />
+        <div class="modal-actions">
+          <button id="cancelWorldBtn">Cancel</button>
+          <button id="createWorldBtn" class="primary">Create</button>
+        </div>
+      </div>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>

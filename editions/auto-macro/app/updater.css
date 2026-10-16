@@ -1,0 +1,12 @@
+:root { color-scheme: dark; font-family: Inter, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #101010; color: #f4f4f4; user-select: none; }
+main { min-height: 250px; padding: 34px; display: flex; align-items: center; gap: 22px; border: 1px solid #292929; }
+img { width: 58px; height: 58px; }
+.copy { flex: 1; min-width: 0; }
+h1 { margin: 0 0 8px; font-size: 23px; font-weight: 650; }
+p { min-height: 38px; margin: 0 0 16px; color: #a7a7a7; font-size: 13px; line-height: 1.45; overflow-wrap: anywhere; }
+.track { height: 5px; overflow: hidden; background: #292929; border-radius: 999px; }
+#fill { width: 0; height: 100%; background: #1688ff; border-radius: inherit; transition: width 120ms ease; }
+button { margin-top: 18px; border: 0; border-radius: 7px; padding: 8px 16px; background: #2b2b2b; color: #f4f4f4; cursor: pointer; }
+.failed #fill { background: #e85c5c; }

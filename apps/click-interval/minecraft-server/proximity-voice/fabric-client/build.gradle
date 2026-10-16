@@ -1,0 +1,172 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    implementation "io.github.jaredmdobson:concentus:${project.concentus_version}"
+    include "io.github.jaredmdobson:concentus:${project.concentus_version}"
+
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def generatedVoiceResources = layout.buildDirectory.dir('generated/voice-resources')
+
+tasks.register('generateMicrophoneGlyph') {
+    def glyphFile = generatedVoiceResources.map {
+        it.file('assets/proximityvoice_client/textures/font/microphone.png')
+    }
+    outputs.file(glyphFile)
+
+    doLast {
+        def output = glyphFile.get().asFile
+        output.parentFile.mkdirs()
+
+        // Four 12x10 monochrome bitmap glyphs: speaking, muted, idle, and disconnected.
+        // Minecraft applies the name-tag text color to the white pixels at render time.
+        def glyphs = [
+                [
+                        '.#..####..#.',
+                        '#..#....#..#',
+                        '#..#....#..#',
+                        '.#.#....#.#.',
+                        '...#....#...',
+                        '....####....',
+                        '..#......#..',
+                        '...######...',
+                        '.....##.....',
+                        '...######...'
+                ],
+                [
+                        '....####...#',
+                        '...#....#.#.',
+                        '...#....##..',
+                        '...#...##...',
+                        '...#..#.#...',
+                        '....##......',
+                        '..#.##...#..',
+                        '...######...',
+                        '.....##.....',
+                        '...######...'
+                ],
+                [
+                        '....####....',
+                        '...#....#...',
+                        '...#....#...',
+                        '...#....#...',
+                        '...#....#...',
+                        '....####....',
+                        '..#......#..',
+                        '...######...',
+                        '.....##.....',
+                        '...######...'
+                ],
+                [
+                        '....####....',
+                        '...#....#...',
+                        '...#....#...',
+                        '...#....#...',
+                        '...#....#...',
+                        '....####....',
+                        '..#......#..',
+                        '...######...',
+                        '.##..##..##.',
+                        '..##....##..'
+                ]
+        ]
+        def image = new java.awt.image.BufferedImage(12 * glyphs.size(), 10,
+                java.awt.image.BufferedImage.TYPE_INT_ARGB)
+        glyphs.eachWithIndex { rows, glyphIndex ->
+            rows.eachWithIndex { row, y ->
+                row.eachWithIndex { pixel, x ->
+                    if (pixel == '#') image.setRGB((glyphIndex * 12) + x, y, 0xFFFFFFFF as int)
+                }
+            }
+        }
+        if (!javax.imageio.ImageIO.write(image, 'png', output)) {
+            throw new GradleException('No PNG writer is available for the microphone font atlas.')
+        }
+    }
+}
+
+sourceSets {
+    main {
+        resources.srcDir(generatedVoiceResources)
+    }
+}
+
+loom {
+    runs {
+        client {
+            client()
+            name 'Proximity Voice Client'
+        }
+    }
+}
+
+processResources {
+    dependsOn tasks.named('generateMicrophoneGlyph')
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    testLogging {
+        events 'failed', 'skipped'
+        exceptionFormat 'full'
+    }
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.named('sourcesJar') {
+    dependsOn tasks.named('generateMicrophoneGlyph')
+}
+
+jar {
+    from('LICENSE') {
+        rename { "${it}_${project.base.archivesName.get()}" }
+    }
+}
+
+publishing {
+    publications {
+        create('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+}

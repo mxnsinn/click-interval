@@ -1,0 +1,7 @@
+@import url("updater.css");
+.error-icon { width: 64px; height: 64px; margin-top: 5px; fill: rgba(255, 59, 48, .1); stroke: #ff3b30; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.error-message { width: 100%; min-height: 39px; margin-top: 14px; overflow: hidden; color: #ff6262; text-align: center; }
+#errorVersions { color: #777; text-align: center; }
+#closeErrorButton { width: 112px; height: 32px; margin-top: auto; border: 1px solid #5b5b5b; border-radius: 4px; color: #fff; background: linear-gradient(#242424,#191919); }
+#closeErrorButton:hover { border-color: #ff3b30; background: #242424; }
+#closeErrorButton:active { background: #0b253b; }

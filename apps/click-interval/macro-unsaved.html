@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unsaved Changes</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body class="macro-delete-window">
+  <header class="popup-titlebar">Unsaved Changes</header>
+  <main>
+    <div class="delete-message"><span aria-hidden="true">&#9888;</span><p>You didn't save your changes. Would you like to save?</p></div>
+    <div class="popup-actions">
+      <button id="saveChanges" type="button">Yes</button>
+      <button id="discardChanges" type="button">No</button>
+    </div>
+  </main>
+  <script src="theme-loader.js"></script><script src="localization.js"></script><script src="macro-unsaved-window.js"></script>
+</body>
+</html>

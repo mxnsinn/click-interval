@@ -1,0 +1,11 @@
+{
+  "description":{"text":"Miner's Sweep"},
+  "supported_items":"#minecraft:pickaxes",
+  "weight":1,
+  "max_level":2,
+  "min_cost":{"base":25,"per_level_above_first":5},
+  "max_cost":{"base":55,"per_level_above_first":5},
+  "anvil_cost":8,
+  "slots":["mainhand"],
+  "effects":{}
+}

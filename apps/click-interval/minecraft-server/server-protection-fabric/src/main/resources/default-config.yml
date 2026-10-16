@@ -1,0 +1,227 @@
+# Server Protection Fabric adapter. Reload with /serverprotection reload.
+enabled: true
+
+checks:
+  movement:
+    speed: true
+    flight: true
+    phase: false
+    invalidPosition: true
+    invalidRotation: true
+    groundSpoof: true
+    waterWalk: true
+    step: true
+    timer: true
+    noSlow: false
+  combat:
+    reach: true
+    wallHit: true
+    autoClicker: true
+    multiTarget: true
+    aimDirection: false
+    killAura: false
+    clickPattern: true
+    criticals: false
+  world:
+    fastBreak: true
+    fastPlace: true
+    breakReach: true
+    placeReach: true
+    scaffold: false
+    multiBreak: false
+  abuse:
+    chatSpam: true
+    commandSpam: true
+    inventorySpam: true
+
+# Trusted, server-configured exceptions are scoped to one player and one check. Entries may be
+# player names or UUIDs. Do not use a broad exemption for an inventory-helper compatibility case.
+check-exemptions:
+  movement:
+    speed: []
+    flight: []
+    phase: []
+    invalidPosition: []
+    invalidRotation: []
+    groundSpoof: []
+    waterWalk: []
+    step: []
+    timer: []
+    noSlow: []
+  combat:
+    reach: []
+    wallHit: []
+    autoClicker: []
+    multiTarget: []
+    aimDirection: []
+    killAura: []
+    clickPattern: []
+    criticals: []
+  world:
+    fastBreak: []
+    fastPlace: []
+    breakReach: []
+    placeReach: []
+    scaffold: []
+    multiBreak: []
+  abuse:
+    chatSpam: []
+    commandSpam: []
+    inventorySpam: []
+
+# Optional companion reports are client-controlled policy signals, never proof of a clean client.
+# A new per-connection nonce rejects stale/cross-session replay. A modified client can still omit
+# or forge its own list, so this policy never exempts a player from behavior checks.
+modPolicy:
+  enabled: false
+  enforcement: report
+  requireDeclaration: false
+  declarationGraceSeconds: 8
+  enforceAllowlist: false
+  allowed: []
+  blocked: []
+
+response:
+  enabled: true
+  preThresholdAction: warn
+  alertVl: 8.0
+  kickVl: 16.0
+  kickOffenses: 1
+  tempBanOffenses: 3
+  tempBanMinutes: 60
+  permanentBanOffenses: 7
+  offenseDecayHours: 168
+  actionCooldownSeconds: 8
+
+messages:
+  warning:
+    text: "{reason}. Please stop."
+    color: "#ffff55"
+  alert:
+    text: "Suspicious activity detected: {reason}."
+    color: "#ff5555"
+  kick:
+    text: "Removed for suspicious activity: {reason}."
+    color: "#ff5555"
+  temporaryBan:
+    text: "Temporarily banned for suspicious activity: {reason} ({duration_minutes}m)."
+    color: "#aa0000"
+  permanentBan:
+    text: "Banned for suspicious activity: {reason}."
+    color: "#aa0000"
+  loginTemporaryBan:
+    text: "Temporarily banned ({remaining_minutes}m remaining)."
+    color: "#ff5555"
+  loginPermanentBan:
+    text: "You are banned from this server."
+    color: "#ff5555"
+  modPolicyKick:
+    text: "Client mod policy: {reason}."
+    color: "#ff5555"
+  banSource: "Server protection"
+  warningCooldownSeconds: 10
+  checks: {}
+
+violation-decay: 0.12
+minimum-tps: 18.0
+
+# Fabric has no native Paper-style ore obfuscation. This bounded detector records only repeated
+# valuable-ore breaks that had no adjacent air/fluid face before the break. It performs no scans.
+detection:
+  antiXray:
+    enabled: false
+    requiredConcealedSamples: 3
+    windowSeconds: 300
+
+grace:
+  joinSeconds: 5
+  teleportSeconds: 4
+  velocitySeconds: 2
+
+# Retired compatibility block. Player and nametag tracking always follows vanilla for PvP safety.
+# These keys remain readable so old managed configs do not fail to load; enabled is ignored.
+mitigations:
+  entityEsp:
+    enabled: false
+    minimumTps: 18.0
+    nearRevealRadius: 12.0
+    maximumVisibleDistance: 96.0
+    scanIntervalTicks: 5
+    maxPairsPerTick: 64
+    hideAfterSamples: 3
+    revealAfterSamples: 2
+    maxTrackedPairs: 2048
+    maxOnlinePlayers: 128
+
+# Owners/admins resolve from the manager-owned access.yml file. Direct names are lowercase-matched.
+exemptions:
+  owners: false
+  admins: false
+  players: []
+exempt-players: []
+
+reach:
+  geometryAllowance: 0.05
+  maxPingAllowance: 0.25
+  pingAllowancePerMs: 0.0008
+  maxTickAllowance: 0.10
+  tickAllowancePerMissingTps: 0.05
+  maxTargetRewind: 0.45
+  baseRewindTicks: 0.50
+  pingRewindTicksPerMs: 0.010
+  maxRewindTicks: 3.00
+  immediateExcess: 0.75
+  consecutiveSamples: 2
+  evidenceWindowMillis: 1250
+
+limits:
+  movement:
+    maxGroundBlocksPerTick: 0.78
+    maxAirBlocksPerTick: 0.92
+    maxAirTicks: 80
+    phaseSamples: 4
+    groundSpoofSamples: 5
+    waterWalkSamples: 7
+    stepSamples: 2
+    maxUseItemBlocksPerTick: 0.20
+    noSlowSamples: 7
+    maxPacketsPerSecond: 28
+    timerEvidenceWindows: 3
+  combat:
+    maxReach: 3.45
+    maxCps: 20
+    multiTargetCount: 4
+    multiTargetWindowMillis: 250
+    wallHitSamples: 6
+    maxAimDeviationDegrees: 55
+    aimEvidenceSamples: 4
+    aimEvidenceWindowMillis: 1500
+    rapidSwitchMillis: 90
+    rapidSwitchAngleDegrees: 110
+    rapidSwitchSamples: 3
+    rapidSwitchEvidenceWindowMillis: 1200
+    clickPatternSamples: 16
+    clickPatternMaxDeviationMillis: 1.5
+    criticalSamples: 3
+    criticalWindowMillis: 2500
+  world:
+    maxBreaksPerSecond: 18
+    maxPlacesPerSecond: 16
+    blockReachAllowance: 0.75
+    scaffoldAimDegrees: 80
+    scaffoldSamples: 4
+    scaffoldWindowMillis: 2000
+    multiBreakSamples: 6
+    multiBreakWindowMillis: 300
+    multiBreakMinSpan: 3.5
+  abuse:
+    maxChatPerFiveSeconds: 6
+    maxCommandsPerFiveSeconds: 10
+    maxInventoryClicksPerSecond: 35
+    # A normal over-limit burst must persist across separate samples before it is actionable.
+    inventoryEvidenceSamples: 3
+    inventorySampleIntervalMillis: 250
+    inventoryEvidenceWindowMillis: 1500
+    # This independent ceiling still blocks an immediate packet flood.
+    maxInventoryBurstPacketsPerSecond: 120
+    inventoryViolationCooldownMillis: 3000

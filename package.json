@@ -1,0 +1,20 @@
+{
+  "name": "click-interval-source",
+  "version": "1.5.147",
+  "private": true,
+  "description": "Open-source Click Interval toolbox",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mxnsinn/click-interval.git"
+  },
+  "scripts": {
+    "audit": "node test/source-audit.js",
+    "test:auto-macro": "node editions/auto-macro/test/friend-wine-compat-test.js && node editions/auto-macro/test/friend-backend-pipe-test.js && node editions/auto-macro/test/friend-update-recovery-test.js",
+    "test": "npm run audit && npm run test:auto-macro"
+  },
+  "devDependencies": {
+    "electron": "44.0.0",
+    "rcedit": "5.0.2"
+  }
+}

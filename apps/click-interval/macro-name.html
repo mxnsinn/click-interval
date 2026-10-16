@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Macro</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body class="macro-name-window">
+  <header id="macroNameTitle" class="popup-titlebar">New Macro</header>
+  <main>
+    <label id="macroNameLabel" for="macroNameInput">Macro name</label>
+    <input id="macroNameInput" type="text" maxlength="40" autocomplete="off" placeholder="My Macro">
+    <select id="macroNameSelect" aria-label="Choose an option" hidden></select>
+    <div class="popup-actions">
+      <button id="createMacro" type="button">Create</button>
+      <button id="cancelMacro" type="button">Cancel</button>
+    </div>
+  </main>
+  <script src="theme-loader.js"></script><script src="localization.js"></script><script src="macro-name-window.js"></script>
+</body>
+</html>

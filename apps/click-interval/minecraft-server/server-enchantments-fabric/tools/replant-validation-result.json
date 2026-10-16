@@ -1,0 +1,36 @@
+{
+  "version": "1.3.1",
+  "minecraft": "26.2",
+  "artifact": "dist/ServerEnchantments-Fabric-1.3.1+mc26.2.jar",
+  "sha256": "f573f6e39eeae2003c9229bd8007074a1a48704a9cbf07999e82998b3b3de7ba",
+  "baselineReproduction": {
+    "nativeWorld": "../../../work/smp-mod-smoke-PZJH8k",
+    "result": "Expected regression assertion failure with old production implementation: both manual centers replant even while neighbor work is queued"
+  },
+  "verifiedNativeWorld": "../../../work/smp-mod-smoke-liXTG7",
+  "nativeTimestamp": "2026-10-08T20:33:41+04:00",
+  "nativeExitCode": 0,
+  "nativeMods": 76,
+  "passedMarkers": [
+    "SERVER_HARVESTER_REPLANT_SELFTEST_PASS",
+    "SERVER_HARVESTER_SELFTEST_PASS",
+    "SERVER_SMELTER_SELFTEST_PASS",
+    "SERVER_ENCHANTMENTS_SELFTEST_PASS",
+    "SERVER_VILLAGER_CYCLE_SELFTEST_PASS",
+    "SERVER_VILLAGER_TRADES_SELFTEST_PASS",
+    "SERVER_ANVIL_CAP_SELFTEST_PASS"
+  ],
+  "regressions": [
+    "Two rapid manual ripe crop centers both restore while extra-break budget is zero and earlier neighbor work is queued",
+    "Exactly one inventory seed per restored crop and exact native harvest drops",
+    "Held attack cannot destroy immature or freshly restored crops with a Harvester hoe",
+    "Sneaking deliberately bypasses young-crop guard and automatic replanting",
+    "Offhand-only seed inventory pays for nine restored crops",
+    "Denied original break neither spends seeds nor produces harvest drops",
+    "Existing levels, seed types, absent and last seed, full inventory, neighbor protection and invalid soil coverage retained"
+  ],
+  "liveServerModified": false,
+  "clientInstallationModified": false,
+  "userWorldModified": false,
+  "activationRequired": "Managed server restart or client relaunch after authorized installation"
+}

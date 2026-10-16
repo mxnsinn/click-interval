@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Player Role</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="player-role-editor.css">
+</head>
+<body>
+  <header class="role-titlebar"><span id="windowTitle">New Player Role</span></header>
+  <main>
+    <form id="roleForm" autocomplete="off">
+      <section class="role-section role-identity" aria-labelledby="identityTitle">
+        <h1 id="identityTitle">Role</h1>
+        <label><span>Name</span><input id="roleName" maxlength="32" placeholder="Moderator" required></label>
+        <label><span>ID</span><input id="roleId" maxlength="32" placeholder="moderator" pattern="[a-z0-9][a-z0-9._-]*" required></label>
+      </section>
+
+      <section class="role-section" aria-labelledby="permissionsTitle">
+        <h2 id="permissionsTitle">Access</h2>
+        <div class="toggle-grid">
+          <label class="check"><input id="canSpectate" type="checkbox"><span>View player POV</span></label>
+          <label class="check"><input id="canViewCoordinates" type="checkbox"><span>View coordinates</span></label>
+          <label class="check"><input id="canViewDimension" type="checkbox"><span>View dimension</span></label>
+          <label class="check"><input id="canCycleTrades" type="checkbox"><span>Cycle villager trades</span></label>
+          <label class="check"><input id="canShowEntityIds" type="checkbox"><span>Show entity IDs</span></label>
+          <label class="check"><input id="canInspectEntities" type="checkbox"><span>Inspect entities</span></label>
+          <label class="check"><input id="canEditEntities" type="checkbox"><span>Edit entities</span></label>
+          <label class="check"><input id="canStopServer" type="checkbox"><span>Stop server</span></label>
+          <label class="check"><input id="canRestartServer" type="checkbox"><span>Restart server</span></label>
+          <label class="check"><input id="canManageProtection" type="checkbox"><span>Manage protection</span></label>
+          <label class="check"><input id="canBypassProtection" type="checkbox"><span>Bypass protection checks</span></label>
+        </div>
+        <label class="wide"><span>Villager trade discount</span><input id="tradeDiscountPercent" type="number" min="0" max="55" step="1" value="0"><small>0–55% for players assigned to this role</small></label>
+        <label class="wide"><span>Command access</span>
+          <select id="commandMode">
+            <option value="none">No admin commands</option>
+            <option value="allowlist">Selected commands</option>
+            <option value="all">All commands</option>
+          </select>
+        </label>
+        <div id="commandDetails" class="command-details">
+          <div><span class="field-label">Command groups</span><div id="commandGroups" class="command-groups"></div></div>
+          <div class="wide"><span class="field-label">Available server commands</span><div id="commandCatalog" class="command-groups"></div></div>
+          <label class="wide"><span>Additional command roots</span><input id="allowedCommands" maxlength="1024" placeholder="custom commands from installed add-ons"></label>
+          <label class="wide"><span>Blocked commands</span><input id="deniedCommands" maxlength="1024" placeholder="stop, op"></label>
+        </div>
+      </section>
+
+      <section class="role-section" aria-labelledby="nameTagTitle">
+        <div class="section-line"><h2 id="nameTagTitle">Name tag</h2><label class="switch"><input id="appearanceEnabled" type="checkbox"><span>Show role style</span></label></div>
+        <div id="appearanceFields" class="appearance-fields">
+          <label><span>Name color</span><select id="nameColor"></select></label>
+          <label><span>Prefix</span><input id="tagPrefix" maxlength="64" placeholder="&6[Admin] &r"></label>
+          <label><span>Suffix</span><input id="tagSuffix" maxlength="64" placeholder=""></label>
+          <div class="format-line" aria-label="Insert Minecraft formatting">
+            <span>Format</span>
+            <button type="button" data-format="&l" title="Bold"><b>B</b></button>
+            <button type="button" data-format="&o" title="Italic"><i>I</i></button>
+            <button type="button" data-format="&n" title="Underline"><u>U</u></button>
+            <button type="button" data-format="&m" title="Strikethrough"><s>S</s></button>
+            <button type="button" data-format="&k" title="Obfuscated">?</button>
+            <button type="button" data-format="&r" title="Reset">Reset</button>
+          </div>
+          <div class="tag-preview"><span id="tagPreview"></span></div>
+          <p>Use Minecraft formatting codes such as <code>&amp;6</code>, <code>&amp;l</code>, and <code>&amp;r</code>.</p>
+        </div>
+      </section>
+    </form>
+    <div id="editorMessage" class="editor-message" role="status" hidden></div>
+    <footer>
+      <button id="deleteRole" class="danger" type="button" hidden>Delete role</button>
+      <span></span>
+      <button id="cancelRole" type="button">Cancel</button>
+      <button id="saveRole" class="primary" type="submit" form="roleForm">Save role</button>
+    </footer>
+  </main>
+  <script src="theme-loader.js"></script>
+  <script src="player-role-editor.js"></script>
+</body>
+</html>

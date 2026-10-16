@@ -1,0 +1,13 @@
+enabled: true
+
+# Blank binds the UDP relay to every local interface.
+bindAddress: ''
+
+# Blank tells clients to reuse the Minecraft server hostname.
+publicHost: ''
+
+# This UDP port must be allowed through the firewall/router separately from Minecraft TCP.
+port: 24454
+
+voiceDistance: 48.0
+sessionTimeoutSeconds: 45

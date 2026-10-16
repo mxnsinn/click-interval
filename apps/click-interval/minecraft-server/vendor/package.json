@@ -1,0 +1,7 @@
+{
+  "name": "click-interval-minecraft-server-runtime",
+  "private": true,
+  "dependencies": {
+    "nat-api": "0.3.1"
+  }
+}

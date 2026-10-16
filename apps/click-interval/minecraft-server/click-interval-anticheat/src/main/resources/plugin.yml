@@ -1,0 +1,43 @@
+name: ServerProtection
+version: 1.4.0
+main: com.clickinterval.anticheat.ClickIntervalAntiCheat
+api-version: '1.20'
+authors: [Server Manager]
+description: Lightweight, configurable server-side protection and access control.
+commands:
+  whisper:
+    description: Send a private message using the vanilla message command.
+    usage: /whisper <player> <message>
+  serverprotection:
+    description: View and manage server protection.
+    usage: /serverprotection [status|history|reload|pardon|mods|compatibility]
+    aliases: [protect]
+  ci-spectate:
+    description: Follow an online player's point of view without replacing vanilla spectate.
+    usage: /ci-spectate <online-player>
+    permission: serverprotection.player-view
+  ci-unspectate:
+    description: Return to the saved location and game mode.
+    usage: /ci-unspectate
+    permission: serverprotection.player-view
+  unspectate:
+    description: Legacy alias for /ci-unspectate.
+    usage: /unspectate
+    permission: serverprotection.player-view
+  entityadmin:
+    description: Show where entity inspection and editing is available.
+    usage: /entityadmin [help]
+    permission: serverprotection.entity-admin
+permissions:
+  serverprotection.admin:
+    description: Manage protection and review its history.
+    default: op
+  serverprotection.bypass:
+    description: Exempt a player from all built-in protection checks.
+    default: false
+  serverprotection.player-view:
+    description: Use Click Interval's camera-only player view commands.
+    default: op
+  serverprotection.entity-admin:
+    description: Discover the Click Interval entity administration UI.
+    default: op

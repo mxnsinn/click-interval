@@ -1,0 +1,67 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+version = project.mod_version
+group = project.maven_group
+base { archivesName = project.archives_base_name }
+repositories { mavenCentral() }
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') { expand version: project.version }
+}
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    maxParallelForks = 1
+    minHeapSize = '32m'
+    maxHeapSize = '128m'
+}
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+tasks.register('copyReleaseJar', Copy) {
+    dependsOn tasks.named('jar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('dist')
+    rename { "ServerVillagerTrades-Fabric-${project.mod_version}+mc26.2.jar" }
+}
+tasks.named('build') { finalizedBy tasks.named('copyReleaseJar') }
+tasks.named('jar') {
+    exclude 'com/clickinterval/villagertrades/client/**'
+    exclude 'villager-trades-client.mixins.json'
+}
+
+// Legacy custom button, retained only for reproducibility. Normal builds ship stock-only
+// server support; the original upstream Trade Cycling mod supplies the UI and protocol.
+tasks.register('clientAddonJar', Jar) {
+    dependsOn tasks.named('classes')
+    archiveFileName = "ClickInterval-TradeButton-Fabric-${project.client_mod_version}+mc26.2.jar"
+    inputs.property 'clientVersion', project.client_mod_version
+    destinationDirectory = layout.projectDirectory.dir('dist')
+    from(sourceSets.main.output) {
+        include 'com/clickinterval/villagertrades/client/**'
+        include 'com/clickinterval/villagertrades/network/**'
+        include 'villager-trades-client.mixins.json'
+    }
+    from('src/client') {
+        include 'fabric.mod.json'
+        expand version: project.client_mod_version
+    }
+}

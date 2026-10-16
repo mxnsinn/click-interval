@@ -1,0 +1,53 @@
+name: Build and sign Auto Clicker + Macro
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-sign:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Build reproducible unsigned Authenticode input
+        shell: pwsh
+        env:
+          CI_UPDATE_PRIVATE_KEY: ${{ secrets.CI_UPDATE_PRIVATE_KEY }}
+        run: ./scripts/build-auto-macro.ps1
+      - name: Upload unsigned artifact
+        id: unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: click-interval-auto-macro-unsigned
+          path: artifacts/Click-Interval-*-win-x64.zip
+          if-no-files-found: error
+          retention-days: 7
+      - name: Submit signing request to SignPath
+        if: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' }}
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY_SLUG }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_ARTIFACT_CONFIGURATION_SLUG }}
+          github-artifact-id: ${{ steps.unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: artifacts/signed
+      - name: Upload signed artifact
+        if: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: click-interval-auto-macro-signed
+          path: artifacts/signed
+          if-no-files-found: error

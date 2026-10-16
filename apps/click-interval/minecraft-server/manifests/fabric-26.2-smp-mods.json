@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 1,
+  "id": "fabric-26.2-smp-2026-10-04",
+  "title": "Click Interval Fabric 26.2 SMP additions",
+  "resolvedAt": "2026-10-06T14:11:32Z",
+  "source": "Modrinth v2 API and exact official Modrinth CDN files verified on 2026-10-06",
+  "target": {
+    "loader": "fabric",
+    "minecraftVersion": "26.2"
+  },
+  "requiredInstalledModIds": [
+    "fabric-api"
+  ],
+  "clientExternalDependencies": [
+    {
+      "modId": "fabric-api",
+      "title": "Fabric API",
+      "projectId": "P7dR8mSH",
+      "versionId": "ewUK83HI",
+      "version": "0.161.0+26.2",
+      "sourcePage": "https://modrinth.com/mod/fabric-api/version/ewUK83HI",
+      "filename": "fabric-api-0.161.0+26.2.jar",
+      "url": "https://cdn.modrinth.com/data/P7dR8mSH/versions/ewUK83HI/fabric-api-0.161.0%2B26.2.jar",
+      "size": 2566123,
+      "hashes": {
+        "sha1": "332da34ebb72171e603a0c538de17f4c54ea9e29",
+        "sha256": "e5b858ceb13290c274e31cb888ff5a1a40cb91067e7ffab0b5b775aec51e216a",
+        "sha512": "2502fa5ade78e9a120b3747bc1a9a2167d6671743bea45bf115d3174c94121aeda87c549446d1a604a9c11fb828de17a551e3514ce42f3e93069dd14bdaee55b"
+      },
+      "bundled": false,
+      "required": true,
+      "reason": "Required only when a player chooses an optional Fabric client bundle such as Litematica; not required to join the server."
+    }
+  ],
+  "clientBundles": [
+    {
+      "key": "litematica",
+      "title": "Litematica",
+      "available": true,
+      "target": {
+        "loader": "fabric",
+        "minecraftVersion": "26.2"
+      },
+      "artifactKeys": [
+        "litematica-client",
+        "malilib-client"
+      ]
+    },
+    {
+      "key": "fresh-animations",
+      "title": "Fresh Animations",
+      "available": true,
+      "target": {
+        "loader": "fabric",
+        "minecraftVersion": "26.2"
+      },
+      "artifactKeys": [
+        "fresh-animations-resource-pack",
+        "entity-model-features-client",
+        "entity-texture-features-client"
+      ]
+    }
+  ],
+  "notes": [
+    "The default server additions require no companion mods on joining clients. Lootr has been retired from automatic installation.",
+    "Litematica and MaLiLib are packaged as an optional client bundle and must never be copied to the server mods folder.",
+    "Fresh Animations, Entity Model Features, and Entity Texture Features are an explicitly selected client bundle; each player downloads the exact reference-only ZIP/JARs directly, and none are installed on the server.",
+    "The Fresh ZIP targets resourcepacks and EMF/ETF target client mods, but portable exports retain only official URLs and verification metadata; no raw Fresh-stack file is embedded or rehosted.",
+    "Chunky only changes terrain by explicit administrator commands; no pre-generation starts automatically.",
+    "ServerCore gameplay-changing optimizations remain disabled by its defaults.",
+    "Players choosing the optional Litematica bundle need its declared Fabric API dependency; it is not required just to join this server."
+  ],
+  "artifacts": [
+    {
+      "key": "servercore",
+      "title": "ServerCore",
+      "purpose": "Reduces server lag spikes while keeping gameplay-changing features disabled by default.",
+      "projectId": "4WWQxlQP",
+      "versionId": "edrtnY9v",
+      "version": "1.5.19+26.2",
+      "releaseType": "release",
+      "publishedAt": "2026-06-24T12:56:41.975609Z",
+      "sourcePage": "https://modrinth.com/mod/servercore/version/edrtnY9v",
+      "iconUrl": "https://cdn.modrinth.com/data/4WWQxlQP/5207e4657a1d0e929506a8c07491a42fa73b0a29_96.webp",
+      "filename": "servercore-fabric-1.5.19+26.2.jar",
+      "url": "https://cdn.modrinth.com/data/4WWQxlQP/versions/edrtnY9v/servercore-fabric-1.5.19%2B26.2.jar",
+      "size": 909932,
+      "hashes": {
+        "sha1": "43eda9e44e32e0e736ada0ff125f83cb87cbd59a",
+        "sha256": "4f7c9fb3b35b364d8f6500d04f0d5481656f617a83bc69742b47f39adff59666",
+        "sha512": "aa4cfc93f8e02172910302444330e37713dfcf2047d28e55eb7323a3cd5d51493374a0959aa3e626ec2bf43fc707a755508b83454bb34b6d57d65c069929074b"
+      },
+      "modId": "servercore",
+      "installTarget": "server",
+      "clientRequired": false,
+      "serverOnly": true,
+      "clientOnly": false,
+      "optional": false,
+      "replaceExisting": false,
+      "dependencies": [
+        "fabric-api"
+      ]
+    },
+    {
+      "key": "krypton",
+      "title": "Krypton",
+      "purpose": "Optimizes the Fabric networking stack without changing survival gameplay.",
+      "projectId": "fQEb0iXm",
+      "versionId": "5WeL0Nkz",
+      "version": "0.3.1",
+      "releaseType": "release",
+      "publishedAt": "2026-07-14T22:10:35.227152Z",
+      "sourcePage": "https://modrinth.com/mod/krypton/version/5WeL0Nkz",
+      "iconUrl": "https://cdn.modrinth.com/data/fQEb0iXm/3ea60899d060a9286e03b87bfa9e71d0cbe2dde7_96.webp",
+      "filename": "krypton-0.3.1.jar",
+      "url": "https://cdn.modrinth.com/data/fQEb0iXm/versions/5WeL0Nkz/krypton-0.3.1.jar",
+      "size": 268842,
+      "hashes": {
+        "sha1": "c83ed92c0f9f8523d7e6096151e74222fea91e96",
+        "sha256": "5ea8901561973d29e51e751469d52d92100f348ab461e1186f67012e93420c48",
+        "sha512": "b8d9af34cd0050493afb8a6232cb8f785daa9d8887b7045f6e6a53c6bb9b5ffc4318fd9b0347a940eacfeba4773f10cb80ae0be1e79ce4c1888f96eda21e564e"
+      },
+      "modId": "krypton",
+      "installTarget": "server",
+      "clientRequired": false,
+      "serverOnly": true,
+      "clientOnly": false,
+      "optional": false,
+      "replaceExisting": false,
+      "dependencies": []
+    },
+    {
+      "key": "spark",
+      "title": "spark",
+      "purpose": "Adds low-overhead profiling and health diagnostics so lag can be measured before changing settings.",
+      "projectId": "l6YH9Als",
+      "versionId": "e3hsPc1o",
+      "version": "1.10.187-fabric",
+      "releaseType": "release",
+      "publishedAt": "2026-09-19T07:44:18.489950Z",
+      "sourcePage": "https://modrinth.com/mod/spark/version/e3hsPc1o",
+      "iconUrl": "https://cdn.modrinth.com/data/l6YH9Als/61a777dd08a8447ac93e8b6372e6d27d48cd1e1a_96.webp",
+      "filename": "spark-1.10.187-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/e3hsPc1o/spark-1.10.187-fabric.jar",
+      "size": 3838499,
+      "hashes": {
+        "sha1": "0940b4089affdfca37d6b6d0ea5ecae4dbd8fe98",
+        "sha256": "3fc00663caa542b1e78333730609b4eb2568326628e3666a3938ad58cbc9acc6",
+        "sha512": "c74bf5d5a16b2445ec6ea717eac756412b272a8015e91f91a7bf5a27e6f2f99c4a11878d434510f941f37b0344b3a7d1ba0dd6c34e80642762c48fb6e9a93894"
+      },
+      "modId": "spark",
+      "installTarget": "server",
+      "clientRequired": false,
+      "serverOnly": true,
+      "clientOnly": false,
+      "optional": false,
+      "replaceExisting": false,
+      "dependencies": [
+        "fabric-api"
+      ]
+    },
+    {
+      "key": "chunky",
+      "title": "Chunky",
+      "purpose": "Lets an administrator pre-generate a bounded world area to move exploration load out of live play.",
+      "projectId": "fALzjamp",
+      "versionId": "4Eotm6ov",
+      "version": "1.5.3",
+      "releaseType": "release",
+      "publishedAt": "2026-05-04T05:47:16.215347Z",
+      "sourcePage": "https://modrinth.com/plugin/chunky/version/4Eotm6ov",
+      "filename": "Chunky-Fabric-1.5.3.jar",
+      "url": "https://cdn.modrinth.com/data/fALzjamp/versions/4Eotm6ov/Chunky-Fabric-1.5.3.jar",
+      "size": 354095,
+      "hashes": {
+        "sha1": "fc1f2f374c5c82117599071ed18b6ef9bba2c7fb",
+        "sha256": "ecdfc55a0f67f3ec6f40850687615c941ae226bd88f4e06188a7b268fd3da942",
+        "sha512": "b83bfe7b218d0aa6232af977ae741dc1f82b10e50cd12bb759f65cf416b8b62beccb543e587ef0b9670abe03815660f8e091bc6823624d65cf07300571573516"
+      },
+      "modId": "chunky",
+      "installTarget": "server",
+      "clientRequired": false,
+      "serverOnly": true,
+      "clientOnly": false,
+      "optional": true,
+      "replaceExisting": false,
+      "dependencies": [
+        "fabric-api"
+      ]
+    },
+    {
+      "key": "squaremap",
+      "title": "squaremap",
+      "purpose": "Provides the lightweight live 2D browser map used by the separate map window.",
+      "projectId": "PFb7ZqK6",
+      "versionId": "QoKeDHFP",
+      "version": "1.3.15",
+      "releaseType": "release",
+      "publishedAt": "2026-07-29T04:46:28.030152Z",
+      "sourcePage": "https://modrinth.com/plugin/squaremap/version/QoKeDHFP",
+      "filename": "squaremap-fabric-mc26.2-1.3.15.jar",
+      "url": "https://cdn.modrinth.com/data/PFb7ZqK6/versions/QoKeDHFP/squaremap-fabric-mc26.2-1.3.15.jar",
+      "size": 8808202,
+      "hashes": {
+        "sha1": "749c5c5a7670b4cd99ca55fd2ce568c836b4dbe5",
+        "sha256": "25ed8493b1468a506400e3941779d429392614c7095c1252cb5c505c2fb258d1",
+        "sha512": "45fec38bac275bb80dd044a2c07f98fba4744ead7d8cc4aa99147c0ae4f4575e35c71437bf1e27cf3d026b555b4c33362c73623ae5c2de55713cf2c426a63e85"
+      },
+      "modId": "squaremap",
+      "installTarget": "server",
+      "clientRequired": false,
+      "serverOnly": true,
+      "clientOnly": false,
+      "optional": true,
+      "replaceExisting": false,
+      "dependencies": [
+        "fabric-api"
+      ]
+    },
+    {
+      "key": "litematica-client",
+      "title": "Litematica (optional client file)",
+      "purpose": "Lets an individual player load and place schematic guides on their own client.",
+      "projectId": "bEpr0Arc",
+      "versionId": "CuniXtbo",
+      "version": "0.28.8",
+      "releaseType": "release",
+      "publishedAt": "2026-09-05T14:45:14.562886Z",
+      "sourcePage": "https://modrinth.com/mod/litematica/version/CuniXtbo",
+      "iconUrl": "https://cdn.modrinth.com/data/bEpr0Arc/25b5529d7a3b030ac136a6ce879d8ed2a1aa4a8d.png",
+      "filename": "litematica-fabric-26.2-0.28.8.jar",
+      "url": "https://cdn.modrinth.com/data/bEpr0Arc/versions/CuniXtbo/litematica-fabric-26.2-0.28.8.jar",
+      "size": 1929569,
+      "hashes": {
+        "sha1": "736eda2b7a9f08ef2a104f6a79bce2c2715ecf28",
+        "sha256": "6de0774f78aee1698154dc7e7fa3c3afb19201e3d9474ddaf073fa4f4309a064",
+        "sha512": "d1c80538f3311b585c9311e59f14fd7fd3eb82288fe5afb399b2139cb35b42d24db7203379f2f61b50a610736335a86dbd395ca1795b001622e6b24dc6fe2a67"
+      },
+      "modId": "litematica",
+      "installTarget": "client-optional",
+      "clientRequired": false,
+      "serverOnly": false,
+      "clientOnly": true,
+      "optional": true,
+      "replaceExisting": false,
+      "bundleGroup": "litematica-client",
+      "compatibility": {
+        "loader": "fabric",
+        "minecraftVersion": "26.2"
+      },
+      "dependencies": [
+        "malilib-client"
+      ]
+    },
+    {
+      "key": "malilib-client",
+      "title": "MaLiLib (Litematica dependency)",
+      "purpose": "Required client-side library for the packaged Litematica build.",
+      "projectId": "GcWjdA9I",
+      "versionId": "KvjmGjAV",
+      "version": "0.29.6",
+      "releaseType": "release",
+      "publishedAt": "2026-09-04T18:29:23.813423Z",
+      "sourcePage": "https://modrinth.com/mod/malilib/version/KvjmGjAV",
+      "iconUrl": "https://cdn.modrinth.com/data/GcWjdA9I/a530ae55df5e0c405f5cf1b3e4fd6163a398bdc3.png",
+      "filename": "malilib-fabric-26.2-0.29.6.jar",
+      "url": "https://cdn.modrinth.com/data/GcWjdA9I/versions/KvjmGjAV/malilib-fabric-26.2-0.29.6.jar",
+      "size": 2037195,
+      "hashes": {
+        "sha1": "8e4959313bec2d413ac898d1a030f1d73d419d5a",
+        "sha256": "db49040123d8dfe725a95407b4e777383e7162656045bff38ff72fc570080600",
+        "sha512": "0fab398f835d9c4736dac65510f707c77a60be6e6051bfd008225c20a5ff13e146296da258bee551d39fa28102b8854d77fa25b2ecb6b0f89fb3c874bac563db"
+      },
+      "modId": "malilib",
+      "installTarget": "client-optional",
+      "clientRequired": false,
+      "serverOnly": false,
+      "clientOnly": true,
+      "optional": true,
+      "replaceExisting": false,
+      "bundleGroup": "litematica-client",
+      "compatibility": {
+        "loader": "fabric",
+        "minecraftVersion": "26.2"
+      },
+      "dependencies": []
+    },
+    {
+      "key": "fresh-animations-resource-pack",
+      "title": "Fresh Animations",
+      "purpose": "Provides the optional animated vanilla-style entity resource pack for Fabric clients.",
+      "artifactType": "resource-pack",
+      "projectId": "50dA9Sha",
+      "versionId": "RGIzA5em",
+      "version": "1.10.5",
+      "releaseType": "beta",
+      "sourcePage": "https://modrinth.com/resourcepack/fresh-animations/version/RGIzA5em",
+      "filename": "FreshAnimations_v1.10.5.zip",
+      "url": "https://cdn.modrinth.com/data/50dA9Sha/versions/RGIzA5em/FreshAnimations_v1.10.5.zip",
+      "size": 645816,
+      "hashes": {
+        "sha1": "0d069c5583d1dd4591e55ec5ff6dd0905f3f8615",
+        "sha256": "cf9f17a2977e171b33cb0b598bc4357dd0383e09c10d5f768ff17c12d0a028ee",
+        "sha512": "f4f2a1d294c2e0afe245b6987fea4a84ff120f131a7f2cfb16779e9cc5d0a00b3d49bf1585ac827d6690c36421e8dda203b0c6e642bb0c6aa067c5921dd8dc30"
+      },
+      "resourcePackId": "fresh-animations",
+      "installTarget": "client-resource-pack",
+      "clientRequired": false,
+      "serverOnly": false,
+      "clientOnly": true,
+      "optional": true,
+      "replaceExisting": false,
+      "bundleGroup": "fresh-animations",
+      "compatibility": {
+        "loader": "fabric",
+        "minecraftVersion": "26.2",
+        "gameVersions": [
+          "26.1",
+          "26.1.1",
+          "26.1.2",
+          "26.2",
+          "26.3"
+        ]
+      },
+      "officialCompatibility": {
+        "loader": "minecraft",
+        "gameVersions": [
+          "26.1",
+          "26.1.1",
+          "26.1.2",
+          "26.2",
+          "26.3"
+        ]
+      },
+      "license": {
+        "id": "LicenseRef-Fresh-Animations-Custom",
+        "name": "Fresh Animations custom terms",
+        "sourcePage": "https://modrinth.com/resourcepack/fresh-animations"
+      },
+      "resourcePack": {
+        "minFormat": 84,
+        "maxFormat": 999
+      },
+      "distribution": {
+        "source": "official-cdn",
+        "embedInApp": false,
+        "rehost": false,
+        "portableExport": "reference-only",
+        "localDirectInstall": true,
+        "notice": "Download directly from the official Modrinth CDN for personal local installation. Portable exports retain only this verified reference; do not rehost or redistribute the pack."
+      },
+      "dependencies": [
+        "entity-model-features-client",
+        "entity-texture-features-client"
+      ]
+    },
+    {
+      "key": "entity-model-features-client",
+      "title": "Entity Model Features (Fresh Animations dependency)",
+      "purpose": "Adds the custom entity-model support Fresh Animations needs on Fabric clients.",
+      "projectId": "4I1XuqiY",
+      "versionId": "tgEvvPhr",
+      "version": "3.3.11",
+      "releaseType": "release",
+      "sourcePage": "https://modrinth.com/mod/entity-model-features/version/tgEvvPhr",
+      "filename": "entity_model_features-3.3.11-26.2-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/4I1XuqiY/versions/tgEvvPhr/entity_model_features-3.3.11-26.2-fabric.jar",
+      "size": 664593,
+      "hashes": {
+        "sha1": "adac13c5fd8b82819830387cf9c8d8f405bd0ca5",
+        "sha256": "26b13c2ee755932e74f80ecf6baf16a25582568ae7482cf472751abb98e7b14a",
+        "sha512": "7e3d6c76033c60a01f6d89a7d6ee07436f08a1f63ed78f93d8d1623d0f49b6f229bcdc2f24d9e7b70c92fda6179339980f65702132b57aa5f241c006f2113903"
+      },
+      "modId": "entity_model_features",
+      "installTarget": "client-optional",
+      "clientRequired": false,
+      "serverOnly": false,
+      "clientOnly": true,
+      "optional": true,
+      "replaceExisting": false,
+      "bundleGroup": "fresh-animations",
+      "compatibility": {
+        "loader": "fabric",
+        "minecraftVersion": "26.2"
+      },
+      "officialCompatibility": {
+        "loaders": [
+          "fabric",
+          "quilt"
+        ],
+        "gameVersions": [
+          "26.2"
+        ]
+      },
+      "license": {
+        "id": "LGPL-3.0-only",
+        "sourcePage": "https://modrinth.com/mod/entity-model-features/version/tgEvvPhr"
+      },
+      "distribution": {
+        "source": "official-cdn",
+        "embedInApp": false,
+        "rehost": false,
+        "portableExport": "reference-only",
+        "localDirectInstall": true,
+        "notice": "Download this exact verified build directly from its official Modrinth CDN URL; it is not copied into portable exports."
+      },
+      "dependencies": [
+        "entity-texture-features-client"
+      ]
+    },
+    {
+      "key": "entity-texture-features-client",
+      "title": "Entity Texture Features (Fresh Animations dependency)",
+      "purpose": "Adds the custom entity-texture support used alongside Fresh Animations on Fabric clients.",
+      "projectId": "BVzZfTc1",
+      "versionId": "b9RlCI9F",
+      "version": "7.2.5",
+      "releaseType": "release",
+      "sourcePage": "https://modrinth.com/mod/entitytexturefeatures/version/b9RlCI9F",
+      "filename": "entity_texture_features-7.2.5-26.2-fabric.jar",
+      "url": "https://cdn.modrinth.com/data/BVzZfTc1/versions/b9RlCI9F/entity_texture_features-7.2.5-26.2-fabric.jar",
+      "size": 792861,
+      "hashes": {
+        "sha1": "475bc0d85ba188ff4e30ee54700b96bb8b33f846",
+        "sha256": "ac66cf294fbd2b1eb1576bdc2396cb096abcd54d9f8f39ecb1973abbc4e00488",
+        "sha512": "0610cb90020e3c38b6a23b1bb6a0e2b819f15c6f5a90dbf10ede8cf955499b48699dc328e91c22fd89a0a126bdc0ce60a6a3fd4f355d5613b9b3d32ee20af6f5"
+      },
+      "modId": "entity_texture_features",
+      "installTarget": "client-optional",
+      "clientRequired": false,
+      "serverOnly": false,
+      "clientOnly": true,
+      "optional": true,
+      "replaceExisting": false,
+      "bundleGroup": "fresh-animations",
+      "compatibility": {
+        "loader": "fabric",
+        "minecraftVersion": "26.2"
+      },
+      "officialCompatibility": {
+        "loaders": [
+          "fabric",
+          "quilt"
+        ],
+        "gameVersions": [
+          "26.2"
+        ]
+      },
+      "license": {
+        "id": "LGPL-3.0-only",
+        "sourcePage": "https://modrinth.com/mod/entitytexturefeatures/version/b9RlCI9F"
+      },
+      "distribution": {
+        "source": "official-cdn",
+        "embedInApp": false,
+        "rehost": false,
+        "portableExport": "reference-only",
+        "localDirectInstall": true,
+        "notice": "Download this exact verified build directly from its official Modrinth CDN URL; it is not copied into portable exports."
+      },
+      "dependencies": []
+    }
+  ],
+  "compatiblePreviousManifestDigests": [
+    "d256abd4e07396708c7627f2c1a705a5887b00c9868ef04bf97271b7ddfa8eec"
+  ]
+}

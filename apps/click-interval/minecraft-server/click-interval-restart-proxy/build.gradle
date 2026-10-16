@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.clickinterval'
+version = project.plugin_version
+
+base {
+    archivesName = 'ClickIntervalRestartProxy'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    compileOnly "com.velocitypowered:velocity-api:${project.velocity_version}"
+    annotationProcessor "com.velocitypowered:velocity-api:${project.velocity_version}"
+
+    testImplementation platform("org.junit:junit-bom:${project.junit_version}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "com.velocitypowered:velocity-api:${project.velocity_version}"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Xlint:all', '-Xlint:-processing']
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.register('copyReleaseJar', Copy) {
+    dependsOn tasks.named('jar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('dist')
+    rename { "ClickIntervalRestartProxy-${project.plugin_version}.jar" }
+}
+
+tasks.named('build') {
+    finalizedBy tasks.named('copyReleaseJar')
+}

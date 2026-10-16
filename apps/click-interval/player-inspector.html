@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Player</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="player-inspector.css">
+</head>
+<body>
+  <header class="player-inspector-titlebar">
+    <button id="backToProfile" class="title-icon" type="button" title="Back to player" aria-label="Back to player" hidden><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+    <span id="playerTitle">View Player</span>
+    <div class="title-actions">
+      <button id="openStatistics" class="title-icon" type="button" title="Player statistics" aria-label="Open player statistics"><svg viewBox="0 0 24 24"><path d="M5 19V9M12 19V5M19 19v-7M3 19h18"/></svg></button>
+      <button id="refreshPlayer" class="title-icon" type="button" title="Refresh player" aria-label="Refresh player"><svg viewBox="0 0 24 24"><path d="M19 7v5h-5M5 17v-5h5M7 8a7 7 0 0 1 11 1l1 3M5 12l1 3a7 7 0 0 0 11 1"/></svg></button>
+    </div>
+  </header>
+  <main>
+    <section id="profilePage" class="profile-page">
+      <aside class="player-card" aria-label="Player model and equipment">
+        <div class="model-stage">
+          <div id="playerModel" class="player-model" role="img" aria-label="3D player model">
+            <div id="modelRig" class="model-rig"></div>
+            <div id="modelFallback" class="model-fallback">Loading skin…</div>
+          </div>
+          <div class="model-location">
+            <strong id="playerDimension">—</strong>
+            <span><b id="playerX">—</b> / <b id="playerY">—</b> / <b id="playerZ">—</b></span>
+          </div>
+          <div id="armorInventory" class="equipment-column armor-inventory" aria-label="Armor"></div>
+          <div id="offhandInventory" class="equipment-column offhand-inventory" aria-label="Offhand"></div>
+        </div>
+        <strong id="profilePlayerName" class="profile-player-name">Player</strong>
+      </aside>
+
+      <section class="player-details">
+        <div class="player-vitals" aria-label="Player status">
+          <div class="vital-line"><div id="healthBar" class="minecraft-icons hearts" role="img" aria-label="Health"></div></div>
+          <div class="vital-line"><div id="hungerBar" class="minecraft-icons hunger" role="img" aria-label="Hunger"></div></div>
+          <div class="xp-line" aria-label="Experience"><div class="xp-track"><div id="xpProgress" class="xp-progress"></div></div><span id="xpLevel">0</span></div>
+        </div>
+
+        <section id="playerViewPanel" class="player-view-panel" aria-labelledby="playerViewTitle" hidden>
+          <div class="player-view-copy">
+            <strong id="playerViewTitle">Return from active view</strong>
+            <span id="playerViewStatus" aria-live="polite"></span>
+          </div>
+          <div class="player-view-actions">
+            <label class="player-view-select"><span>Viewer</span><select id="playerViewViewer" aria-label="Viewer with a saved return position" disabled></select></label>
+            <button id="stopPlayerView" type="button" hidden disabled>Return</button>
+          </div>
+        </section>
+
+        <section class="inventory-section" aria-labelledby="inventoryTitle">
+          <div class="section-heading"><strong id="inventoryTitle">Inventory</strong><span id="inventoryStatus">Loading…</span></div>
+          <div id="mainInventory" class="inventory-grid main-inventory" aria-label="Main inventory"></div>
+          <div class="hotbar-heading">Hotbar</div>
+          <div id="hotbarInventory" class="inventory-grid hotbar-inventory" aria-label="Hotbar"></div>
+        </section>
+      </section>
+    </section>
+
+    <section id="statisticsPage" class="statistics-page" hidden>
+      <div class="statistics-toolbar">
+        <div><strong>Statistics</strong><span id="statisticsSummary">Loading…</span></div>
+        <label class="statistics-search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><input id="statisticsSearch" type="search" placeholder="Search statistics" autocomplete="off"></label>
+      </div>
+      <div id="statisticsList" class="statistics-list" aria-live="polite"></div>
+      <nav id="statisticsPagination" class="statistics-pagination" aria-label="Statistics pages" hidden>
+        <button id="previousStatisticsPage" type="button">Previous</button>
+        <span id="statisticsPageSummary">Page 1 of 1</span>
+        <button id="nextStatisticsPage" type="button">Next</button>
+      </nav>
+    </section>
+
+    <div id="inspectorError" class="inspector-error" role="status" hidden></div>
+    <footer><span id="playerUpdated">Waiting for Minecraft…</span><button id="closeInspector" type="button">Close</button></footer>
+  </main>
+  <script src="theme-loader.js"></script>
+  <script src="player-inspector-data.js"></script>
+  <script src="player-inspector.js"></script>
+</body>
+</html>

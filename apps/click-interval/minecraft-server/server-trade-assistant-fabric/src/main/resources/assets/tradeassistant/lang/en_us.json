@@ -1,0 +1,8 @@
+{
+  "tradeassistant.button.cycle": "Cycle trades",
+  "tradeassistant.button.cycle.tooltip": "Generate a new set of novice trades",
+  "tradeassistant.message.success": "Trades cycled.",
+  "tradeassistant.message.cooldown": "Wait before cycling trades again.",
+  "tradeassistant.message.denied": "Your role does not allow trade cycling.",
+  "tradeassistant.message.invalid": "This villager cannot cycle trades."
+}

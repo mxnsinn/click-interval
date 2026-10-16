@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; connect-src 'none'; img-src 'self' data:; style-src 'self'; script-src 'self'">
+  <title>Click Interval</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="titlebar">
+    <div class="app-title"><img class="app-logo" src="assets/toolbox-icon.svg" alt=""><span id="appVersionLabel">Click Interval</span></div>
+    <div class="window-buttons">
+      <button id="updateWindow" class="update-window" type="button" aria-label="Check for updates" data-hint="Check for updates">
+        <svg class="update-check-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M15.8 6.8A6.5 6.5 0 1 0 16.2 13M15.8 3.5v3.8h-3.8"/></svg>
+        <svg class="update-install-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5v9m0 0 3.2-3.2M10 11.5 6.8 8.3M4 14.5v2h12v-2"/></svg>
+      </button>
+      <button id="minimizeWindow" type="button" aria-label="Minimize">&#x2212;</button>
+      <button id="closeWindow" class="close" type="button" aria-label="Close">&#x00D7;</button>
+    </div>
+  </header>
+  <nav class="tool-switcher" aria-label="Tools">
+    <button id="showAutoClicker" class="tool-tab active" type="button" aria-pressed="true" data-hint="Right-click for tab options"><span class="tool-mouse" aria-hidden="true"></span>Auto Clicker<svg class="tool-lock-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7"/></svg></button>
+    <button id="showMacro" class="tool-tab" type="button" aria-pressed="false" data-hint="Right-click for tab options"><svg class="tool-macro-icon" viewBox="0 0 18 16" aria-hidden="true"><rect x="1.5" y="2.5" width="15" height="11" rx="2"/><circle cx="6" cy="8" r="2"/><path d="M11 6.5h3M11 9.5h3"/></svg>Macro<svg class="tool-lock-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.2 7V5.2a2.8 2.8 0 0 1 5.6 0V7"/></svg></button>
+  </nav>
+  <main id="appMain" class="tool-view" tabindex="-1">
+    <fieldset class="interval-box">
+      <legend>Click interval</legend>
+      <div class="interval-row">
+        <input id="hours" type="text" inputmode="numeric" value="0"><span>hours</span>
+        <input id="minutes" type="text" inputmode="numeric" value="0"><span>mins</span>
+        <input id="seconds" type="text" inputmode="numeric" value="0"><span>secs</span>
+        <input id="milliseconds" type="text" inputmode="numeric" value="10" data-hint="Maximum speed is controlled by the CPS cap"><span>milliseconds</span>
+      </div>
+      <div class="random-row">
+        <button id="help" class="help" type="button" aria-describedby="helpHint">?</button>
+        <div id="helpHint" class="hint-source" role="status">Set a random offset for the interval.</div>
+        <label class="check-label"><input id="randomEnabled" type="checkbox"> Random offset</label>
+        <input id="randomMilliseconds" type="text" inputmode="numeric" value="40">
+        <span>milliseconds</span>
+      </div>
+    </fieldset>
+
+    <div class="middle-grid">
+      <fieldset>
+        <legend>Click options</legend>
+        <div class="form-row"><label for="mouseClick">Mouse button:</label><select id="mouseClick"><option>Left</option><option>Right</option><option>Middle</option></select></div>
+        <div class="form-row"><label for="clickType">Click type:</label><select id="clickType"><option>Single</option><option>Double</option></select></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>CPS cap &amp; emergency stop</legend>
+        <div class="safety-row cps-row"><label for="cpsCap">CPS cap:</label><div class="cps-input-wrap"><input id="cpsCap" type="text" inputmode="numeric" value="100"><div class="cps-stepper"><button id="cpsIncrease" type="button" aria-label="Increase CPS cap"></button><button id="cpsDecrease" type="button" aria-label="Decrease CPS cap"></button></div></div><span id="cpsWarning" class="cps-warning" aria-describedby="cpsHint">&#9888;</span><div id="cpsHint" class="hint-source" role="status"></div></div>
+        <div class="safety-row"><span>Emergency:</span><button id="emergencyHotkey" type="button">Ctrl + Shift + F12</button></div>
+      </fieldset>
+    </div>
+
+    <fieldset class="cursor-box">
+      <legend>Cursor position</legend>
+      <label class="cursor-current"><input type="radio" name="cursor" id="currentLocation" checked> Current location</label>
+      <label class="pick-radio"><input type="radio" name="cursor" id="pickedLocation"></label>
+      <button id="pickLocation" type="button">Pick location</button>
+      <label>X <input id="cursorX" type="text" inputmode="numeric" value="0"></label>
+      <label>Y <input id="cursorY" type="text" inputmode="numeric" value="0"></label>
+    </fieldset>
+
+    <div class="actions">
+      <button id="startButton" type="button">Start (Q)</button>
+      <button id="stopButton" type="button" disabled>Stop (Q)</button>
+      <button id="hotkeyButton" class="focused-look" type="button">Hotkey setting</button>
+      <button id="recordButton" type="button">Emergency Stop (Ctrl+Shift+F12)</button>
+    </div>
+  </main>
+
+  <main id="macroView" class="tool-view macro-view" tabindex="-1" hidden>
+    <section id="macroHomePanel" class="macro-panel">
+      <div class="macro-page-header">
+        <strong>Your macros</strong>
+        <div class="macro-header-actions">
+          <button id="importMacro" class="macro-bare-icon" type="button" aria-label="Open a macro file" data-hint="Open a macro file">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7.5h6l2 2h7v9h-15z"/><path d="M4.5 7.5v-2h6l2 2"/></svg>
+          </button>
+          <button id="createMacroButton" class="macro-bare-icon macro-plus" type="button" aria-label="Create a new macro" data-hint="Create a new macro">+</button>
+        </div>
+      </div>
+      <div class="macro-library-box">
+        <div id="macroLibraryList" class="macro-library-list" role="list" aria-label="Saved macros"></div>
+        <div id="macroEmptyState" class="macro-empty-state">No macros yet. Press + to create one.</div>
+      </div>
+    </section>
+
+    <section id="macroRecorderPanel" class="macro-panel" hidden>
+      <div class="macro-page-header editor-header">
+        <button id="macroRecorderBack" class="macro-nav-icon" type="button" aria-label="Back to saved macros" data-hint="Back to saved macros">&#x2190;</button>
+        <div class="macro-title-stack">
+          <strong id="macroRecorderTitle">Macro</strong>
+          <div class="macro-file-status"><strong id="macroActionCount">0 actions</strong><span id="macroFileName">Not saved</span></div>
+        </div>
+        <div class="macro-header-actions">
+          <button id="macroSave" class="macro-nav-icon macro-save-button" type="button" aria-label="Save macro" data-hint="Save macro">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg>
+          </button>
+          <button id="openAdvancedMacro" class="macro-nav-icon advanced-button" type="button" aria-label="Open advanced editor" data-hint="Open advanced editor">&#9881;</button>
+        </div>
+      </div>
+      <fieldset class="macro-settings-box">
+        <legend>Settings</legend>
+        <div class="recorder-settings-grid">
+          <div class="recorder-settings-group">
+            <span class="settings-group-title">Repeat</span>
+            <div class="recorder-setting-row repeat-count-setting"><label><input type="radio" name="macroRepeatMode" id="macroRepeatCountMode" checked> Repeat count</label><input id="macroRepeatCount" type="text" inputmode="numeric" value="3"></div>
+            <div class="recorder-setting-row"><label><input type="radio" name="macroRepeatMode" id="macroConstantRepeat"> Constant repeat</label></div>
+            <div class="recorder-setting-row"><label for="macroLoopDelay">Loop delay</label><div class="setting-unit"><input id="macroLoopDelay" type="text" inputmode="numeric" value="0"><span>ms</span></div></div>
+          </div>
+          <div class="recorder-settings-group">
+            <span class="settings-group-title">Playback</span>
+            <div class="recorder-setting-row"><label for="macroPlaybackSpeed">Speed</label><select id="macroPlaybackSpeed"><option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option><option value="3">3x</option><option value="4">4x</option></select></div>
+            <div class="recorder-setting-row"><label for="macroStartDelay">Start delay</label><select id="macroStartDelay"><option value="0">None</option><option value="250">0.25s</option><option value="500">0.5s</option><option value="1000">1s</option><option value="2000">2s</option></select></div>
+            <div class="recorder-setting-row"><label for="macroTimingVariance">Timing variance</label><select id="macroTimingVariance"><option value="0">None</option><option value="5">5%</option><option value="10">10%</option><option value="20">20%</option></select></div>
+          </div>
+        </div>
+        <div class="recorder-behavior-row">
+          <label class="check-label" data-hint="Hide Click Interval when playback starts"><input id="macroMinimizeOnPlay" type="checkbox" checked> Minimize app</label>
+          <label class="check-label" data-hint="Return the cursor to its starting position when playback ends"><input id="macroRestoreCursor" type="checkbox"> Restore cursor</label>
+          <label class="check-label" data-hint="Stop playback when physical keyboard or mouse input is detected"><input id="macroStopOnInput" type="checkbox"> Stop on input</label>
+        </div>
+      </fieldset>
+      <fieldset class="macro-recording-box">
+        <legend>Record &amp; playback</legend>
+        <div class="macro-record-controls">
+          <button id="macroRecord" class="macro-primary" type="button"><span class="record-dot"></span><span>Record</span></button>
+          <button id="macroPlay" type="button"><span class="play-triangle"></span><span>Play</span></button>
+        </div>
+        <div class="macro-file-controls">
+          <div class="recording-quality-control">
+            <label for="macroRecordingQuality" data-hint="Compact 30 Hz, Balanced 60 Hz, Smooth 120 Hz, Ultra 240 Hz">Quality</label>
+            <select id="macroRecordingQuality">
+              <option value="compact">Compact</option>
+              <option value="balanced" selected>Balanced</option>
+              <option value="smooth">Smooth</option>
+              <option value="ultra">Ultra</option>
+            </select>
+          </div>
+          <button id="macroOpen" type="button">Open file</button>
+        </div>
+      </fieldset>
+      <fieldset class="macro-hotkeys-box">
+        <legend>Hotkeys</legend>
+        <div class="macro-shortcuts">
+          <button id="macroRecordHotkey" type="button">Record / Stop: Ctrl + F10</button>
+          <button id="macroPlayHotkey" type="button">Play / Stop: Ctrl + F11</button>
+        </div>
+      </fieldset>
+    </section>
+
+    <section id="macroAdvancedPanel" class="macro-panel" hidden>
+      <div class="macro-page-header advanced-header">
+        <button id="macroAdvancedBack" class="macro-nav-icon" type="button" aria-label="Back to recorder" data-hint="Back to recorder">&#x2190;</button>
+        <strong>Advanced editor</strong>
+        <div class="advanced-header-tools">
+          <select id="advancedMacroSelect" aria-label="Macro to edit"></select>
+          <select id="triggerTypeMenu" hidden aria-hidden="true"><option value="relation">Color Relation</option><option value="visual">Color Presence</option><option value="pixel">Pixel Color</option><option value="zone">Color Zone</option><option value="bar">Bar Fill</option><option value="screen">Screen Change</option></select>
+          <button id="openTriggerMenu" class="macro-bare-icon trigger-menu-icon" type="button" aria-label="Add or edit trigger" data-hint="Add or edit trigger">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v7m0 0a3 3 0 1 0 0 6v5M5 10a3 3 0 0 1 0 6M8 13h5l3-4v8l3-4h2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="advanced-top-grid">
+        <fieldset class="macro-trigger-box">
+          <legend>Trigger</legend>
+          <div class="compact-row"><label for="macroTriggerMode">When:</label><select id="macroTriggerMode"><option>Pressed</option><option>Hold</option><option>Toggle</option></select></div>
+          <div class="compact-row"><span>Keys:</span><button id="macroTriggerKey" type="button">F8</button></div>
+          <label class="check-label macro-enabled"><input id="macroEnabled" type="checkbox"> Enable global trigger</label>
+        </fieldset>
+        <fieldset class="macro-capture-box">
+          <legend>Record settings</legend>
+          <div class="capture-grid">
+            <label><input id="captureMovement" type="checkbox" checked> Movement</label>
+            <label><input id="captureButtons" type="checkbox" checked> Buttons</label>
+            <label><input id="captureKeyboard" type="checkbox" checked> Keyboard</label>
+            <label><input id="captureDelays" type="checkbox" checked> Delays</label>
+          </div>
+          <div class="position-mode"><label><input type="radio" name="macroPosition" id="macroAbsolute" checked> Absolute</label><label><input type="radio" name="macroPosition" id="macroRelative"> Relative</label></div>
+        </fieldset>
+      </div>
+
+      <fieldset class="macro-actions-box">
+        <legend>Actions</legend>
+        <div class="action-layout">
+          <select id="macroActionList" size="6" aria-label="Macro actions"></select>
+          <div class="action-toolbar">
+            <button id="actionEdit" type="button" data-hint="Edit selected action" aria-label="Edit selected action">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19l1-4L16.5 4.5l3 3L9 18z"/><path d="M14.5 6.5l3 3"/></svg>
+            </button>
+            <button id="actionUp" type="button" data-hint="Move up">&#x2191;</button>
+            <button id="actionDown" type="button" data-hint="Move down">&#x2193;</button>
+            <button id="actionDuplicate" type="button" data-hint="Duplicate">&#x29C9;</button>
+            <button id="actionDelete" type="button" data-hint="Delete">&#x00D7;</button>
+            <button id="actionClear" type="button" data-hint="Clear all">C</button>
+          </div>
+        </div>
+        <div class="action-add-row">
+          <select id="newActionType" aria-label="New action type"><option value="wait">Wait</option><option value="wait_until_relation">Wait until color relation</option><option value="find_color_click">Find color and click</option><option value="auto_clicker_control">Control auto clicker</option><option value="label">Label</option><option value="goto">Go to label</option><option value="mouse_click">Mouse click</option><option value="mouse_down">Mouse button down</option><option value="mouse_up">Mouse button up</option><option value="key_press">Key press (VK)</option><option value="move_absolute">Move absolute</option><option value="move_relative">Move relative</option></select>
+          <input id="newActionValue" type="text" value="100" aria-label="Action value" data-hint="Wait: milliseconds. Key: virtual-key number. Move: x,y">
+          <select id="newActionButton" aria-label="Mouse button" hidden><option>Left</option><option>Right</option><option>Middle</option><option>MB4</option><option>MB5</option></select>
+          <button id="actionAdd" type="button">Add</button>
+        </div>
+      </fieldset>
+    </section>
+
+    <section id="macroActionEditorPanel" class="macro-panel" hidden>
+      <div class="macro-page-header action-editor-header">
+        <button id="macroActionEditorBack" class="macro-nav-icon" type="button" aria-label="Back to advanced editor" data-hint="Back to advanced editor">&#x2190;</button>
+        <strong id="macroActionEditorTitle">Edit action</strong>
+        <span></span>
+      </div>
+
+      <fieldset class="action-editor-box">
+        <legend>Action settings</legend>
+        <div id="actionEditWaitFields" class="action-edit-fields" hidden>
+          <label>Delay <span class="action-edit-unit"><input id="actionEditWaitMs" type="text" inputmode="numeric"><span>ms</span></span></label>
+        </div>
+        <div id="actionEditMoveFields" class="action-edit-fields" hidden>
+          <label>X <input id="actionEditMoveX" type="text" inputmode="numeric"></label>
+          <label>Y <input id="actionEditMoveY" type="text" inputmode="numeric"></label>
+          <label>Movement <select id="actionEditMoveMode"><option value="absolute">Absolute</option><option value="relative">Relative</option></select></label>
+        </div>
+        <div id="actionEditPathFields" class="action-edit-path" hidden>
+          <div class="action-edit-path-options">
+            <label>Movement <select id="actionEditPathMode"><option value="absolute">Absolute</option><option value="relative">Relative</option></select></label>
+            <label>Playback <span class="action-edit-unit"><input id="actionEditPathHz" type="text" inputmode="numeric"><span>Hz</span></span></label>
+          </div>
+          <label>Path points <span class="action-edit-help">one line per point: delay, x, y</span></label>
+          <textarea id="actionEditPathPoints" spellcheck="false"></textarea>
+        </div>
+        <div id="actionEditMouseFields" class="action-edit-fields" hidden>
+          <label>Event <select id="actionEditMouseEvent"><option value="mouse_down">Button down</option><option value="mouse_up">Button up</option></select></label>
+          <label>Button <select id="actionEditMouseButton"><option>Left</option><option>Right</option><option>Middle</option><option>MB4</option><option>MB5</option></select></label>
+        </div>
+        <div id="actionEditKeyFields" class="action-edit-fields" hidden>
+          <label>Event <select id="actionEditKeyEvent"><option value="key_down">Key down</option><option value="key_up">Key up</option></select></label>
+          <label>Key <input id="actionEditKeyVk" type="text" readonly aria-label="Click, then press a key"></label>
+        </div>
+        <div id="actionEditWaitUntilFields" class="action-edit-fields action-edit-compact" hidden>
+          <label>Boundary color <input id="actionEditWaitBoundary" type="text" maxlength="7"></label>
+          <label>Target color <input id="actionEditWaitTarget" type="text" maxlength="7"></label>
+          <label>Tolerance, margin <input id="actionEditWaitDetection" type="text"></label>
+          <label>Relation <select id="actionEditWaitCondition"><option value="target_inside">Target is inside</option><option value="target_right">Target is right</option><option value="target_left">Target is left</option><option value="target_centered">Target is centered</option><option value="colors_visible">Both colors are visible</option><option value="tracking_lost">Either color is missing</option></select></label>
+          <label>Area X,Y <input id="actionEditWaitAreaXY" type="text"></label>
+          <label>Area W,H <input id="actionEditWaitAreaWH" type="text"></label>
+          <label>Check every <span class="action-edit-unit"><input id="actionEditWaitPoll" type="text" inputmode="numeric"><span>ms</span></span></label>
+          <label>Timeout <span class="action-edit-unit"><input id="actionEditWaitTimeout" type="text" inputmode="numeric"><span>ms</span></span></label>
+          <button id="actionEditWaitPickArea" class="action-area-pick" type="button">Select area on screen</button>
+        </div>
+        <div id="actionEditFindClickFields" class="action-edit-fields action-edit-compact" hidden>
+          <label>Target color <input id="actionEditFindColor" type="text" maxlength="7"></label>
+          <label>Tolerance <input id="actionEditFindTolerance" type="text" inputmode="numeric"></label>
+          <label>Minimum pixels <input id="actionEditFindPixels" type="text" inputmode="numeric"></label>
+          <label>Area X,Y <input id="actionEditFindAreaXY" type="text"></label>
+          <label>Area W,H <input id="actionEditFindAreaWH" type="text"></label>
+          <label>Mouse button <select id="actionEditFindButton"><option>Left</option><option>Right</option><option>Middle</option></select></label>
+          <label>Check every <span class="action-edit-unit"><input id="actionEditFindPoll" type="text" inputmode="numeric"><span>ms</span></span></label>
+          <label>Timeout <span class="action-edit-unit"><input id="actionEditFindTimeout" type="text" inputmode="numeric"><span>ms</span></span></label>
+          <button id="actionEditFindPickArea" class="action-area-pick" type="button">Select area on screen</button>
+        </div>
+        <div id="actionEditControlFields" class="action-edit-fields" hidden>
+          <label id="actionEditControlLabel">Name <input id="actionEditControlName" type="text" maxlength="40"></label>
+        </div>
+        <div id="actionEditAutoClickerFields" class="action-edit-fields" hidden>
+          <label>Auto clicker <select id="actionEditAutoClickerOperation"><option value="start">Start</option><option value="stop">Stop</option><option value="toggle">Toggle</option></select></label>
+        </div>
+      </fieldset>
+      <div class="action-editor-buttons">
+        <button id="actionEditCancel" type="button">Cancel</button>
+        <button id="actionEditSave" type="button">Save action</button>
+      </div>
+    </section>
+
+    <section id="macroSmartPanel" class="macro-panel" hidden>
+      <div class="macro-page-header smart-header">
+        <button id="macroSmartBack" class="macro-nav-icon" type="button" aria-label="Back to advanced editor" data-hint="Back to advanced editor">&#x2190;</button>
+        <strong id="triggerEditorTitle">Color Presence</strong>
+        <span id="smartActivationState" class="smart-state">Disabled</span>
+      </div>
+
+      <fieldset class="smart-source-box">
+        <legend id="triggerSourceLegend">Target color</legend>
+        <div id="visualTriggerSource" class="trigger-source-simple" hidden>
+          <div class="trigger-color-preview" id="triggerColorPreview"></div>
+          <div><strong id="triggerColorTitle">Measure color coverage</strong><span id="triggerColorDescription" data-hint="Runs the next action while the selected color covers the chosen percentage of the search area." data-hint-overflow="true">Runs the next action while the selected color covers the chosen percentage of the search area.</span></div>
+          <div class="trigger-color-inputs">
+            <input id="triggerColor" type="text" value="#ff0000" maxlength="7" aria-label="Target color">
+            <select id="triggerCoverage" aria-label="Required color coverage"><option value="0.5">0.5% area</option><option value="1">1% area</option><option value="5" selected>5% area</option><option value="10">10% area</option><option value="25">25% area</option><option value="50">50% area</option></select>
+          </div>
+        </div>
+        <div id="screenTriggerSource" class="trigger-source-simple" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3M6 11h3l2-3 3 6 2-3h2"/></svg>
+          <div><strong>Compare consecutive scans</strong><span id="screenTriggerDescription" data-hint="Runs the next action when the selected region changes, or remains stable, compared with its previous scan." data-hint-overflow="true">Runs the next action when the selected region changes, or remains stable, compared with its previous scan.</span></div>
+        </div>
+        <div id="relationTriggerSource" class="relation-trigger-source" hidden>
+          <label>Boundary color <input id="relationBoundaryColor" type="text" value="#ffffff" maxlength="7"></label>
+          <label>Target color <input id="relationTargetColor" type="text" value="#ff0000" maxlength="7"></label>
+          <label>Tolerance <input id="relationTolerance" type="text" inputmode="numeric" value="35"></label>
+          <label>Edge margin <input id="relationEdgeMargin" type="text" inputmode="numeric" value="3"></label>
+        </div>
+      </fieldset>
+
+      <div class="smart-settings-grid">
+        <fieldset>
+          <legend>Detection</legend>
+          <div class="smart-setting-row"><label for="smartCondition">Trigger when</label><select id="smartCondition"></select></div>
+          <div class="smart-setting-row"><label id="triggerThresholdLabel" for="smartThreshold">Confidence</label><select id="smartThreshold"></select></div>
+          <div class="smart-setting-row"><label id="smartScanLabel" for="smartScanInterval">Scan every</label><select id="smartScanInterval"><option value="100">100 ms</option><option value="250" selected>250 ms</option><option value="500">500 ms</option><option value="1000">1 second</option></select></div>
+          <div class="smart-setting-row"><label id="smartCooldownLabel" for="smartCooldown">Minimum interval</label><div class="setting-unit"><input id="smartCooldown" type="text" inputmode="numeric" value="0"><span>ms</span></div></div>
+        </fieldset>
+        <fieldset>
+          <legend>Search area</legend>
+          <div class="smart-setting-row"><label for="smartAreaMode">Area</label><select id="smartAreaMode"><option value="full">Full screen</option><option value="center">Center 50%</option><option value="custom">Custom</option></select></div>
+          <div id="smartCustomArea" class="smart-area-inputs" hidden>
+            <label>X <input id="smartAreaX" type="text" inputmode="numeric" value="0"></label>
+            <label>Y <input id="smartAreaY" type="text" inputmode="numeric" value="0"></label>
+            <label>W <input id="smartAreaWidth" type="text" inputmode="numeric" value="800"></label>
+            <label>H <input id="smartAreaHeight" type="text" inputmode="numeric" value="600"></label>
+            <button id="smartPickArea" type="button">Select area on screen</button>
+          </div>
+        </fieldset>
+      </div>
+
+      <fieldset class="smart-enable-box">
+        <legend id="smartAddLegend">Add trigger</legend>
+        <button id="addTriggerAction" type="button">Add trigger to actions</button>
+        <span id="smartMatchDetails">Configure this trigger, then add it.</span>
+      </fieldset>
+    </section>
+  </main>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

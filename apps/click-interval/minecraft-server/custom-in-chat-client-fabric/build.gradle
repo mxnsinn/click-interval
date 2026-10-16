@@ -1,0 +1,50 @@
+plugins { id 'net.fabricmc.fabric-loom' version "${loom_version}" }
+
+version = project.mod_version
+group = 'dev.custominchat'
+base { archivesName = 'Custom-In-Chat-Client-Fabric' }
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.terraformersmc.com/releases/' }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    compileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") { transitive = false }
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.ow2.asm:asm-tree:9.9'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') { expand version: project.version }
+}
+
+tasks.withType(JavaCompile).configureEach { options.release = 25; options.encoding = 'UTF-8' }
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    maxParallelForks = 1
+    maxHeapSize = '192m'
+    jvmArgs '-XX:ActiveProcessorCount=2'
+    dependsOn tasks.named('jar')
+    systemProperty 'client.releaseJar', tasks.named('jar').get().archiveFile.get().asFile.absolutePath
+}
+tasks.withType(AbstractArchiveTask).configureEach { preserveFileTimestamps = false; reproducibleFileOrder = true }
+java { withSourcesJar(); sourceCompatibility = JavaVersion.VERSION_25; targetCompatibility = JavaVersion.VERSION_25 }
+
+tasks.register('copyReleaseJar', Copy) {
+    dependsOn tasks.named('check'), tasks.named('jar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('dist')
+    rename { "Custom-In-Chat-Client-Fabric-${project.mod_version}+mc26.2.jar" }
+}
+tasks.named('build') { dependsOn tasks.named('copyReleaseJar') }
+tasks.named('wrapper') {
+    gradleVersion = '9.5.1'
+    distributionSha256Sum = 'bafc141b619ad6350fd975fc903156dd5c151998cc8b058e8c1044ab5f7b031f'
+}

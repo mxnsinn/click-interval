@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "server_advancement_silence",
+  "version": "${version}",
+  "name": "Server Advancement Silence",
+  "description": "Console-managed, per-player advancement chat announcements. Awards, rewards, and toasts remain unchanged. No client add-on required.",
+  "authors": ["Click Interval"],
+  "environment": "*",
+  "entrypoints": { "main": ["com.clickinterval.advancementsilence.ServerAdvancementSilence"] },
+  "mixins": ["advancement-silence.mixins.json"],
+  "depends": { "fabricloader": ">=0.19.5", "minecraft": "26.2", "java": ">=25", "fabric-api": "*" }
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Updating Click Interval</title>
+  <link rel="stylesheet" href="updater.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="titlebar">
+    <span>Click Interval Updater</span>
+    <div class="window-controls">
+      <button id="minimizeUpdater" type="button" aria-label="Minimize">&#x2212;</button>
+      <button id="closeUpdater" class="close" type="button" aria-label="Close">&#x00D7;</button>
+    </div>
+  </header>
+  <main>
+    <img class="update-logo" src="assets/toolbox-icon.svg" alt="">
+    <h1>Click Interval</h1>
+    <p id="versions" class="versions">Preparing update...</p>
+    <div class="progress-track" role="progressbar" aria-label="Update progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div id="progressBar"></div>
+    </div>
+    <p id="status" class="status">Preparing...</p>
+    <button id="cancelUpdate" class="cancel-update" type="button">Cancel</button>
+  </main>
+  <script src="updater-renderer.js"></script>
+</body>
+</html>

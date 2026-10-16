@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minecraft Server Console</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="console-body">
+    <header class="titlebar console-titlebar">
+      <div class="console-title">
+        <svg viewBox="0 0 24 24"><path d="m7 8 4 4-4 4" /><path d="M13 17h5" /></svg>
+        <span>Server Console</span>
+      </div>
+      <div class="drag-region"></div>
+      <button id="consoleClearBtn" class="title-icon danger-action" title="Delete console logs" aria-label="Delete console logs">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16" /><path d="M9 7V5h6v2" /><path d="m7 7 1 13h8l1-13" /></svg>
+      </button>
+      <button id="consoleStartBtn" class="title-icon" title="Start server" aria-label="Start server">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+      </button>
+      <button id="consoleStopBtn" class="title-icon" title="Stop server" aria-label="Stop server">
+        <svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z" /></svg>
+      </button>
+      <div class="window-controls">
+        <button id="minimizeBtn" class="window-btn" title="Minimize" aria-label="Minimize">
+          <svg viewBox="0 0 24 24"><path d="M6 12h12" /></svg>
+        </button>
+        <button id="maximizeBtn" class="window-btn" title="Maximize" aria-label="Maximize">
+          <svg viewBox="0 0 24 24"><path d="M8 8h8v8H8z" /></svg>
+        </button>
+        <button id="closeBtn" class="window-btn close" title="Close" aria-label="Close">
+          <svg viewBox="0 0 24 24"><path d="m8 8 8 8M16 8l-8 8" /></svg>
+        </button>
+      </div>
+    </header>
+    <main class="console-main">
+      <div id="consoleLog" class="console-log" aria-live="polite" aria-label="Server console log"></div>
+    </main>
+    <script src="console.js"></script>
+  </body>
+</html>

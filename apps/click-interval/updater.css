@@ -1,0 +1,40 @@
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; }
+body {
+  color: #fff;
+  background: #101010;
+  border: 1px solid #3a3a3a;
+  font: 12px "Segoe UI", Tahoma, sans-serif;
+}
+.titlebar { height: 29px; display: flex; align-items: center; justify-content: space-between; padding-left: 5px; color: #fff; font-size: 12px; -webkit-app-region: drag; }
+.window-controls { height: 29px; display: flex; -webkit-app-region: no-drag; }
+.window-controls button { width: 42px; height: 29px; padding: 0; border: 0; border-radius: 0; color: #fff; background: transparent; font: 16px "Segoe UI", sans-serif; }
+.window-controls button:hover { background: #222; }
+.window-controls .close:hover { color: #fff; background: #c42b1c; }
+main { height: calc(100% - 29px); display: flex; flex-direction: column; align-items: center; padding: 15px 38px 20px; }
+.update-logo { width: 61px; height: 61px; }
+h1 { margin: -1px 0 2px; font-size: 20px; font-weight: 600; }
+p { margin: 0; color: #aaa; font-size: 11px; }
+.versions { text-align: center; }
+.progress-track {
+  width: 100%;
+  height: 8px;
+  margin: 22px 0 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid #505050;
+  border-bottom-color: #aaa;
+  background: #181818;
+}
+#progressBar {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: #1683c7;
+  transition: width 180ms ease;
+}
+.status { width: 100%; min-height: 30px; overflow: hidden; color: #888; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.cancel-update { width: 112px; height: 32px; margin-top: auto; border: 1px solid #5b5b5b; border-radius: 4px; color: #fff; background: linear-gradient(#242424,#191919); -webkit-app-region: no-drag; }
+.cancel-update:hover:not(:disabled) { border-color: #1683c7; background: #242424; }
+.cancel-update:active:not(:disabled) { background: #0b253b; }
+.cancel-update:disabled { color: #777; background: #161616; border-color: #292929; }

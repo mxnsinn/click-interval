@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Click Interval Settings</title>
+  <link rel="stylesheet" href="settings.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="settings-titlebar">Settings</header>
+  <main>
+    <div id="settingsHome">
+    <fieldset>
+      <legend>Application</legend>
+      <label class="position-row" for="appLanguage"><span>Application language</span><select id="appLanguage"><option value="en">English</option><option value="ar">Arabic</option><option value="fr">French</option><option value="ru">Russian</option></select></label>
+      <label class="setting-row"><span><strong>Always above everything</strong><small>Keep Click Interval over other windows and fullscreen apps.</small></span><input id="alwaysOnTop" type="checkbox"></label>
+      <label class="setting-row"><span><strong>Update automatically</strong><small>Install trusted Click Interval updates when they become available.</small></span><input id="autoUpdate" type="checkbox"></label>
+      <label class="setting-row"><span><strong>Open after updating</strong><small>Launch the newly updated version when installation finishes.</small></span><input id="reopenAfterUpdate" type="checkbox"></label>
+      <label class="setting-row"><span><strong>Keep Minecraft server running during updates</strong><small>Replace Click Interval without disconnecting players. Use Silent Restart afterward to load server-side changes.</small></span><input id="keepMinecraftServerRunningDuringUpdate" type="checkbox"></label>
+      <div class="setting-row update-setting-row"><span><strong>Click Interval updates</strong><small id="updateCheckStatus">Check whether a newer version is available.</small></span><button id="checkUpdateButton" type="button">Check for updates</button></div>
+    </fieldset>
+    <fieldset class="background-tools-settings">
+      <legend>Background tools</legend>
+      <p class="settings-hint">The open tab always works. Select any other tools that should keep working at the same time.</p>
+      <div class="background-tool-grid">
+        <label><input id="backgroundAutoClicker" type="checkbox"> Auto Clicker</label>
+        <label><input id="backgroundMacro" type="checkbox"> Macro</label>
+        <label><input id="backgroundCrosshair" type="checkbox"> Crosshair</label>
+        <label><input id="backgroundVoice" type="checkbox"> Voice</label>
+      </div>
+    </fieldset>
+    <fieldset class="indicator-settings">
+      <legend>Active indicator</legend>
+      <label class="setting-row compact"><span><strong>Show mouse logo while clicking</strong></span><input id="showActiveIndicator" type="checkbox"></label>
+      <div class="position-row overlay-position-row"><span>Logo position</span><output id="activeIndicatorCoordinates">—</output><button id="pickActiveIndicatorPosition" type="button">Pick location</button></div>
+      <label class="setting-row compact"><span><strong>Show live CPS while clicking</strong></span><input id="showCpsIndicator" type="checkbox"></label>
+      <label class="setting-row compact cps-detail-setting"><span><strong>Include my physical clicks</strong></span><input id="cpsIncludePhysicalClicks" type="checkbox"></label>
+      <label class="setting-row compact cps-detail-setting"><span><strong>Keep CPS visible all the time</strong><small>Show 0 CPS even when no clicker or macro is running.</small></span><input id="showCpsAlways" type="checkbox"></label>
+      <label class="position-row cps-detail-setting" for="cpsDisplayMode"><span>CPS display</span><select id="cpsDisplayMode"><option value="total">Total CPS</option><option value="left-right">Left | Right</option></select></label>
+      <div class="position-row overlay-position-row"><span>CPS position</span><output id="cpsIndicatorCoordinates">—</output><button id="pickCpsIndicatorPosition" type="button">Pick location</button></div>
+      <label class="setting-row compact"><span><strong>Show keyboard and mouse inputs</strong></span><input id="showInputDisplay" type="checkbox"></label>
+    </fieldset>
+    <fieldset class="theme-settings">
+      <legend>Theme</legend>
+      <div class="theme-grid" role="radiogroup" aria-label="Application theme">
+        <label><input type="radio" name="theme" value="obsidian"><span class="theme-card obsidian"><i></i>Obsidian</span></label>
+        <label><input type="radio" name="theme" value="light"><span class="theme-card light"><i></i>Light</span></label>
+        <label><input type="radio" name="theme" value="crimson"><span class="theme-card crimson"><i></i>Crimson</span></label>
+        <label><input type="radio" name="theme" value="ocean"><span class="theme-card ocean"><i></i>Ocean</span></label>
+        <label><input type="radio" name="theme" value="rose"><span class="theme-card rose"><i></i>Rose</span></label>
+        <label><input type="radio" name="theme" value="custom"><span class="theme-card custom"><i></i>Custom</span></label>
+      </div>
+    </fieldset>
+    </div>
+    <div class="settings-actions"><button id="saveSettings" type="button">Save</button><button id="cancelSettings" type="button">Cancel</button></div>
+  </main>
+  <dialog id="customThemeDialog" class="custom-theme-dialog">
+    <form method="dialog">
+      <h2>Custom theme</h2>
+      <p>Choose the colors used across Click Interval.</p>
+      <label><span>Accent color</span><input id="customAccent" type="color"></label>
+      <label><span>Main color</span><input id="customMain" type="color"></label>
+      <label><span>Shadow color</span><input id="customShadow" type="color"></label>
+      <label><span>Text color</span><input id="customText" type="color"></label>
+      <label><span>Highlight color</span><input id="customHighlight" type="color"></label>
+      <label><span>Scrollbar track</span><input id="customScrollbarTrack" type="color"></label>
+      <label><span>Scrollbar thumb</span><input id="customScrollbarThumb" type="color"></label>
+      <label><span>Scrollbar hover</span><input id="customScrollbarThumbHover" type="color"></label>
+      <div class="custom-theme-actions"><button id="saveCustomTheme" type="button">Use colors</button><button id="cancelCustomTheme" type="button">Cancel</button></div>
+    </form>
+  </dialog>
+  <script src="theme-loader.js"></script><script src="localization.js"></script><script src="settings-window.js"></script>
+</body>
+</html>

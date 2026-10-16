@@ -1,0 +1,185 @@
+# This file is managed by Server Protection. Every check can also be changed from Protection in the app.
+preset: balanced
+enabled: true
+
+checks:
+  movement:
+    speed: true
+    flight: true
+    phase: false
+    invalidPosition: true
+    invalidRotation: true
+    groundSpoof: true
+    waterWalk: true
+    step: true
+    timer: true
+    noSlow: false
+  combat:
+    reach: true
+    wallHit: true
+    autoClicker: true
+    multiTarget: true
+    aimDirection: false
+    killAura: false
+    clickPattern: true
+    criticals: false
+  world:
+    fastBreak: true
+    fastPlace: true
+    breakReach: true
+    placeReach: true
+    scaffold: false
+    multiBreak: false
+  abuse:
+    chatSpam: true
+    commandSpam: true
+    inventorySpam: true
+
+response:
+  enabled: true
+  preThresholdAction: log
+  alertVl: 8.0
+  kickVl: 16.0
+  kickOffenses: 1
+  tempBanOffenses: 3
+  tempBanMinutes: 60
+  permanentBanOffenses: 7
+  offenseDecayHours: 168
+  actionCooldownSeconds: 8
+
+# Player-facing protection messages. Available values are inserted with {placeholders}; unknown
+# placeholders are removed. A check override inherits any omitted text or color from warning.
+messages:
+  warningCooldownSeconds: 10
+  warning:
+    text: "{reason}. Please stop."
+    color: yellow
+  alert:
+    text: "Suspicious activity detected: {reason}."
+    color: red
+  kick:
+    text: "Removed for suspicious activity: {reason}."
+    color: red
+  temporaryBan:
+    text: "Temporarily banned for suspicious activity: {reason} ({duration_minutes}m)."
+    color: dark_red
+  permanentBan:
+    text: "Banned for suspicious activity: {reason}."
+    color: dark_red
+  loginTemporaryBan:
+    text: "Temporarily banned ({remaining_minutes}m remaining)."
+    color: red
+  loginPermanentBan:
+    text: "You are banned from this server."
+    color: red
+  modPolicyKick:
+    text: "Client mod policy: {reason}."
+    color: red
+  banSource: "Server protection"
+  checks: {}
+
+# Violation points removed every second without a new detection.
+violation-decay: 0.12
+minimum-tps: 18.0
+bypass-permission: serverprotection.bypass
+exempt-worlds: []
+exempt-players: []
+
+# Exact, per-player/per-check compatibility exceptions. UUID keys are preferred; lowercase player
+# names are supported for offline-mode servers. These never disable a check for other players.
+compatibility:
+  playerOverrides: {}
+  permissionOverrides: []
+
+# Paper cannot discover arbitrary client-only mods. This optional policy acts only on declarations
+# sent by a compatible client companion over serverprotection:mods; declarations can be omitted or
+# spoofed by a hostile client, so they never create anti-cheat exemptions.
+modPolicy:
+  enabled: false
+  enforcement: report
+  requireDeclaration: false
+  declarationGraceSeconds: 8
+  enforceAllowlist: false
+  allowed: []
+  blocked: []
+
+grace:
+  joinSeconds: 4
+  teleportSeconds: 3
+  velocitySeconds: 2
+
+# Retired compatibility block. Player and nametag tracking always follows vanilla for PvP safety.
+# These keys remain readable so old managed configs still load; enabled is ignored.
+mitigations:
+  entityEsp:
+    enabled: false
+    minimumTps: 18.0
+    nearRevealRadius: 12.0
+    maximumVisibleDistance: 96.0
+    scanIntervalTicks: 5
+    maxPairsPerTick: 64
+    hideAfterSamples: 3
+    revealAfterSamples: 2
+    maxTrackedPairs: 2048
+    maxOnlinePlayers: 128
+
+# Reach reconciliation and evidence. These balanced defaults absorb normal network/tick jitter.
+reach:
+  geometryAllowance: 0.05
+  maxPingAllowance: 0.25
+  pingAllowancePerMs: 0.0008
+  maxTickAllowance: 0.10
+  tickAllowancePerMissingTps: 0.05
+  maxTargetRewind: 0.45
+  baseRewindTicks: 0.50
+  pingRewindTicksPerMs: 0.010
+  maxRewindTicks: 3.00
+  immediateExcess: 0.75
+  consecutiveSamples: 2
+  evidenceWindowMillis: 1250
+
+# Advanced thresholds. Balanced defaults intentionally favor avoiding false bans.
+limits:
+  movement:
+    maxGroundBlocksPerTick: 0.78
+    maxAirBlocksPerTick: 0.92
+    maxAirTicks: 80
+    phaseSamples: 3
+    groundSpoofSamples: 5
+    waterWalkSamples: 7
+    stepSamples: 2
+    maxUseItemBlocksPerTick: 0.20
+    noSlowSamples: 7
+    maxPacketsPerSecond: 28
+    timerEvidenceWindows: 3
+  combat:
+    maxReach: 3.45
+    maxCps: 20
+    wallHitSamples: 3
+    multiTargetCount: 4
+    multiTargetWindowMillis: 650
+    maxAimDeviationDegrees: 55
+    aimEvidenceSamples: 4
+    aimEvidenceWindowMillis: 1500
+    rapidSwitchMillis: 90
+    rapidSwitchAngleDegrees: 110
+    rapidSwitchSamples: 3
+    rapidSwitchEvidenceWindowMillis: 1200
+    clickPatternSamples: 16
+    clickPatternMaxDeviationMillis: 1.5
+    criticalSamples: 3
+    criticalWindowMillis: 2500
+  world:
+    maxBreaksPerSecond: 18
+    maxPlacesPerSecond: 16
+    blockReachAllowance: 0.75
+    scaffoldAimDegrees: 80
+    scaffoldSamples: 4
+    scaffoldWindowMillis: 2000
+    multiBreakSamples: 6
+    multiBreakWindowMillis: 300
+    multiBreakMinSpan: 3.5
+  abuse:
+    maxChatPerFiveSeconds: 6
+    maxCommandsPerFiveSeconds: 10
+    maxInventoryClicksPerSecond: 35

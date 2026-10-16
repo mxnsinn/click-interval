@@ -1,0 +1,7 @@
+{
+  "version": "1.5.1",
+  "notes": "Briefly describe what changed in this release.",
+  "installerUrl": "https://updates.example.com/Click-Interval-1.5.1-Setup.exe",
+  "sha256": "replace-with-the-64-character-sha256-of-the-installer",
+  "pageUrl": "https://example.itch.io/click-interval"
+}

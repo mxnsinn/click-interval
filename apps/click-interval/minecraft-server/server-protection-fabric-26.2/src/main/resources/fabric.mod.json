@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "serverprotection_fabric",
+  "version": "${version}",
+  "name": "Server Protection",
+  "description": "Bounded server protection, managed access, advisory client reports and authorized player view. No typing tracking or relay.",
+  "authors": ["Server Manager"],
+  "license": "Proprietary",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "dev.serverprotection.fabric.ServerProtectionFabric"
+    ]
+  },
+  "mixins": [
+    "serverprotection.fabric.mixins.json",
+    "serverprotection.entity-control.mixins.json"
+  ],
+  "jars": [
+    {
+      "file": "META-INF/jars/meowantixray-fabric-1.6.3.jar"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "=26.2",
+    "java": ">=25",
+    "fabric-api": ">=0.161.0+26.2",
+    "meowantixray": "=1.6.3"
+  }
+}

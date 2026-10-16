@@ -1,0 +1,6 @@
+{
+  "key.proximityvoice_client.settings": "Voice chat settings",
+  "key.proximityvoice_client.push_to_talk": "Push to talk",
+  "key.proximityvoice_client.toggle_mute": "Toggle microphone",
+  "key.category.proximityvoice_client.voice": "Proximity Voice"
+}

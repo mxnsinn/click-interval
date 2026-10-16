@@ -1,0 +1,54 @@
+:root { font: 12px "Segoe UI", Tahoma, sans-serif; color: #fff; background: #101010; color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; overflow: hidden; color: #fff; background: #101010; }
+.popup-titlebar { height: 32px; display: flex; align-items: center; padding: 0 138px 0 11px; overflow: hidden; color: #fff; background: #101010; font-weight: 500; white-space: nowrap; -webkit-app-region: drag; }
+main { padding: 14px 10px 12px; }
+button { height: 32px; color: #fff; border: 1px solid #5b5b5b; border-radius: 7px; background: linear-gradient(#242424, #191919); font: inherit; }
+button:hover { border-color: #1683c7; background: #111; }
+button:active { background: #0b253b; }
+.hotkey-row { display: grid; grid-template-columns: 101px 101px; gap: 8px; }
+#hotkeyValue { height: 32px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 6px; border: 1px solid #4b4b4b; border-bottom-color: #aaa; border-radius: 7px; background: #181818; font-size: 15px; white-space: nowrap; }
+.popup-actions { display: flex; justify-content: center; gap: 31px; margin-top: 15px; }
+.popup-actions button { width: 60px; height: 29px; }
+.message-window main { height: 150px; display: flex; flex-direction: column; padding: 17px 18px 14px; }
+.message-content { min-width: 0; flex: 1; display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 11px; align-items: start; }
+.message-window p { min-width: 0; margin: 1px 0 0; line-height: 1.45; white-space: normal; overflow-wrap: anywhere; }
+.message-icon { display: none; color: #ff4038; filter: drop-shadow(0 0 3px rgba(255,59,48,.25)); }
+.message-icon svg { width: 28px; height: 28px; fill: rgba(255,64,56,.12); stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.message-icon.visible { display: block; }
+.message-actions { display: flex; justify-content: center; }
+.message-actions button { width: 68px; height: 29px; }
+.macro-name-window main { padding: 13px 14px 12px; }
+.macro-name-window label { display: block; margin-bottom: 6px; color: #ddd; }
+.macro-name-window :is(input,select) { width: 100%; height: 32px; padding: 4px 8px; color: #fff; border: 1px solid #4b4b4b; border-bottom-color: #aaa; border-radius: 7px; outline: none; background: #181818; font: inherit; }
+.macro-name-window :is(input,select):focus { border-color: #1683c7; }
+.macro-name-window .popup-actions { margin-top: 14px; }
+.macro-name-window .popup-actions button { width: 76px; }
+.macro-delete-window main { padding: 15px 16px 12px; }
+.delete-message { min-height: 48px; display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.delete-message span { color: #ff4f47; font-size: 25px; line-height: 25px; text-align: center; }
+.delete-message p { margin: 1px 0 0; line-height: 1.4; }
+.macro-delete-window .popup-actions { margin-top: 8px; }
+.reset-settings-option { display: flex; gap: 8px; align-items: center; margin: 16px 0 0 38px; }
+.reset-settings-option input { margin: 0; accent-color: #1683c7; }
+.reset-settings-help { margin: 7px 0 15px 38px; color: var(--theme-muted, #aaa); line-height: 1.4; }
+.reset-data-window .popup-actions button { width: auto; min-width: 80px; padding: 0 12px; }
+.reset-data-window main { max-height: calc(100vh - 32px); overflow-y: auto; }
+.reset-fields { margin: 0 0 16px 38px; padding: 12px; border: 1px solid #414141; border-radius: 6px; }
+.reset-fields legend { padding: 0 5px; }
+.reset-fields-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+.reset-fields-grid label { display: flex; align-items: center; gap: 8px; }
+.reset-fields-grid input { margin: 0; accent-color: #1683c7; }
+.reset-fields p { margin: 12px 0 0; color: var(--theme-muted, #aaa); line-height: 1.4; }
+.danger-button { border-color: #7d302d; }
+.danger-button:hover { border-color: #ff4f47; background: #351412; }
+.settings-unsaved-window main { padding: 15px 16px 12px; }
+.settings-unsaved-actions { display: grid; grid-template-columns: 72px 88px 72px; justify-content: center; gap: 8px; margin-top: 11px; }
+.settings-unsaved-actions button { width: auto; height: 29px; }
+
+html[data-language]:not([data-language="en"]) .hotkey-row { grid-template-columns: minmax(0,1fr) 101px; }
+html[data-language]:not([data-language="en"]) .popup-actions button { min-width: 76px; width: auto; padding: 0 10px; }
+html[data-language]:not([data-language="en"]) .settings-unsaved-actions { grid-template-columns: minmax(90px,1fr) minmax(120px,1.35fr) minmax(90px,1fr); }
+html[data-language="ar"] :is(.popup-titlebar,.hotkey-row button,.macro-name-window label,.delete-message p,.popup-actions button,.settings-unsaved-actions button,.message-window p) { direction: rtl; text-align: right; }
+html[data-language="ar"] :is(input,output) { direction: ltr; text-align: left; }

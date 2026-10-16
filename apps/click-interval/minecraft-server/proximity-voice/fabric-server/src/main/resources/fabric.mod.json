@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "proximityvoice_fabric_server",
+  "version": "${version}",
+  "name": "Proximity Voice Server",
+  "description": "Lightweight encrypted proximity voice relay for Fabric servers.",
+  "authors": ["Server Manager"],
+  "license": "Proprietary",
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "dev.proximityvoice.fabric.ProximityVoiceFabricServer"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "=26.2",
+    "java": ">=25",
+    "fabric-api": ">=0.161.0+26.2"
+  }
+}

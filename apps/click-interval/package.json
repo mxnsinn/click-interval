@@ -1,0 +1,19 @@
+{
+  "name": "click-interval",
+  "version": "1.5.144",
+  "private": true,
+  "license": "MIT",
+  "repository": "https://github.com/mxnsinn/click-interval",
+  "description": "Click Interval toolbox for Windows",
+  "main": "bootstrap.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "44.0.0",
+    "nat-api": "^0.3.1"
+  },
+  "devDependencies": {
+    "rcedit": "^5.0.2"
+  }
+}

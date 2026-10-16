@@ -1,0 +1,29 @@
+:root { font: 12px "Segoe UI",Tahoma,sans-serif; color: var(--theme-text); background: var(--theme-bg); color-scheme: dark; }
+* { box-sizing: border-box; }
+body { min-width: 560px; min-height: 420px; margin: 0; overflow: hidden; color: var(--theme-text); background: var(--theme-bg); }
+button,textarea { font: inherit; }
+button { height: 30px; border: 1px solid var(--theme-border); border-radius: 5px; outline: 0; color: var(--theme-text); background: var(--theme-raised); }
+button:hover:not(:disabled),button:focus-visible { border-color: var(--theme-accent); background: var(--theme-accent-soft); }
+.motd-titlebar { height: 32px; display: flex; align-items: center; padding: 0 138px 0 12px; color: var(--theme-text); background: var(--theme-bg); font-weight: 600; -webkit-app-region: drag; }
+main { height: calc(100vh - 32px); display: grid; grid-template-rows: minmax(0,1fr) auto auto; gap: 13px; padding: 15px 17px 13px; }
+.motd-workspace { min-height: 0; display: flex; flex-direction: column; }
+.motd-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 11px; }
+.motd-colors { display: grid; grid-template-columns: repeat(8,24px); gap: 5px; }
+.motd-colors button { width: 24px; height: 24px; padding: 0; border-color: color-mix(in srgb,var(--motd-color) 70%,var(--theme-border)); background: var(--motd-color); }
+.motd-colors button:hover,.motd-colors button:focus-visible { border-color: var(--theme-text); background: var(--motd-color); box-shadow: 0 0 0 1px var(--theme-text); }
+.motd-effects { display: flex; gap: 4px; }
+.motd-effects button { width: 30px; padding: 0; color: var(--theme-muted); }
+.motd-effects .bold { font-weight: 800; }.motd-effects .italic { font-style: italic; }.motd-effects .underline { text-decoration: underline; }.motd-effects .strike { text-decoration: line-through; }.motd-effects .magic { color: var(--theme-accent-bright); }
+label,.motd-preview-label { margin-bottom: 6px; color: var(--theme-muted); font-size: 11px; font-weight: 600; }
+#motdSource { width: 100%; min-height: 92px; flex: 1; resize: none; padding: 10px 11px; border: 1px solid var(--theme-border); border-radius: 6px; outline: 0; color: var(--theme-text); background: var(--theme-surface); font: 13px/1.55 Consolas,"Courier New",monospace; caret-color: var(--theme-accent-bright); }
+#motdSource:focus { border-color: var(--theme-accent); box-shadow: 0 0 0 1px var(--theme-accent-soft); }
+.motd-source-footer { min-height: 25px; display: flex; align-items: center; justify-content: space-between; gap: 15px; color: var(--theme-subtle); font-size: 10px; }
+.motd-source-footer span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.motd-source-footer output { flex: 0 0 auto; }
+.motd-tools { display: flex; gap: 6px; }.motd-tools button { width: auto; height: 27px; padding: 0 9px; color: var(--theme-muted); background: transparent; font-size: 10px; }
+.motd-preview-section { min-width: 0; }
+.motd-server-preview { min-height: 76px; display: grid; grid-template-columns: 54px minmax(0,1fr); gap: 11px; align-items: center; padding: 10px 12px; border: 1px solid var(--theme-border); border-radius: 6px; background: var(--theme-row); }
+.motd-server-preview img { width: 54px; height: 54px; object-fit: cover; image-rendering: pixelated; }
+.motd-server-preview > div { min-width: 0; }.motd-server-preview strong { display: block; margin-bottom: 3px; color: var(--theme-text); font: 15px/18px Consolas,"Courier New",monospace; }
+.motd-preview { min-height: 34px; overflow: hidden; color: #aaa; font: 14px/17px Consolas,"Courier New",monospace; overflow-wrap: anywhere; white-space: pre-wrap; }.motd-preview.empty { color: var(--theme-subtle); font-style: italic; }.motd-magic { display: inline; }
+footer { display: flex; justify-content: flex-end; gap: 7px; padding-top: 1px; }footer button { min-width: 86px; padding: 0 13px; }footer .primary { border-color: var(--theme-accent); background: var(--theme-accent-soft); }
+@media (max-width: 630px) { .motd-toolbar { align-items: flex-start; }.motd-colors { grid-template-columns: repeat(8,20px); gap: 4px; }.motd-colors button { width: 20px; height: 20px; }.motd-effects { display: grid; grid-template-columns: repeat(3,30px); } }

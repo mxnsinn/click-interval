@@ -1,0 +1,46 @@
+:root { font: 12px "Segoe UI",Tahoma,sans-serif; color: var(--theme-text); background: var(--theme-bg); }
+* { box-sizing: border-box; }
+[hidden] { display: none!important; }
+body { width: 620px; height: 560px; margin: 0; overflow: hidden; color: var(--theme-text); background: var(--theme-bg); }
+button,input,select { font: inherit; }
+.role-titlebar { height: 32px; display: flex; align-items: center; padding: 0 142px 0 12px; font-weight: 600; -webkit-app-region: drag; }
+main { height: 528px; display: grid; grid-template-rows: minmax(0,1fr) auto auto; }
+form { min-height: 0; overflow-y: auto; padding: 8px 16px 5px; scrollbar-width: thin; scrollbar-color: var(--theme-scrollbar-thumb) var(--theme-scrollbar-track); }
+.role-section { margin: 0 0 14px; }
+.role-section h1,.role-section h2 { margin: 0 0 8px; color: var(--theme-text); font-size: 12px; }
+.role-identity { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.role-identity h1 { grid-column: 1 / -1; margin-bottom: -1px; }
+label { min-width: 0; display: grid; gap: 4px; color: var(--theme-muted); font-size: 10px; }
+label small { color: var(--theme-subtle); font-size: 9px; }
+input,select { width: 100%; height: 29px; padding: 4px 8px; border: 1px solid var(--theme-border); border-radius: 4px; outline: 0; color: var(--theme-text); background: var(--theme-row); }
+input:focus,select:focus { border-color: var(--theme-accent); }
+input:disabled,select:disabled { opacity: .55; }
+.toggle-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 5px 14px; margin-bottom: 9px; }
+.check { min-height: 22px; display: flex; align-items: center; gap: 6px; color: var(--theme-text); font-size: 10px; }
+.check input,.switch input { width: 14px; height: 14px; margin: 0; accent-color: var(--theme-accent); }
+.wide { margin-top: 7px; }
+.command-details { margin-top: 8px; }
+.field-label { display: block; margin-bottom: 5px; color: var(--theme-muted); font-size: 10px; }
+.command-groups { display: flex; flex-wrap: wrap; gap: 5px 12px; }
+.command-groups .check { min-height: 18px; }
+#commandCatalog { max-height: 118px; overflow-y: auto; padding: 5px 7px; border: 1px solid var(--theme-border); border-radius: 4px; background: var(--theme-row); }
+.section-line { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.section-line h2 { margin: 0; }
+.switch { display: flex; align-items: center; gap: 6px; color: var(--theme-text); }
+.appearance-fields { display: grid; grid-template-columns: 150px minmax(0,1fr) minmax(0,1fr); gap: 8px; }
+.appearance-fields.disabled { opacity: .48; }
+.format-line { grid-column: 1 / -1; display: flex; align-items: center; gap: 4px; color: var(--theme-muted); font-size: 10px; }
+.format-line > span { margin-right: 3px; }
+.format-line button { min-width: 27px; height: 24px; padding: 0 6px; border: 1px solid var(--theme-border); border-radius: 4px; color: var(--theme-muted); background: transparent; }
+.format-line button:hover,.format-line button:focus-visible { color: var(--theme-text); background: var(--theme-raised); outline: 0; }
+.tag-preview { grid-column: 1 / -1; min-height: 34px; display: flex; align-items: center; padding: 6px 10px; border-radius: 4px; color: #fff; background: #101010; font: 14px Minecraft,"Segoe UI",sans-serif; text-shadow: 1px 1px #111; }
+.tag-preview .bold { font-weight: 700; }.tag-preview .italic { font-style: italic; }.tag-preview .underlined { text-decoration: underline; }.tag-preview .strikethrough { text-decoration: line-through; }.tag-preview .underlined.strikethrough { text-decoration: underline line-through; }.tag-preview .obfuscated { filter: blur(1.5px); }
+.appearance-fields p { grid-column: 1 / -1; margin: -2px 0 0; color: var(--theme-subtle); font-size: 9px; }
+.appearance-fields code { color: var(--theme-muted); font-family: Consolas,monospace; }
+.editor-message { margin: 0 16px 5px; color: var(--theme-danger,#ef8989); font-size: 10px; }
+footer { min-height: 47px; display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 7px; padding: 7px 16px 10px; }
+footer button { min-width: 76px; height: 29px; padding: 0 11px; border: 1px solid var(--theme-border); border-radius: 4px; color: var(--theme-text); background: var(--theme-raised); }
+footer button:hover:not(:disabled),footer button:focus-visible { border-color: var(--theme-border-strong); background: var(--theme-row); outline: 0; }
+footer .primary { border-color: var(--theme-accent); background: var(--theme-accent-soft); }
+footer .danger { color: var(--theme-danger,#ef8989); background: transparent; }
+footer button:disabled { opacity: .5; }

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "serverteleport_fabric",
+  "version": "${version}",
+  "name": "Server Teleport",
+  "description": "Bounded player TPA requests, saved places, backtracking, and consent-safe group travel for dedicated and single-player Fabric servers.",
+  "authors": ["Server Manager"],
+  "license": "Proprietary",
+  "environment": "*",
+  "mixins": ["serverteleport.mixins.json"],
+  "entrypoints": {
+    "main": [
+      "dev.serverteleport.fabric.ServerTeleportFabric"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "=26.2",
+    "java": ">=25",
+    "fabric-api": ">=0.161.0+26.2"
+  }
+}

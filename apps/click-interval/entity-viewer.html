@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Entity Viewer</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="entity-viewer.css">
+</head>
+<body>
+  <section class="entity-shell" aria-label="Loaded Minecraft entity viewer">
+    <header class="entity-titlebar">
+      <div class="entity-brand">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8.5 12 5l5 3.5v7L12 19l-5-3.5zM9.5 10.5h.01m5-.01h.01M9 14c2 1.3 4 1.3 6 0"/></svg>
+        <strong>Entity Viewer</strong>
+        <span id="viewerState" class="viewer-state" data-state="stopped"><i aria-hidden="true"></i><span>Stopped</span></span>
+      </div>
+      <div class="entity-drag"></div>
+      <button id="refreshEntities" class="title-action" type="button" title="Refresh loaded entities" aria-label="Refresh loaded entities">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16 8a6 6 0 1 0 .2 4M16 3v5h-5"/></svg>
+      </button>
+      <div class="entity-window-actions" aria-label="Window controls">
+        <button id="minimizeEntityViewer" type="button" aria-label="Minimize"><span aria-hidden="true">−</span></button>
+        <button id="closeEntityViewer" class="close" type="button" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </header>
+
+    <main class="entity-workspace">
+      <aside class="entity-sidebar">
+        <label class="entity-search">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+          <input id="entitySearch" type="search" autocomplete="off" spellcheck="false" placeholder="Search loaded entities">
+        </label>
+        <div class="entity-list-heading"><strong>Loaded entities</strong><span id="entityCount">0</span></div>
+        <div id="entityList" class="entity-list" role="listbox" aria-label="Loaded entities"></div>
+        <div id="entityListEmpty" class="entity-list-empty">No loaded entities</div>
+      </aside>
+
+      <section class="entity-detail-pane">
+        <div id="entityEmpty" class="entity-empty">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 17 24 10l10 7v14l-10 7-10-7zM19 20h.01m10-.01h.01M19 28c3.3 2 6.7 2 10 0"/></svg>
+          <strong id="entityEmptyTitle">Loading entities</strong>
+          <span id="entityEmptyDetail">Waiting for the server bridge.</span>
+        </div>
+
+        <div id="entityLoading" class="entity-loading" hidden><i aria-hidden="true"></i><span>Loading entity…</span></div>
+
+        <article id="entityDetail" class="entity-detail" hidden>
+          <header class="entity-identity">
+            <div class="entity-kind-icon" aria-hidden="true"><span id="entityGlyph">E</span></div>
+            <div>
+              <strong id="entityName">Entity</strong>
+              <span id="entityType">minecraft:entity</span>
+            </div>
+          </header>
+
+          <dl class="entity-facts">
+            <div class="entity-id-fact"><dt>UUID / stable ID</dt><dd id="entityId">—</dd></div>
+            <div><dt>Dimension</dt><dd id="entityDimension">—</dd></div>
+            <div><dt>X</dt><dd id="entityX">—</dd></div>
+            <div><dt>Y</dt><dd id="entityY">—</dd></div>
+            <div><dt>Z</dt><dd id="entityZ">—</dd></div>
+          </dl>
+
+          <div class="entity-controls-grid">
+            <form id="ageForm" class="entity-control" hidden>
+              <div class="control-copy"><strong>Life stage</strong><span>Set adult or remaining baby growth time.</span></div>
+              <label><span>Stage</span><select id="entityStage"><option value="adult">Adult</option><option value="baby">Baby</option></select></label>
+              <label id="growthTimeRow"><span>Growth remaining</span><span class="unit-input"><input id="entityGrowthSeconds" type="number" min="1" max="1200" step="1" value="1200"><small>sec</small></span></label>
+              <button id="saveEntityAge" type="submit">Save age</button>
+            </form>
+
+            <form id="cooldownForm" class="entity-control" hidden>
+              <div class="control-copy"><strong>Breeding cooldown</strong><span>Zero makes the entity ready when other conditions pass.</span></div>
+              <label><span>Cooldown</span><span class="unit-input"><input id="entityCooldownSeconds" type="number" min="0" max="3600" step="1" value="0"><small>sec</small></span></label>
+              <button id="saveEntityCooldown" type="submit">Save cooldown</button>
+            </form>
+          </div>
+
+          <section id="offersSection" class="offers-section" hidden>
+            <div class="section-heading"><div><strong>Villager offers</strong><span>Changes apply only to this loaded villager.</span></div><span id="offerCount">0</span></div>
+            <div id="offerList" class="offer-list"></div>
+            <div id="offersEmpty" class="offers-empty" hidden>This villager has no offers.</div>
+          </section>
+        </article>
+      </section>
+    </main>
+
+    <footer class="entity-statusbar"><span id="entityNotice" role="status" aria-live="polite"></span><span id="entityUpdated"></span></footer>
+  </section>
+  <script src="theme-loader.js"></script>
+  <script src="entity-viewer.js"></script>
+</body>
+</html>

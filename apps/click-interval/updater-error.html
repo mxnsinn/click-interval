@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Click Interval update failed</title>
+  <link rel="stylesheet" href="updater-error.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header class="titlebar">
+    <span>Click Interval Updater</span>
+    <div class="window-controls">
+      <button id="minimizeError" type="button" aria-label="Minimize">&#x2212;</button>
+      <button id="closeError" class="close" type="button" aria-label="Close">&#x00D7;</button>
+    </div>
+  </header>
+  <main>
+    <svg class="error-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7L59 55H5z"/><path d="M32 22v17M32 47v1"/></svg>
+    <h1>Update failed</h1>
+    <p id="errorVersions"></p>
+    <p id="errorMessage" class="error-message">The update could not be completed.</p>
+    <button id="closeErrorButton" type="button">Close</button>
+  </main>
+  <script src="updater-error-renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Input Display</title>
+  <style>
+    :root{--scale:1;--accent:#42a5f5;--panel:rgba(17,21,26,.88);--text:#fff;font:12px "Segoe UI",sans-serif;color:var(--text);background:transparent}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:transparent;user-select:none}
+    .stage{width:300px;height:112px;display:grid;grid-template-columns:76px 1fr;gap:9px;padding:9px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:12px;background:var(--panel);box-shadow:0 7px 26px rgba(0,0,0,.42);transform:scale(var(--scale));transform-origin:top left}
+    .mouse{position:relative;width:66px;height:92px;border:2px solid color-mix(in srgb,var(--text) 58%,transparent);border-radius:30px 30px 25px 25px;overflow:hidden}
+    .mouse-part{position:absolute;display:grid;place-items:center;color:color-mix(in srgb,var(--text) 72%,transparent);background:rgba(255,255,255,.035);font-size:9px;font-weight:700;transition:color .08s,background .08s,box-shadow .08s}
+    .mouse-part.down{color:#071018;background:var(--accent);box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
+    .mouse-part.up{color:var(--accent);background:color-mix(in srgb,var(--accent) 15%,transparent)}
+    [data-button="Left"]{left:0;top:0;width:31px;height:38px;border-right:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18)}
+    [data-button="Right"]{right:0;top:0;width:31px;height:38px;border-bottom:1px solid rgba(255,255,255,.18)}
+    [data-button="Middle"]{left:27px;top:8px;width:10px;height:23px;z-index:2;border:1px solid rgba(255,255,255,.4);border-radius:6px}
+    [data-button="MB4"],[data-button="MB5"]{left:5px;width:21px;height:13px;border:1px solid rgba(255,255,255,.2);border-radius:5px}
+    [data-button="MB4"]{top:48px}[data-button="MB5"]{top:64px}
+    .key-area{min-width:0;display:flex;flex-direction:column}.input-caption{height:17px;display:flex;align-items:flex-start;justify-content:space-between;color:color-mix(in srgb,var(--text) 58%,transparent);font-size:9px;text-transform:uppercase;letter-spacing:.08em}
+    #source{color:var(--accent)}.keys{height:76px;display:flex;align-items:flex-start;align-content:flex-start;gap:6px;flex-wrap:wrap;overflow:hidden}.empty{color:color-mix(in srgb,var(--text) 45%,transparent);font-size:11px;margin-top:17px}
+    .keycap{min-width:34px;height:34px;display:grid;grid-template-rows:1fr 10px;place-items:center;padding:2px 6px 3px;border:1px solid color-mix(in srgb,var(--text) 38%,transparent);border-bottom-width:3px;border-radius:6px;color:var(--text);background:rgba(255,255,255,.055);font-size:12px;font-weight:700;line-height:1;transition:transform .07s,background .07s,color .07s,border .07s}
+    .keycap small{font-size:7px;font-weight:700;letter-spacing:.06em;color:color-mix(in srgb,var(--text) 55%,transparent)}
+    .keycap.down{transform:translateY(2px);color:#071018;border-color:var(--accent);border-bottom-width:1px;background:var(--accent)}.keycap.down small{color:#071018}
+    .keycap.up{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 65%,transparent);background:color-mix(in srgb,var(--accent) 13%,transparent)}.keycap.up small{color:var(--accent)}
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div id="mouse" class="mouse">
+      <span class="mouse-part" data-button="Left">L</span><span class="mouse-part" data-button="Right">R</span><span class="mouse-part" data-button="Middle">M</span><span class="mouse-part" data-button="MB4">4</span><span class="mouse-part" data-button="MB5">5</span>
+    </div>
+    <div class="key-area"><div class="input-caption"><span>Input display</span><span id="source">Ready</span></div><div id="keys" class="keys"><span class="empty">Press a key or mouse button</span></div></div>
+  </div>
+  <script>
+    const root=document.documentElement,keys=document.getElementById('keys'),source=document.getElementById('source');
+    let config={inputDisplayScale:100,inputDisplayLingerMs:900};
+    const timers=new Map(),keycaps=new Map();
+    const vkNames={8:'Backspace',9:'Tab',13:'Enter',16:'Shift',17:'Ctrl',18:'Alt',19:'Pause',20:'Caps',27:'Esc',32:'Space',33:'PgUp',34:'PgDn',35:'End',36:'Home',37:'←',38:'↑',39:'→',40:'↓',45:'Ins',46:'Del',91:'Win',92:'Win',93:'Menu',144:'Num',145:'Scroll'};
+    for(let i=48;i<=57;i++)vkNames[i]=String.fromCharCode(i);for(let i=65;i<=90;i++)vkNames[i]=String.fromCharCode(i);for(let i=96;i<=105;i++)vkNames[i]=`Num ${i-96}`;for(let i=112;i<=135;i++)vkNames[i]=`F${i-111}`;
+    const labelFor=value=>vkNames[Number(value)]||`VK ${value}`;
+    const rgba=(hex,opacity)=>{const value=String(hex||'#11151a').replace('#','');return `rgba(${parseInt(value.slice(0,2),16)},${parseInt(value.slice(2,4),16)},${parseInt(value.slice(4,6),16)},${opacity})`};
+    function applyConfig(value){config={...config,...value};root.style.setProperty('--scale',String((Number(config.inputDisplayScale)||100)/100));root.style.setProperty('--accent',config.inputDisplayAccent||'#42a5f5');root.style.setProperty('--text',config.inputDisplayText||'#fff');root.style.setProperty('--panel',rgba(config.inputDisplayBackground,(Number(config.inputDisplayOpacity)||88)/100));const mouseOn=config.inputDisplayMouse!==false,keyOn=config.inputDisplayKeyboard!==false,stage=document.querySelector('.stage');document.getElementById('mouse').hidden=!mouseOn;document.querySelector('.key-area').hidden=!keyOn;stage.style.width=mouseOn&&keyOn?'300px':mouseOn?'94px':'215px';stage.style.gridTemplateColumns=mouseOn&&keyOn?'76px 1fr':mouseOn?'76px':'1fr'}
+    function setMouse(button,action){const part=document.querySelector(`[data-button="${button}"]`);if(!part)return;const id=`mouse:${button}`;clearTimeout(timers.get(id));part.className=`mouse-part ${action}`;part.textContent=({Left:'L',Right:'R',Middle:'M',MB4:'4',MB5:'5'}[button]||button)+(action==='down'?'↓':action==='up'?'↑':'');if(action==='click'){part.className='mouse-part down';timers.set(id,setTimeout(()=>setMouse(button,'up'),70));return}if(action==='up')timers.set(id,setTimeout(()=>{part.className='mouse-part';part.textContent={Left:'L',Right:'R',Middle:'M',MB4:'4',MB5:'5'}[button]||button},Number(config.inputDisplayLingerMs)||900))}
+    function setKey(vk,action){const id=String(vk);let cap=keycaps.get(id);if(!cap){cap=document.createElement('span');cap.className='keycap';cap.dataset.vk=id;cap.innerHTML=`<b></b><small></small>`;keycaps.set(id,cap);keys.querySelector('.empty')?.remove();keys.prepend(cap);while(keycaps.size>8){const last=keys.lastElementChild;keycaps.delete(last.dataset.vk);last.remove()}}clearTimeout(timers.get(`key:${id}`));cap.querySelector('b').textContent=labelFor(vk);cap.querySelector('small').textContent=action==='down'?'DOWN':'UP';cap.className=`keycap ${action}`;keys.prepend(cap);if(action==='up')timers.set(`key:${id}`,setTimeout(()=>{cap.remove();keycaps.delete(id);if(!keycaps.size)keys.innerHTML='<span class="empty">Press a key or mouse button</span>'},Number(config.inputDisplayLingerMs)||900))}
+    window.inputDisplay.onConfig(applyConfig);window.inputDisplay.onEvent(event=>{if(!event)return;source.textContent=event.source==='physical'?'Physical':event.source==='macro'?'Macro':'Auto clicker';if(event.device==='mouse')setMouse(event.control,event.action);if(event.device==='keyboard')setKey(event.control,event.action)});
+  </script>
+</body>
+</html>

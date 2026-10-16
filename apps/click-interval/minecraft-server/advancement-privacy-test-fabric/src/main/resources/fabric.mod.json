@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "advancement_privacy_test_only",
+  "version": "1.0.0-test",
+  "name": "Advancement privacy disposable test ONLY",
+  "description": "Never deploy. Runs only with explicit project fixture path, marker and JVM flag.",
+  "environment": "server",
+  "entrypoints": {"main": ["com.clickinterval.advancementprivacytest.PrivacyTest"]},
+  "depends": {"fabricloader": ">=0.19.5", "minecraft": "26.2", "java": ">=25", "fabric-api": "*", "server_advancement_silence": "1.0.0"}
+}

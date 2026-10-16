@@ -1,0 +1,8 @@
+{
+  "key.category.custom_in_chat_client.enchantments": "Custom In-Chat Client",
+  "key.custom_in_chat_client.menu": "Open enchantment toggles",
+  "key.custom_in_chat_client.miner": "Toggle Miner's Sweep",
+  "key.custom_in_chat_client.tree": "Toggle Tree Chop",
+  "key.custom_in_chat_client.harvester": "Toggle Harvester Sweep",
+  "message.custom_in_chat_client.unsupported": "Custom In-Chat Client: this world or server does not provide /enchants. Custom enchantment support must be installed on the server."
+}

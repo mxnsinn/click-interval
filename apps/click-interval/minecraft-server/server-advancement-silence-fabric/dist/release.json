@@ -1,0 +1,18 @@
+{
+  "modId": "server_advancement_silence",
+  "version": "1.0.0",
+  "minecraftVersion": "26.2",
+  "artifact": "ServerAdvancementSilence-Fabric-1.0.0+mc26.2.jar",
+  "sha256": "7f37efa869865e4a224edb0c8ba34a0d8298b8a9599c048cfd389a1a8a1260b1",
+  "requiredOnClient": false,
+  "requires": ["Java 25", "Fabric Loader >=0.19.5", "Fabric API"],
+  "commands": ["silence advancement <player>", "unsilence advancement <player>"],
+  "consoleOnly": true,
+  "unitTestsPassed": 8,
+  "nativeTests": [
+    {"fixture": "build/native-fixtures/advancement-QSpPCg", "world": "fresh disposable world", "passedPhases": [1, 2]},
+    {"fixture": "build/native-fixtures/advancement-GE59K4", "world": "hash-verified TreeChopTest copy", "passedPhases": [1, 2]}
+  ],
+  "originalTreeChopTestUnchanged": true,
+  "liveOrClientInstalled": false
+}

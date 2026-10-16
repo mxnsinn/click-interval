@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "clickinterval_solotest",
+  "version": "${version}",
+  "name": "Single-Player Test Launcher",
+  "description": "Explicit, expiring one-shot opening of TreeChopTest, exact marked TestWorld, or three marked lobby previews. Host-only test tools remain restricted to TreeChopTest and marked TestWorld. No input automation or account access.",
+  "environment": "client",
+  "entrypoints": { "client": ["com.clickinterval.solotest.SoloTestLauncher"] },
+  "depends": { "fabricloader": ">=0.19.5", "minecraft": "26.2", "java": ">=25", "fabric-api": "*" },
+  "suggests": { "servermarket_fabric": "*" }
+}

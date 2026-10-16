@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; frame-src 'none'; connect-src 'none'; img-src 'self' data:; style-src 'self'; script-src 'self'">
+  <title>Updating Click Interval</title>
+  <link rel="stylesheet" href="updater.css">
+</head>
+<body>
+  <main>
+    <img src="assets/toolbox-icon.svg" alt="">
+    <div class="copy">
+      <h1>Updating</h1>
+      <p id="status">Preparing the update...</p>
+      <div class="track" aria-hidden="true"><div id="fill"></div></div>
+      <button id="close" type="button" hidden>Close</button>
+    </div>
+  </main>
+  <script src="updater-renderer.js"></script>
+</body>
+</html>

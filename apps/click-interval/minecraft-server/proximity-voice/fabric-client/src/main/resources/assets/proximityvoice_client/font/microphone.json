@@ -1,0 +1,11 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "proximityvoice_client:font/microphone.png",
+      "ascent": 9,
+      "height": 10,
+      "chars": ["\ue001\ue002\ue003\ue004"]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    maxParallelForks = 1
+    minHeapSize = '64m'
+    maxHeapSize = '256m'
+    testLogging {
+        events 'failed', 'skipped'
+        exceptionFormat 'full'
+    }
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.register('copyReleaseJar', Copy) {
+    dependsOn tasks.named('jar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('dist')
+    rename { "ServerTeleport-Fabric-${project.mod_version}+mc${project.minecraft_version}.jar" }
+}
+
+def resolvedFabricApi = providers.provider {
+    def expected = "fabric-api-${project.fabric_api_version}.jar"
+    def matches = configurations.runtimeClasspath.files.findAll { it.name == expected }
+    if (matches.size() != 1 || !matches[0].isFile()) {
+        throw new GradleException("Expected exactly one resolved ${expected}, found ${matches.size()}")
+    }
+    matches[0]
+}
+
+tasks.register('copyFabricApi', Copy) {
+    from resolvedFabricApi
+    into layout.projectDirectory.dir('dist')
+}
+
+tasks.named('build') {
+    finalizedBy tasks.named('copyReleaseJar'), tasks.named('copyFabricApi')
+}
