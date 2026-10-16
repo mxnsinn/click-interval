@@ -6,6 +6,8 @@ crosshair tools, and an input display in one interface.
 
 Website: [click-interval.netlify.app](https://click-interval.netlify.app/)
 
+![Click Interval Auto Clicker](docs/assets/auto-clicker-1.5.148.png)
+
 ## Repository layout
 
 - `apps/click-interval/` — complete buildable desktop application
