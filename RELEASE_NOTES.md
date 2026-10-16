@@ -4,6 +4,8 @@ This is the first public, reproducible preview of the isolated **Auto Clicker +
 Macro** edition. It is being published before SignPath Foundation approval so
 the source-to-binary build can be reviewed publicly.
 
+![Click Interval Auto Clicker](https://raw.githubusercontent.com/mxnsinn/click-interval/main/docs/assets/auto-clicker-1.5.148.png)
+
 ## Included
 
 - Auto Clicker
