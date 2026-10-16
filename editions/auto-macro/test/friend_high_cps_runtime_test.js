@@ -23,7 +23,9 @@ async function run() {
   const send = payload => backend.stdin.write(`${JSON.stringify(payload)}\n`);
 
   try {
-    for (let attempt = 0; attempt < 100 && !output.includes('"type": "ready"'); attempt += 1) await wait(20);
+    // Hosted Windows runners can take several seconds to start Python on a
+    // cold image. This is startup tolerance, not extra time in the CPS sample.
+    for (let attempt = 0; attempt < 500 && !output.includes('"type": "ready"'); attempt += 1) await wait(20);
     assert.match(output, /"type": "ready"/, 'Backend did not become ready.');
     send({
       action: 'configure', enabled: false, auto_tool_active: true,

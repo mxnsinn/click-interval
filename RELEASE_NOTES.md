@@ -1,4 +1,4 @@
-# Click Interval 1.5.148 — Unsigned preview
+# Click Interval 1.5.149 — Unsigned preview
 
 This is the first public, reproducible preview of the isolated **Auto Clicker +
 Macro** edition. It is being published before SignPath Foundation approval so
