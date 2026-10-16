@@ -1,5 +1,5 @@
 {
-  "manifestUrl": "https://click-interval.netlify.app/updates/manifest.json",
+  "manifestUrl": "https://click-interval.netlify.app/private-updates/6acaa7df5444442db9a7f3c5a8e42a3c/manifest.json",
   "manifestPublicKey": "MCowBQYDK2VwAyEAS4TY6SpsL3R52iwfixsP1g2fz5QI793nDhnPCQsa7RY=",
   "stagedUpdatePath": null,
   "checkIntervalMinutes": 30

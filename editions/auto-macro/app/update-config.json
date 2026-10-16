@@ -1,8 +1,8 @@
 {
   "edition": "click-interval-friend",
   "channel": "stable",
-  "manifestUrl": "https://click-interval.netlify.app/updates/auto-macro/manifest.json",
-  "controlUrl": "https://click-interval.netlify.app/updates/auto-macro/control.json",
+  "manifestUrl": "https://click-interval-friend-updates-3635dd656475.netlify.app/bb1258af0182f8024009da9836baf046c342/manifest.json",
+  "controlUrl": "https://click-interval-friend-updates-3635dd656475.netlify.app/bb1258af0182f8024009da9836baf046c342/control.json",
   "manifestPublicKey": "MCowBQYDK2VwAyEAnBmRzk0/L6fzp2qjXt0ZJTOfVxE/kiY+cbxTvm0hKXE=",
   "checkIntervalMinutes": 5
 }
