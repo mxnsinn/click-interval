@@ -1,0 +1,43 @@
+name: Bug report
+description: Report a reproducible Click Interval problem
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include passwords, private macros, server worlds, tokens, or other personal data.
+  - type: input
+    id: version
+    attributes:
+      label: Click Interval version
+      placeholder: 1.5.148
+    validations:
+      required: true
+  - type: dropdown
+    id: edition
+    attributes:
+      label: Edition
+      options:
+        - Auto Clicker + Macro
+        - Full toolbox
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the smallest sequence that consistently triggers the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual result
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Windows version, or macOS/Wine version if applicable.
+

@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/mxnsinn/click-interval/security/advisories/new
+    about: Report vulnerabilities privately instead of opening a public issue.
+  - name: Support
+    url: https://click-interval.netlify.app/support.html
+    about: Get help using Click Interval without publishing private information.
+
