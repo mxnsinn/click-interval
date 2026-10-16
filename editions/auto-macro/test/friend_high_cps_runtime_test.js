@@ -6,7 +6,8 @@ const { spawn } = require('node:child_process');
 
 const friendRoot = path.resolve(__dirname, '..');
 const backendPath = path.join(friendRoot, 'app', 'backend.py');
-const pythonPath = path.join(friendRoot, 'app', 'runtime', 'python.exe');
+const stagedPython = path.resolve(friendRoot, '..', '..', 'artifacts', 'auto-macro-stage', 'runtime', 'python.exe');
+const pythonPath = process.env.PYTHON || (require('node:fs').existsSync(stagedPython) ? stagedPython : 'python');
 const wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
 async function run() {

@@ -7,7 +7,6 @@ const crypto = require('crypto');
 const { spawn } = require('child_process');
 const { verifyInstalledApplication } = require('./app-integrity');
 const { downloadVerifiedFile, fetchUpdateEnvelope } = require('./update-download');
-const { cachePathForDocuments, readCachedControl, verifyReleaseControlEnvelope, writeCachedControl } = require('./release-control');
 const { compareVersions, releaseFileUrl, secureHttpsUrl, verifyFriendUpdateEnvelope } = require('./update-manifest');
 const { assertNoLinkedSegments, resolveInsideNoLinks, validateStageRoot } = require('./update-path-safety');
 const { minimalChildEnvironment } = require('./process-environment');
@@ -19,7 +18,6 @@ function loadConfig(applicationPath) {
     throw new Error('The update configuration belongs to a different Click Interval edition or channel.');
   }
   secureHttpsUrl(value.manifestUrl, 'manifest URL');
-  secureHttpsUrl(value.controlUrl, 'beta control URL');
   if (!value.manifestPublicKey || typeof value.manifestPublicKey !== 'string') throw new Error('The Click Interval update signing key is missing.');
   return value;
 }
@@ -70,34 +68,10 @@ function createFriendUpdateController(options = {}) {
     ? options.settingsDirectory
     : () => path.join(electronApp.getPath('documents'), 'Click Interval Auto Macro', 'Settings');
   const quitForUpdate = typeof options.quitForUpdate === 'function' ? options.quitForUpdate : () => electronApp.quit();
-  const onRevoked = typeof options.onRevoked === 'function' ? options.onRevoked : () => electronApp.quit();
   const onIntegrityFailure = typeof options.onIntegrityFailure === 'function' ? options.onIntegrityFailure : () => electronApp.quit();
   let available = null;
   let checkPromise = null;
   let installing = false;
-  let enforcedControlRevision = -1;
-
-  function controlCache(config) {
-    return cachePathForDocuments(electronApp.getPath('documents'));
-  }
-
-  async function checkControl() {
-    const config = loadConfig(applicationPath);
-    const separator = config.controlUrl.includes('?') ? '&' : '?';
-    const envelope = await fetchUpdateEnvelope(`${config.controlUrl}${separator}check=${Date.now()}`);
-    // Verify before touching local state, then persist only the highest signed
-    // revision. A replayed older "active" record cannot replace a revocation.
-    verifyReleaseControlEnvelope(envelope, config.manifestPublicKey, config.channel || 'stable');
-    const control = writeCachedControl(controlCache(config), envelope, config);
-    if (control.state === 'disabled' && control.revision > enforcedControlRevision) {
-      enforcedControlRevision = control.revision;
-      available = null;
-      sendStatus('disabled', { message: control.message, revision: control.revision, allowUninstall: control.allowUninstall });
-      Promise.resolve(onRevoked(control)).catch(() => electronApp.quit());
-    }
-    return control;
-  }
-
   async function check({ manual = false } = {}) {
     if (checkPromise) return checkPromise;
     if (manual) sendStatus('checking');
@@ -107,26 +81,6 @@ function createFriendUpdateController(options = {}) {
         available = null;
         sendStatus('integrity-error', { message: error?.message || 'The installed application files were edited.' });
         Promise.resolve(onIntegrityFailure(error)).catch(() => electronApp.quit());
-        return null;
-      }
-      let control = null;
-      try { control = await checkControl(); }
-      catch (_) {
-        // A timeout, outage, or malformed network response must never create a
-        // new revocation. The last verified record remains cached and startup
-        // enforcement handles a previously verified disabled state offline.
-        try {
-          const config = loadConfig(applicationPath);
-          control = readCachedControl(controlCache(config), config)?.control || null;
-        } catch (_) {}
-      }
-      if (control?.state === 'disabled') {
-        if (control.revision > enforcedControlRevision) {
-          enforcedControlRevision = control.revision;
-          available = null;
-          sendStatus('disabled', { message: control.message, revision: control.revision, allowUninstall: control.allowUninstall });
-          Promise.resolve(onRevoked(control)).catch(() => electronApp.quit());
-        }
         return null;
       }
       try {
@@ -241,7 +195,7 @@ function createFriendUpdateController(options = {}) {
     catch (_) { return 5; }
   }
 
-  return { check, checkControl, install, intervalMinutes, getAvailable: () => available?.manifest || null };
+  return { check, install, intervalMinutes, getAvailable: () => available?.manifest || null };
 }
 
 module.exports = { cleanOldStages, createFriendUpdateController, loadConfig, waitForUpdaterLock };

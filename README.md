@@ -43,16 +43,27 @@ public installer currently distributed to other users. Its source is in
 `editions/auto-macro` and contains no Minecraft server hosting code or personal
 data.
 
-## Privacy and signing
+## Code signing policy
 
 Click Interval stores user settings, macros, and hosted server data locally.
-See [PRIVACY.md](PRIVACY.md), [SIGNING.md](SIGNING.md), and
-[SECURITY.md](SECURITY.md).
+See the [privacy policy](PRIVACY.md), [complete code signing policy](SIGNING.md),
+and [security policy](SECURITY.md).
 
-Free code signing is being requested from
-[SignPath Foundation](https://signpath.org/). Release binaries will be built
-from this public repository in GitHub Actions and signed only after manual
-approval.
+Free code signing provided by SignPath.io, certificate by SignPath Foundation.
+Every official Windows release is built from this public repository by GitHub
+Actions and requires manual approval before signing. Until approval is granted,
+downloads are clearly marked as unsigned previews.
+
+Click Interval has no remote kill switch. Update checks only report signed
+newer versions, and installation starts only after the local user chooses it.
+
+## Install and uninstall
+
+Download the latest archive from [GitHub Releases](https://github.com/mxnsinn/click-interval/releases),
+extract it to a folder you control, and run `Click Interval.exe`. The preview
+release is portable. To uninstall it, close Click Interval and delete the
+extracted folder. User-created macros and settings are stored separately; their
+locations are documented in the release notes so users can remove them too.
 
 ## License
 

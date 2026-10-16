@@ -46,6 +46,9 @@ const INTEGRITY_REQUIRED_UPDATE_FILES = Object.freeze([
   'updater.html',
   'updater.css'
 ]);
+// beta-uninstall.js, friend-control.js, and release-control.js are inert
+// compatibility paths. Older installed clients require these filenames in the
+// first migration update, but current code never uses them for remote control.
 const REQUIRED_UPDATE_FILES = Object.freeze([
   ...INTEGRITY_REQUIRED_UPDATE_FILES,
   'release-control.js'

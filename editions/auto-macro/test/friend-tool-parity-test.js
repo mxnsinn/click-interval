@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 
 const friendRoot = path.resolve(__dirname, '..', 'app');
-const mainRoot = path.resolve(friendRoot, '..', '..');
+const repositoryRoot = path.resolve(friendRoot, '..', '..', '..');
+const mainRoot = path.join(repositoryRoot, 'apps', 'click-interval');
 const read = (root, name) => fs.readFileSync(path.join(root, name), 'utf8');
 
 const friendPackage = JSON.parse(read(friendRoot, 'package.json'));
@@ -13,12 +14,10 @@ const renderer = read(friendRoot, 'renderer.js');
 const main = read(friendRoot, 'main.js');
 const backend = read(friendRoot, 'backend.py');
 const splash = read(friendRoot, 'splash.html');
-const metadataScript = read(path.dirname(friendRoot), 'set-friend-metadata.js');
-const buildScript = read(path.dirname(friendRoot), 'build-friend-edition.ps1');
-const installerPath = path.join(path.dirname(friendRoot), 'installer', 'install-click-interval.cmd');
-const installerScript = fs.readFileSync(installerPath, 'utf8');
+const metadataScript = read(path.join(repositoryRoot, 'scripts'), 'set-metadata.js');
+const buildScript = read(path.join(repositoryRoot, 'scripts'), 'build-auto-macro.ps1');
 
-assert.equal(friendPackage.version, '1.5.147', 'The two-tool release version is incorrect.');
+assert.equal(friendPackage.version, JSON.parse(read(repositoryRoot, 'package.json')).version, 'The two-tool release version does not match the repository release version.');
 assert.equal(friendPackage.name, 'click-interval-friend', 'The legacy package identity required by installed update clients changed.');
 assert.equal(friendPackage.productName, 'Click Interval', 'The shipped product name must remain Click Interval.');
 assert(Number(friendPackage.version.split('.')[2]) >= Number(mainPackage.version.split('.')[2]), 'The two-tool build is behind the current Click Interval version.');
@@ -31,16 +30,9 @@ for (const source of [JSON.stringify(friendPackage), splash, metadataScript]) {
 for (const artifact of [
   'Click-Interval-win-x64',
   'Click Interval.exe',
-  'Click-Interval-$version-win-x64.zip',
-  'Click-Interval-$version-Setup.exe',
-  'FriendlyName=Click Interval Setup'
+  'Click-Interval-$version-win-x64.zip'
 ]) assert(buildScript.includes(artifact), `Missing normal Click Interval release name: ${artifact}`);
 assert(!/Click-Interval-Friend|Click Interval Friend\.exe|FriendlyName=Click Interval Friend/.test(buildScript), 'Release artifact branding still exposes Friend.');
-assert(!fs.existsSync(path.join(path.dirname(friendRoot), 'installer', 'install-friend.cmd')), 'The legacy Friend-named installer command is still present.');
-for (const installerName of ['Click Interval', 'Click Interval.exe', 'Click Interval.lnk', 'Click-Interval-win-x64']) {
-  assert(installerScript.includes(installerName), `Installer is missing normal Click Interval naming: ${installerName}`);
-}
-assert(!/Click Interval Friend|Click-Interval-Friend/i.test(installerScript), 'Installer still exposes Friend branding.');
 
 const toolTabs = [...html.matchAll(/<button id="show([A-Za-z]+)" class="tool-tab/g)].map(match => match[1]);
 assert.deepEqual(toolTabs, ['AutoClicker', 'Macro'], 'The two-tool build must expose exactly Auto Clicker and Macro.');

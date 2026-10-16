@@ -4,8 +4,6 @@ const path = require('path');
 const { spawn } = require('child_process');
 const { minimalChildEnvironment } = require('./process-environment');
 
-let revocationDialogOpen = false;
-
 function canonicalInstallRoot() {
   const localAppData = process.env.LOCALAPPDATA;
   return localAppData ? path.resolve(localAppData, 'Programs', 'Click Interval Auto Macro') : '';
@@ -75,47 +73,7 @@ function queueCanonicalUninstall({ applicationPath, executablePath, parentPid })
   return true;
 }
 
-async function showRevocationAndExit({ app, dialog, parentWindow = null, control, applicationPath = __dirname, beforeExit = () => {} }) {
-  if (revocationDialogOpen) return;
-  revocationDialogOpen = true;
-  try {
-    try { beforeExit(); } catch (_) {}
-    if (parentWindow && !parentWindow.isDestroyed()) parentWindow.hide();
-    const canUninstall = Boolean(control?.allowUninstall) && isCanonicalInstalledCopy(applicationPath, process.execPath);
-    const messageOptions = {
-      type: 'warning',
-      title: 'Click Interval beta disabled',
-      message: 'This Click Interval beta has been disabled by its owner.',
-      detail: String(control?.message || 'Close the beta or install a newer approved build.').slice(0, 1000),
-      buttons: canUninstall ? ['Close', 'Uninstall…'] : ['Close'],
-      defaultId: 0,
-      cancelId: 0,
-      noLink: true
-    };
-    const result = parentWindow && !parentWindow.isDestroyed()
-      ? await dialog.showMessageBox(parentWindow, messageOptions)
-      : await dialog.showMessageBox(messageOptions);
-    if (canUninstall && result.response === 1) {
-      const confirmation = await dialog.showMessageBox({
-        type: 'warning',
-        title: 'Uninstall Click Interval?',
-        message: 'Remove the beta application from this PC?',
-        detail: 'Your Click Interval macros and settings will be kept.',
-        buttons: ['Cancel', 'Uninstall'],
-        defaultId: 0,
-        cancelId: 0,
-        noLink: true
-      });
-      if (confirmation.response === 1) {
-        try { queueCanonicalUninstall({ applicationPath, executablePath: process.execPath, parentPid: process.pid }); }
-        catch (error) {
-          await dialog.showMessageBox({ type: 'error', title: 'Unable to uninstall', message: error.message, buttons: ['Close'] });
-        }
-      }
-    }
-  } finally {
-    app.quit();
-  }
-}
-
-module.exports = { canonicalInstallRoot, isCanonicalInstalledCopy, queueCanonicalUninstall, showRevocationAndExit };
+// The filename is retained only because older signed update clients require it
+// to exist in the first migration release. Uninstallation can only be started
+// by an explicit local user action; no network response can call this helper.
+module.exports = { canonicalInstallRoot, isCanonicalInstalledCopy, queueCanonicalUninstall };

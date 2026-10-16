@@ -67,52 +67,18 @@ function verifyBeforeLaunch() {
   return verifyInstalledApplication(__dirname);
 }
 
-function cachedBetaControl() {
-  const { cachePathForDocuments, readCachedControl } = require('./release-control');
-  const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'update-config.json'), 'utf8'));
-  const cached = readCachedControl(cachePathForDocuments(app.getPath('documents')), config);
-  return cached?.control || null;
-}
-
-async function refreshDisabledControl(currentControl) {
-  try {
-    const { cachePathForDocuments, refreshCachedControl } = require('./release-control');
-    const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'update-config.json'), 'utf8'));
-    return await refreshCachedControl(cachePathForDocuments(app.getPath('documents')), config, { timeoutMs: 12_000 });
-  } catch (_) {
-    return currentControl;
-  }
-}
-
 function continueVerifiedLaunch() {
   if (process.argv.includes('--friend-update-payload')) require('./updater-main');
   else require('./main');
-}
-
-function enforceCachedRevocation(control) {
-  const { showRevocationAndExit } = require('./beta-uninstall');
-  app.setName('Click Interval');
-  app.whenReady().then(() => showRevocationAndExit({
-    app,
-    dialog,
-    control,
-    applicationPath: __dirname
-  })).catch(error => blockStartup(error, 'Click Interval beta disabled'));
 }
 
 try {
   waitForUpdateBoundary();
   recoverBeforeLaunch();
   verifyBeforeLaunch();
-  const control = cachedBetaControl();
-  if (control?.state === 'disabled') {
-    refreshDisabledControl(control).then(latest => {
-      if (latest?.state === 'disabled') enforceCachedRevocation(latest);
-      else continueVerifiedLaunch();
-    }).catch(() => enforceCachedRevocation(control));
-  } else continueVerifiedLaunch();
+  continueVerifiedLaunch();
 } catch (error) {
   blockStartup(error);
 }
 
-module.exports = { blockStartup, cachedBetaControl, processExists, recoverBeforeLaunch, refreshDisabledControl, verifyBeforeLaunch, waitForUpdateBoundary };
+module.exports = { blockStartup, processExists, recoverBeforeLaunch, verifyBeforeLaunch, waitForUpdateBoundary };

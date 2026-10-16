@@ -146,7 +146,7 @@ function assertStagedTrustContinuity(installedConfig, stagedFiles) {
   let stagedConfig;
   try { stagedConfig = JSON.parse(fs.readFileSync(configFile.source, 'utf8')); }
   catch (_) { throw new Error('The signed release contains an invalid update trust configuration.'); }
-  for (const anchor of ['edition', 'channel', 'manifestUrl', 'controlUrl', 'manifestPublicKey']) {
+  for (const anchor of ['edition', 'channel', 'manifestUrl', 'manifestPublicKey']) {
     if (String(stagedConfig?.[anchor] || '') !== String(installedConfig?.[anchor] || '')) {
       throw new Error(`The signed release tried to change its immutable update ${anchor}.`);
     }

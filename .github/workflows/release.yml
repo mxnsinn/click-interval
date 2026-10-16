@@ -6,7 +6,9 @@ on:
     tags: ['v*']
 
 permissions:
-  contents: read
+  contents: write
+  id-token: write
+  attestations: write
 
 jobs:
   build-and-sign:
@@ -24,6 +26,14 @@ jobs:
         env:
           CI_UPDATE_PRIVATE_KEY: ${{ secrets.CI_UPDATE_PRIVATE_KEY }}
         run: ./scripts/build-auto-macro.ps1
+      - name: Generate release evidence
+        shell: pwsh
+        run: |
+          npm sbom --sbom-format spdx | Out-File -LiteralPath artifacts/click-interval-auto-macro.spdx.json -Encoding utf8
+          $archive = Get-ChildItem -LiteralPath artifacts -Filter 'Click-Interval-*-win-x64.zip' | Select-Object -First 1
+          if (-not $archive) { throw 'Release archive is missing.' }
+          $hash = (Get-FileHash -LiteralPath $archive.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $($archive.Name)" | Out-File -LiteralPath artifacts/SHA256SUMS.txt -Encoding ascii
       - name: Upload unsigned artifact
         id: unsigned
         uses: actions/upload-artifact@v7
@@ -32,6 +42,20 @@ jobs:
           path: artifacts/Click-Interval-*-win-x64.zip
           if-no-files-found: error
           retention-days: 7
+      - name: Upload release evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: click-interval-auto-macro-release-evidence
+          path: |
+            artifacts/SHA256SUMS.txt
+            artifacts/click-interval-auto-macro.spdx.json
+            RELEASE_NOTES.md
+          if-no-files-found: error
+          retention-days: 90
+      - name: Attest unsigned build provenance
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: artifacts/Click-Interval-*-win-x64.zip
       - name: Submit signing request to SignPath
         if: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' }}
         uses: signpath/github-action-submit-signing-request@v3
@@ -51,3 +75,13 @@ jobs:
           name: click-interval-auto-macro-signed
           path: artifacts/signed
           if-no-files-found: error
+      - name: Publish unsigned preview release
+        if: ${{ startsWith(github.ref, 'refs/tags/v') && vars.SIGNPATH_ORGANIZATION_ID == '' }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $archive = Get-ChildItem -LiteralPath artifacts -Filter 'Click-Interval-*-win-x64.zip' | Select-Object -First 1
+          gh release create $env:GITHUB_REF_NAME $archive.FullName artifacts/SHA256SUMS.txt artifacts/click-interval-auto-macro.spdx.json `
+            --title "Click Interval $env:GITHUB_REF_NAME - Unsigned preview" `
+            --notes-file RELEASE_NOTES.md --prerelease --verify-tag

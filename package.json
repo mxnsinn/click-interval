@@ -1,6 +1,6 @@
 {
   "name": "click-interval-source",
-  "version": "1.5.147",
+  "version": "1.5.148",
   "private": true,
   "description": "Open-source Click Interval toolbox",
   "license": "MIT",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "audit": "node test/source-audit.js",
-    "test:auto-macro": "node editions/auto-macro/test/friend-wine-compat-test.js && node editions/auto-macro/test/friend-backend-pipe-test.js && node editions/auto-macro/test/friend-update-recovery-test.js",
+    "test:auto-macro": "node editions/auto-macro/test/friend-wine-compat-test.js && node editions/auto-macro/test/friend-backend-pipe-test.js && node editions/auto-macro/test/friend-update-recovery-test.js && node editions/auto-macro/test/friend-update-security-test.js && node editions/auto-macro/test/friend-privacy-isolation-test.js && node editions/auto-macro/test/friend-integrity-policy-test.js && node editions/auto-macro/test/friend-tool-parity-test.js && node editions/auto-macro/test/friend_high_cps_runtime_test.js",
     "test": "npm run audit && npm run test:auto-macro"
   },
   "devDependencies": {

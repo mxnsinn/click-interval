@@ -323,23 +323,14 @@ async function run() {
     fs.rmSync(directory, { recursive: true, force: true });
   }
 
-  const ownerPublisherPath = path.resolve(__dirname, '..', 'owner-tools', 'publish-friend-update.js');
-  assert(fs.existsSync(ownerPublisherPath), 'Owner update publisher is missing.'); assertions += 1;
-  const publisher = require(ownerPublisherPath);
-  assert.equal(typeof publisher.compareVersions, 'function'); assertions += 1;
-  assert.equal(typeof publisher.assertNewVersion, 'function'); assertions += 1;
-  assert(publisher.compareVersions('1.0.1', '1.0.0') > 0); assertions += 1;
-  assert.doesNotThrow(() => publisher.assertNewVersion('1.0.1', '1.0.0')); assertions += 1;
-  assert.throws(() => publisher.assertNewVersion('1.0.0', '1.0.0'), /newer|version|rollback/i); assertions += 1;
-  assert.throws(() => publisher.assertNewVersion('0.9.9', '1.0.0'), /newer|version|rollback/i); assertions += 1;
-  assert.throws(() => publisher.publish({}, {
-    context: { version: '1.0.1', localPrevious: null },
-    remote: { manifest: { version: '1.0.2' } }
-  }), /older|newer|version|rollback/i, 'Publisher accepted a version older than the live channel.'); assertions += 1;
-  const publisherSource = fs.readFileSync(ownerPublisherPath, 'utf8');
-  const publisherMain = publisherSource.slice(publisherSource.indexOf('async function main'));
-  assert(publisherMain.indexOf('await fetchRemoteManifest') >= 0 && publisherMain.indexOf('await fetchRemoteManifest') < publisherMain.indexOf('publish(options'), 'Default publishing does not inspect the signed live channel before changing local output.'); assertions += 1;
-  assert(publisherSource.includes('verifyLiveRelease') && publisherSource.includes('packageEntry'), 'Publisher does not verify a deployed release payload.'); assertions += 1;
+  const releaseWorkflowPath = path.resolve(__dirname, '..', '..', '..', '.github', 'workflows', 'release.yml');
+  assert(fs.existsSync(releaseWorkflowPath), 'Public release workflow is missing.'); assertions += 1;
+  const releaseWorkflow = fs.readFileSync(releaseWorkflowPath, 'utf8');
+  assert(/push:[\s\S]*tags:\s*\['v\*'\]/.test(releaseWorkflow), 'Release workflow is not bound to version tags.'); assertions += 1;
+  assert(releaseWorkflow.includes('npm test') && releaseWorkflow.includes('build-auto-macro.ps1'), 'Release workflow does not test before building.'); assertions += 1;
+  assert(releaseWorkflow.includes('SHA256SUMS.txt') && releaseWorkflow.includes('sbom-format spdx'), 'Release workflow does not publish checksums and an SPDX SBOM.'); assertions += 1;
+  assert(releaseWorkflow.includes('attest-build-provenance@v3'), 'Release workflow does not attest build provenance.'); assertions += 1;
+  assert(releaseWorkflow.includes('signpath/github-action-submit-signing-request@v3'), 'Release workflow does not use the official SignPath action.'); assertions += 1;
 
   const updaterSource = fs.readFileSync(path.join(appRoot, 'updater-main.js'), 'utf8');
   assert.equal((updaterSource.match(/writeTransactionJournal\(applicationRoot, journal\)/g) || []).length, 1, 'Updater rewrites its supposedly immutable journal.'); assertions += 1;

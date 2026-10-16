@@ -5,7 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const { StringDecoder } = require('string_decoder');
 const { packMacroActions, unpackMacroActions } = require('./macro-codec');
-const { showRevocationAndExit } = require('./beta-uninstall');
 const { createFriendUpdateController } = require('./update-client');
 const { minimalChildEnvironment } = require('./process-environment');
 const { isWineEnvironment } = require('./wine-compat');
@@ -1094,20 +1093,7 @@ function friendUpdater() {
           noLink: true
         });
         quitCleanly(true);
-      },
-      onRevoked: control => showRevocationAndExit({
-        app,
-        dialog,
-        parentWindow: window,
-        control,
-        applicationPath: __dirname,
-        beforeExit: () => {
-          if (updateCheckTimer) clearInterval(updateCheckTimer);
-          updateCheckTimer = null;
-          stopSmartActivationMonitor();
-          stopBackend();
-        }
-      })
+      }
     });
   }
   return updateController;

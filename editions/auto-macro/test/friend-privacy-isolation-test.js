@@ -8,7 +8,7 @@ const path = require('node:path');
 
 const friendRoot = path.resolve(__dirname, '..');
 const sourceApp = path.join(friendRoot, 'app');
-const isolatedRoot = path.resolve(process.env.CLICK_INTERVAL_FRIEND_ROOT || 'D:\\Codex-Projects\\ClickIntervalFriend');
+const isolatedRoot = path.resolve(process.env.CLICK_INTERVAL_FRIEND_ROOT || path.join(friendRoot, '.external-build'));
 const builtApp = path.join(isolatedRoot, 'app');
 const portableApp = path.join(isolatedRoot, 'release', 'Click-Interval-win-x64', 'resources', 'app');
 
@@ -113,7 +113,8 @@ function assertStorageAndImportBoundaries(root) {
   }
 
   const releaseControl = fs.readFileSync(path.join(root, 'release-control.js'), 'utf8');
-  assert(/Click Interval Auto Macro/.test(releaseControl), 'Signed release control is not cached in the isolated Auto/Macro Documents folder.');
+  assert(/deprecated:\s*true/.test(releaseControl), 'The retired remote-control compatibility module is not inert.');
+  assert(!/fetch|https?:|writeFile|readFile|state\s*===\s*['"]disabled/.test(releaseControl), 'The retired compatibility module still performs remote control or persistence.');
   const updaterMain = fs.readFileSync(path.join(root, 'updater-main.js'), 'utf8');
   assert(/Click Interval Auto Macro/.test(updaterMain), 'The updater does not validate the isolated Auto/Macro settings folder.');
 }
@@ -150,14 +151,6 @@ function assertPublicBranding(root) {
 }
 
 function assertInstallIsolation() {
-  const installerPath = path.join(friendRoot, 'installer', 'install-click-interval.cmd');
-  assert(fs.existsSync(installerPath), 'The Click Interval installer command is missing.');
-  const installer = fs.readFileSync(installerPath, 'utf8');
-  assert(/Join-Path \$programs 'Click Interval Auto Macro'/.test(installer), 'Fresh installs do not use the isolated Auto/Macro program folder.');
-  assert(!/Join-Path \$programs 'Click Interval'\)/.test(installer), 'The installer can overwrite the full Click Interval application.');
-  assert(/Click Interval\.exe/.test(installer) && /Click Interval\.lnk/.test(installer), 'Public executable and shortcut names must remain Click Interval.');
-  assert(!/\bFriend\b/i.test(installer), 'The installer still exposes Friend branding.');
-
   const uninstall = fs.readFileSync(path.join(sourceApp, 'beta-uninstall.js'), 'utf8');
   assert(/path\.resolve\(localAppData, 'Programs', 'Click Interval Auto Macro'\)/.test(uninstall), 'Self-uninstall does not use the isolated canonical install folder.');
   assert(/Click Interval Friend/.test(uninstall) && /isLegacy/.test(uninstall), 'Self-uninstall no longer safely recognizes an in-place v1.5.143 installation.');
